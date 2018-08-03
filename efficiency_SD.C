@@ -419,8 +419,8 @@ gROOT->SetBatch(kTRUE);
 */
   //std::cout<<"  Dark photon mass   "<<mass_string<<"  ctau   "<<cT_string<<std::endl;
   // add files to the chain
-  addfiles(chain, dirname, ext);
-
+ // addfiles(chain, dirname, ext);
+chain->Add(fileName);
 //  std::cout<<"1"<<std::endl;  
   //TFile *file = TFile::Open("total_DarkSUSY_mH_125_mN1_10_mGammaD_" + mass_string + "_cT_" + cT_string + ".root","RECREATE"); 
   TFile *file = TFile::Open("test_DarkSUSY.root","RECREATE"); 
@@ -1792,7 +1792,7 @@ void efficiency_SD(){
   //  makeCounters();
 
   
-  create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/");
+  create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/out_ana.root");
   /*create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_PAT_ANA_V2_v1/170128_023406/0000/");
   create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_PAT_ANA_V2_v1/170128_024144/0000/");
   create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_80k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_80k_PAT_ANA_V2_v1/170128_024130/0000/");
