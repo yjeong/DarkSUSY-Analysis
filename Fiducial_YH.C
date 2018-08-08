@@ -17,9 +17,10 @@
 #include "TColor.h"
 #include "TStyle.h"
 
-
+//TFile *tfile;
 ///----Global Variables ----///
-TFile *BAM = new TFile("Efficiency_Plots.root","RECREATE");
+TFile *BAM = new TFile("test_1.root","RECREATE");
+//tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
 int my_canvas_y = 600;
@@ -290,7 +291,8 @@ int MatchRECOtoGENdimuons(double etaC, double phiC, double etaF, double phiF, do
   return matchInt;
 }
 
-void addfiles(TChain *ch, const TString dirname=".", const TString ext=".root")
+//void addfiles(TChain *ch, const TString dirname=".", const TString ext=".root")
+void addfiles(TChain *ch, const TString dirname=".")
 {
   bool verbose(true);
   TSystemDirectory dir(dirname, dirname);
@@ -303,7 +305,7 @@ void addfiles(TChain *ch, const TString dirname=".", const TString ext=".root")
     while ((file=(TSystemFile*)next())) {
       fname = file->GetName();
       if (verbose) std::cout << "found fname " << fname << std::endl;
-      if (!file->IsDirectory() && fname.BeginsWith(ext)) {
+      //if (!file->IsDirectory() && fname.BeginsWith(ext)) {
 
 	ch->Add(dirname + "/" + fname);
 	//if (verbose)
@@ -311,7 +313,6 @@ void addfiles(TChain *ch, const TString dirname=".", const TString ext=".root")
       }
     }
   }
-}
 
 template <class T>
 void set_title_and_label_style(T* gr)
@@ -403,11 +404,15 @@ void create_eff_pergamD2DLxyLz(TString fileName){
 
 gROOT->SetBatch(kTRUE);
 
+  TTree *tree;
+  TFile *tfile;
   //  bool verbose(true);
   bool verbose(false);
   TString dirname(fileName);
-  TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
-  TString ext("out_ana");
+  tfile = new TFile("out_ana.root");
+  //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
+  tree = (TTree*)tfile->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
+  //TString ext("out_ana");
 /*
   //Get the sample mass
   TString str = fileName;
@@ -418,24 +423,21 @@ gROOT->SetBatch(kTRUE);
   ///Get the sample cT
   TString str3 = "_cT_";
   TSubString cT_string = (str(last+str3.Length(),4));
-*/
-  //std::cout<<"  Dark photon mass   "<<mass_string<<"  ctau   "<<cT_string<<std::endl;
-  // add files to the chain
-  //addfiles(chain, dirname, ext);
+*//*
+  std::cout<<"  Dark photon mass   "<<mass_string<<"  ctau   "<<cT_string<<std::endl;
+   add files to the chain
+  addfiles(chain, dirname, ext);
   chain->Add(fileName);
-//  std::cout<<"1"<<std::endl;  
-  //TFile *file = TFile::Open("total_DarkSUSY_mH_125_mN1_10_mGammaD_" + mass_string + "_cT_" + cT_string + ".root","RECREATE"); 
-  //TFile *file = TFile::Open("test_DarkSUSY.root","RECREATE"); 
-//  std::cout<<"2"<<std::endl;  
-  //chain->CloneTree(-1,"fast"); 
-//  std::cout<<"3"<<std::endl;  
-  //file->Write(); 
-//  std::cout<<"4"<<std::endl;  
-  //delete file;
+  TFile *file = TFile::Open("total_DarkSUSY_mH_125_mN1_10_mGammaD_" + mass_string + "_cT_" + cT_string + ".root","RECREATE"); 
+  TFile *file = TFile::Open("test_DarkSUSY.root","RECREATE"); 
+  chain->CloneTree(-1,"fast"); 
+  file->Write(); 
+  delete file;
 
 //  std::cout<<"5"<<std::endl;  
 
   //return;
+  */
   Float_t ev_all[40]={0.0};
 
   Bool_t is1GenMu17;
@@ -567,13 +569,13 @@ gROOT->SetBatch(kTRUE);
   Float_t diMuonF_FittedVtx_L;
 
 
-  TObjArray *fileElements=chain->GetListOfFiles();
-  TIter next(fileElements);
+  //TObjArray *fileElements=chain->GetListOfFiles();
+  //TIter next(fileElements);
   TChainElement *chEl=0;
 
-  while ((chEl=(TChainElement*)next())) {
-    //    if (verbose) std::cout << "running on file " << chEl->GetTitle() << std::endl;
-    //    std::cout << "running on file " << chEl->GetTitle() << std::endl;
+  //while ((chEl=(TChainElement*)next())) {
+   /*/    if (verbose) std::cout << "running on file " << chEl->GetTitle() << std::endl;
+        std::cout << "running on file " << chEl->GetTitle() << std::endl;
     TFile* myfile = new TFile(dirname + chEl->GetTitle());
     if (!myfile) {
       if (verbose) std::cout << "File " << chEl->GetTitle() << " does not exist" << std::endl;
@@ -588,116 +590,116 @@ gROOT->SetBatch(kTRUE);
       if (verbose) std::cout << "Tree cutFlowAnalyzer/Events does not exist" << std::endl;
       continue;
     }
+*/
+    if (verbose) cout<<"  Events  "<<tree->GetEntries()<<endl;
 
-    if (verbose) cout<<"  Events  "<<t->GetEntries()<<endl;
-
-    t->SetBranchStatus("*",0);
-    t->SetBranchStatus("event",1);
-    t->SetBranchStatus("is1GenMu17",1);
-    t->SetBranchStatus("is2GenMu8",1);
-    t->SetBranchStatus("is3GenMu8",1);
-    t->SetBranchStatus("is4GenMu8",1);
-    t->SetBranchStatus("is1SelMu17",1);
-    t->SetBranchStatus("is2SelMu8",1);
-    t->SetBranchStatus("is3SelMu8",1);
-    t->SetBranchStatus("is4SelMu8",1);
-    t->SetBranchStatus("isVertexOK",1);
-    t->SetBranchStatus("genA0_Lxy",1); 
-    t->SetBranchStatus("genA0_Lz",1);  
-    t->SetBranchStatus("genA1_Lxy",1); 
-    t->SetBranchStatus("genA1_Lz",1);  
-    t->SetBranchStatus("selMu0_phi",1);
-    t->SetBranchStatus("selMu1_phi",1);
-    t->SetBranchStatus("selMu2_phi",1);
-    t->SetBranchStatus("selMu3_phi",1);
-    t->SetBranchStatus("selMu0_eta",1);
-    t->SetBranchStatus("selMu1_eta",1);
-    t->SetBranchStatus("selMu2_eta",1);
-    t->SetBranchStatus("selMu3_eta",1);
-    t->SetBranchStatus("genA1_phi",1);
-    t->SetBranchStatus("genA1_eta",1);
-    t->SetBranchStatus("genA0_phi",1);
-    t->SetBranchStatus("genA0_eta",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_px",1); 
-    t->SetBranchStatus("diMuonC_FittedVtx_py",1); 
-    t->SetBranchStatus("diMuonF_FittedVtx_px",1); 
-    t->SetBranchStatus("diMuonF_FittedVtx_py",1); 
-    t->SetBranchStatus("genA0_px",1); 
-    t->SetBranchStatus("genA0_py",1); 
-    t->SetBranchStatus("genA1_px",1); 
-    t->SetBranchStatus("genA1_py",1); 
-    t->SetBranchStatus("isDiMuonHLTFired",1);  
-    t->SetBranchStatus("diMuonF_FittedVtx_m",1);
-    t->SetBranchStatus("diMuonF_FittedVtx_px",1); 
-    t->SetBranchStatus("diMuonF_FittedVtx_py",1); 
-    t->SetBranchStatus("diMuonF_FittedVtx_pz",1); 
-    t->SetBranchStatus("diMuonF_FittedVtx_eta",1);
-    t->SetBranchStatus("diMuonF_FittedVtx_phi",1);
-    t->SetBranchStatus("diMuonF_FittedVtx_Lxy",1);
-    t->SetBranchStatus("diMuonF_FittedVtx_L",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_m",1); 
-    t->SetBranchStatus("diMuonC_FittedVtx_px",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_py",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_pz",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_eta",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_phi",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_Lxy",1);
-    t->SetBranchStatus("diMuonC_FittedVtx_L",1);
+    tree->SetBranchStatus("*",0);
+    tree->SetBranchStatus("event",1);
+    tree->SetBranchStatus("is1GenMu17",1);
+    tree->SetBranchStatus("is2GenMu8",1);
+    tree->SetBranchStatus("is3GenMu8",1);
+    tree->SetBranchStatus("is4GenMu8",1);
+    tree->SetBranchStatus("is1SelMu17",1);
+    tree->SetBranchStatus("is2SelMu8",1);
+    tree->SetBranchStatus("is3SelMu8",1);
+    tree->SetBranchStatus("is4SelMu8",1);
+    tree->SetBranchStatus("isVertexOK",1);
+    tree->SetBranchStatus("genA0_Lxy",1); 
+    tree->SetBranchStatus("genA0_Lz",1);  
+    tree->SetBranchStatus("genA1_Lxy",1); 
+    tree->SetBranchStatus("genA1_Lz",1);  
+    tree->SetBranchStatus("selMu0_phi",1);
+    tree->SetBranchStatus("selMu1_phi",1);
+    tree->SetBranchStatus("selMu2_phi",1);
+    tree->SetBranchStatus("selMu3_phi",1);
+    tree->SetBranchStatus("selMu0_eta",1);
+    tree->SetBranchStatus("selMu1_eta",1);
+    tree->SetBranchStatus("selMu2_eta",1);
+    tree->SetBranchStatus("selMu3_eta",1);
+    tree->SetBranchStatus("genA1_phi",1);
+    tree->SetBranchStatus("genA1_eta",1);
+    tree->SetBranchStatus("genA0_phi",1);
+    tree->SetBranchStatus("genA0_eta",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_px",1); 
+    tree->SetBranchStatus("diMuonC_FittedVtx_py",1); 
+    tree->SetBranchStatus("diMuonF_FittedVtx_px",1); 
+    tree->SetBranchStatus("diMuonF_FittedVtx_py",1); 
+    tree->SetBranchStatus("genA0_px",1); 
+    tree->SetBranchStatus("genA0_py",1); 
+    tree->SetBranchStatus("genA1_px",1); 
+    tree->SetBranchStatus("genA1_py",1); 
+    tree->SetBranchStatus("isDiMuonHLTFired",1);  
+    tree->SetBranchStatus("diMuonF_FittedVtx_m",1);
+    tree->SetBranchStatus("diMuonF_FittedVtx_px",1); 
+    tree->SetBranchStatus("diMuonF_FittedVtx_py",1); 
+    tree->SetBranchStatus("diMuonF_FittedVtx_pz",1); 
+    tree->SetBranchStatus("diMuonF_FittedVtx_eta",1);
+    tree->SetBranchStatus("diMuonF_FittedVtx_phi",1);
+    tree->SetBranchStatus("diMuonF_FittedVtx_Lxy",1);
+    tree->SetBranchStatus("diMuonF_FittedVtx_L",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_m",1); 
+    tree->SetBranchStatus("diMuonC_FittedVtx_px",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_py",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_pz",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_eta",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_phi",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_Lxy",1);
+    tree->SetBranchStatus("diMuonC_FittedVtx_L",1);
 
 
-    t->SetBranchAddress("event",&event);
-    t->SetBranchAddress("is1GenMu17",&is1GenMu17);
-    t->SetBranchAddress("is2GenMu8",&is2GenMu8);
-    t->SetBranchAddress("is3GenMu8",&is3GenMu8);
-    t->SetBranchAddress("is4GenMu8",&is4GenMu8);
-    t->SetBranchAddress("is1SelMu17",&is1SelMu17);
-    t->SetBranchAddress("is2SelMu8",&is2SelMu8);
-    t->SetBranchAddress("is3SelMu8",&is3SelMu8);
-    t->SetBranchAddress("is4SelMu8",&is4SelMu8);
-    t->SetBranchAddress("isVertexOK",&isVtxOK);
-    t->SetBranchAddress("genA0_Lxy", &genA0_Lxy);
-    t->SetBranchAddress("genA0_Lz",  &genA0_Lz);
-    t->SetBranchAddress("genA1_Lxy", &genA1_Lxy);
-    t->SetBranchAddress("genA1_Lz",  &genA1_Lz);
-    t->SetBranchAddress("selMu0_phi",&selMu0_phi);
-    t->SetBranchAddress("selMu1_phi",&selMu1_phi);
-    t->SetBranchAddress("selMu2_phi",&selMu2_phi);
-    t->SetBranchAddress("selMu3_phi",&selMu3_phi);
-    t->SetBranchAddress("selMu0_eta",&selMu0_eta);
-    t->SetBranchAddress("selMu1_eta",&selMu1_eta);
-    t->SetBranchAddress("selMu2_eta",&selMu2_eta);
-    t->SetBranchAddress("selMu3_eta",&selMu3_eta);
-    t->SetBranchAddress("genA1_phi",&genA1_phi);
-    t->SetBranchAddress("genA1_eta",&genA1_eta);
-    t->SetBranchAddress("genA0_phi",&genA0_phi);
-    t->SetBranchAddress("genA0_eta",&genA0_eta);
-    t->SetBranchAddress("diMuonC_FittedVtx_px", &diMuonC_FittedVtx_px);
-    t->SetBranchAddress("diMuonC_FittedVtx_py", &diMuonC_FittedVtx_py);
-    t->SetBranchAddress("diMuonF_FittedVtx_px", &diMuonF_FittedVtx_px);
-    t->SetBranchAddress("diMuonF_FittedVtx_py", &diMuonF_FittedVtx_py);
-    t->SetBranchAddress("genA0_px", & genA0_px);
-    t->SetBranchAddress("genA0_py", & genA0_py);
-    t->SetBranchAddress("genA1_px", & genA1_px);
-    t->SetBranchAddress("genA1_py", & genA1_py);
-    t->SetBranchAddress("isDiMuonHLTFired",               &isDiMuonHLTFired);
-    t->SetBranchAddress("diMuonF_FittedVtx_m", &diMuonF_FittedVtx_m);
-    t->SetBranchAddress("diMuonF_FittedVtx_px", &diMuonF_FittedVtx_px);
-    t->SetBranchAddress("diMuonF_FittedVtx_py", &diMuonF_FittedVtx_py);
-    t->SetBranchAddress("diMuonF_FittedVtx_pz", &diMuonF_FittedVtx_pz);
-    t->SetBranchAddress("diMuonF_FittedVtx_eta",&diMuonF_FittedVtx_eta);
-    t->SetBranchAddress("diMuonF_FittedVtx_phi",&diMuonF_FittedVtx_phi);
-    t->SetBranchAddress("diMuonF_FittedVtx_Lxy",&diMuonF_FittedVtx_Lxy);
-    t->SetBranchAddress("diMuonF_FittedVtx_L",&diMuonF_FittedVtx_L);
-    t->SetBranchAddress("diMuonC_FittedVtx_m", &diMuonC_FittedVtx_m);
-    t->SetBranchAddress("diMuonC_FittedVtx_px", &diMuonC_FittedVtx_px);
-    t->SetBranchAddress("diMuonC_FittedVtx_py", &diMuonC_FittedVtx_py);
-    t->SetBranchAddress("diMuonC_FittedVtx_pz", &diMuonC_FittedVtx_pz);
-    t->SetBranchAddress("diMuonC_FittedVtx_eta",&diMuonC_FittedVtx_eta);
-    t->SetBranchAddress("diMuonC_FittedVtx_phi",&diMuonC_FittedVtx_phi);
-    t->SetBranchAddress("diMuonC_FittedVtx_Lxy",&diMuonC_FittedVtx_Lxy);
-    t->SetBranchAddress("diMuonC_FittedVtx_L",&diMuonC_FittedVtx_L);
+    tree->SetBranchAddress("event",&event);
+    tree->SetBranchAddress("is1GenMu17",&is1GenMu17);
+    tree->SetBranchAddress("is2GenMu8",&is2GenMu8);
+    tree->SetBranchAddress("is3GenMu8",&is3GenMu8);
+    tree->SetBranchAddress("is4GenMu8",&is4GenMu8);
+    tree->SetBranchAddress("is1SelMu17",&is1SelMu17);
+    tree->SetBranchAddress("is2SelMu8",&is2SelMu8);
+    tree->SetBranchAddress("is3SelMu8",&is3SelMu8);
+    tree->SetBranchAddress("is4SelMu8",&is4SelMu8);
+    tree->SetBranchAddress("isVertexOK",&isVtxOK);
+    tree->SetBranchAddress("genA0_Lxy", &genA0_Lxy);
+    tree->SetBranchAddress("genA0_Lz",  &genA0_Lz);
+    tree->SetBranchAddress("genA1_Lxy", &genA1_Lxy);
+    tree->SetBranchAddress("genA1_Lz",  &genA1_Lz);
+    tree->SetBranchAddress("selMu0_phi",&selMu0_phi);
+    tree->SetBranchAddress("selMu1_phi",&selMu1_phi);
+    tree->SetBranchAddress("selMu2_phi",&selMu2_phi);
+    tree->SetBranchAddress("selMu3_phi",&selMu3_phi);
+    tree->SetBranchAddress("selMu0_eta",&selMu0_eta);
+    tree->SetBranchAddress("selMu1_eta",&selMu1_eta);
+    tree->SetBranchAddress("selMu2_eta",&selMu2_eta);
+    tree->SetBranchAddress("selMu3_eta",&selMu3_eta);
+    tree->SetBranchAddress("genA1_phi",&genA1_phi);
+    tree->SetBranchAddress("genA1_eta",&genA1_eta);
+    tree->SetBranchAddress("genA0_phi",&genA0_phi);
+    tree->SetBranchAddress("genA0_eta",&genA0_eta);
+    tree->SetBranchAddress("diMuonC_FittedVtx_px", &diMuonC_FittedVtx_px);
+    tree->SetBranchAddress("diMuonC_FittedVtx_py", &diMuonC_FittedVtx_py);
+    tree->SetBranchAddress("diMuonF_FittedVtx_px", &diMuonF_FittedVtx_px);
+    tree->SetBranchAddress("diMuonF_FittedVtx_py", &diMuonF_FittedVtx_py);
+    tree->SetBranchAddress("genA0_px", & genA0_px);
+    tree->SetBranchAddress("genA0_py", & genA0_py);
+    tree->SetBranchAddress("genA1_px", & genA1_px);
+    tree->SetBranchAddress("genA1_py", & genA1_py);
+    tree->SetBranchAddress("isDiMuonHLTFired",               &isDiMuonHLTFired);
+    tree->SetBranchAddress("diMuonF_FittedVtx_m", &diMuonF_FittedVtx_m);
+    tree->SetBranchAddress("diMuonF_FittedVtx_px", &diMuonF_FittedVtx_px);
+    tree->SetBranchAddress("diMuonF_FittedVtx_py", &diMuonF_FittedVtx_py);
+    tree->SetBranchAddress("diMuonF_FittedVtx_pz", &diMuonF_FittedVtx_pz);
+    tree->SetBranchAddress("diMuonF_FittedVtx_eta",&diMuonF_FittedVtx_eta);
+    tree->SetBranchAddress("diMuonF_FittedVtx_phi",&diMuonF_FittedVtx_phi);
+    tree->SetBranchAddress("diMuonF_FittedVtx_Lxy",&diMuonF_FittedVtx_Lxy);
+    tree->SetBranchAddress("diMuonF_FittedVtx_L",&diMuonF_FittedVtx_L);
+    tree->SetBranchAddress("diMuonC_FittedVtx_m", &diMuonC_FittedVtx_m);
+    tree->SetBranchAddress("diMuonC_FittedVtx_px", &diMuonC_FittedVtx_px);
+    tree->SetBranchAddress("diMuonC_FittedVtx_py", &diMuonC_FittedVtx_py);
+    tree->SetBranchAddress("diMuonC_FittedVtx_pz", &diMuonC_FittedVtx_pz);
+    tree->SetBranchAddress("diMuonC_FittedVtx_eta",&diMuonC_FittedVtx_eta);
+    tree->SetBranchAddress("diMuonC_FittedVtx_phi",&diMuonC_FittedVtx_phi);
+    tree->SetBranchAddress("diMuonC_FittedVtx_Lxy",&diMuonC_FittedVtx_Lxy);
+    tree->SetBranchAddress("diMuonC_FittedVtx_L",&diMuonC_FittedVtx_L);
 
-    Int_t nentries = t->GetEntries();
+    Int_t nentries = tree->GetEntries();
 
 
     //    Float_t bin_edges[41]={0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,78,80};
@@ -712,7 +714,7 @@ gROOT->SetBatch(kTRUE);
 
 
     for(int k=0;k<nentries;k++){
-      t->GetEntry(k);	
+      tree->GetEntry(k);	
       //      std::cout<<"  Enter new event  "<<std::endl;
       if(true or isDiMuonHLTFired == 1){ //Make sure that the event fired the HLT
 	//Loop for Efficienies
@@ -1049,9 +1051,9 @@ gROOT->SetBatch(kTRUE);
 
       }// HLT loop 
     } //for loop
-    myfile->Close();
+    //myfile->Close();
   } //While loop
-} //Method loop
+ //Method loop
 
 
 void makePlots(){
@@ -1794,7 +1796,8 @@ void Fiducial_YH(){
   //  makeCounters();
 
   
-  create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/out_ana.root");
+  //create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/out_ana.root");
+  create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/out_ana.root");
   //create_eff_pergamD2DLxyLz("");
   /*create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_PAT_ANA_V2_v1/170128_023406/0000/");
   create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_PAT_ANA_V2_v1/170128_024144/0000/");
