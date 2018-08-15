@@ -19,7 +19,8 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-TFile *BAM = new TFile("test_1.root","RECREATE");
+TString File_name = "2016";
+TFile *BAM = new TFile("test_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
@@ -410,7 +411,7 @@ gROOT->SetBatch(kTRUE);
   bool verbose(false);
   TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/";
   TString dirname(fileName);
-  tfile = new TFile(PATH_samples+"out_ana.root");
+  tfile = new TFile(PATH_samples+"out_ana_"+File_name+".root");
   //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
   tree = (TTree*)tfile->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
   //TString ext("out_ana");
@@ -1059,7 +1060,7 @@ gROOT->SetBatch(kTRUE);
 
 void makePlots(){
 
-  TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/plots/";
+  TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/plots_"+File_name+"/";
 
   TH2F *den_2D_A0 = new TH2F("den_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
   TH2F *num_2D_A0 = new TH2F("num_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
@@ -1133,7 +1134,8 @@ void makePlots(){
   leg->Draw("same");
 
   effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.pdf");
-  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.C");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.png");
+  //effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.C");
 
   
   gr1->GetXaxis()->SetLimits(0,12);
@@ -1142,7 +1144,8 @@ void makePlots(){
   leg->Draw("same");
 
   effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.pdf");
-  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.C");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.png");
+  //effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.C");
 
 
   TCanvas *effz2 = new TCanvas("effz2", "effz2", my_canvas_x, my_canvas_y);
@@ -1181,7 +1184,8 @@ void makePlots(){
   leg->Draw("same");
 
   effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.pdf");
-  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.C");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.png");
+  //effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.C");
 
 
   gr2->GetXaxis()->SetLimits(0,12);
@@ -1190,7 +1194,8 @@ void makePlots(){
   leg->Draw("same");
 
   effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.pdf");
-  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.C");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.png");
+  //effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.C");
 
 
   TCanvas *effpt = new TCanvas("effpt", "effpt", my_canvas_x, my_canvas_y);
@@ -1226,7 +1231,8 @@ void makePlots(){
 
   leg->Draw("same");
   effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.pdf");
-  effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.C");
+  effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.png");
+  //effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.C");
 
   //Efficiency by Eta plots
   TLine *pixel_1 = new TLine(4.0, 0, 4.0, 1);
@@ -1354,7 +1360,8 @@ void makePlots(){
 
 
   eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.pdf");
-  eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.C");
+  eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.png");
+  //eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.C");
 
   
   mg_lxy->GetXaxis()->SetLimits(0,12);
@@ -1367,7 +1374,8 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
   effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.pdf");
-  effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.C");
+  effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.png");
+  //effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.C");
 
 
 
@@ -1438,7 +1446,8 @@ void makePlots(){
 
   etalegz->Draw("same");
   eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.pdf");
-  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.C");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.png");
+  //eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.C");
 
 
 
@@ -1452,7 +1461,8 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
   eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.pdf");
-  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.C");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.png");
+  //eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.C");
 
 
   //Eta plots including Trigger
@@ -1520,7 +1530,8 @@ void makePlots(){
 
 
   eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.pdf");
-  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.C");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.png");
+  //eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.C");
 
 
 
@@ -1534,7 +1545,8 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
   eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.pdf");
-  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.C");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.png");
+  //eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.C");
 
 
   TCanvas *eta_lz_trig = new TCanvas("eta_lz_trig", "eta_lz_trig", my_canvas_x, my_canvas_y);
@@ -1598,7 +1610,8 @@ void makePlots(){
 
   etalegz->Draw("same");
   eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.pdf");
-  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.C");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.png");
+  //eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.C");
 
 
   mg_lz_trig->GetXaxis()->SetLimits(0,12);
@@ -1611,7 +1624,8 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
   eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.pdf");
-  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.C");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.png");
+  //eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.C");
 
 
   /*
@@ -1752,7 +1766,8 @@ void makePlots(){
   leg->Draw("same");
 
   c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.pdf");
-  c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.C");
+  c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.png");
+  //c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.C");
   //I am not quite sure what this did...    
   //if(l==0) c->SaveAs("eff_2D_LxyLz_A0_ct05.pdf","recreate");
 
@@ -1789,7 +1804,8 @@ void makePlots(){
   leg->Draw("same");
 
   c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.pdf");
-  c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.C");
+  c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.png");
+  //c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.C");
   //I am not quite sure what this did...    
   //if(l==0) c1->SaveAs("eff_2D_LxyLz_A1_ct05.pdf","recreate");
 
