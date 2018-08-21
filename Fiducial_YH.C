@@ -19,7 +19,9 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-TString File_name = "2016";
+//TString File_name = "2016";
+//TString File_name = "2017_1";
+TString File_name = "2017_merged";
 TFile *BAM = new TFile("test_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
@@ -718,7 +720,7 @@ gROOT->SetBatch(kTRUE);
     for(int k=0;k<nentries;k++){
       tree->GetEntry(k);	
       //      std::cout<<"  Enter new event  "<<std::endl;
-      if(true or isDiMuonHLTFired == 1){ //Make sure that the event fired the HLT
+      if(isDiMuonHLTFired == 1){ //Make sure that the event fired the HLT
 	//Loop for Efficienies
 	//	std::cout<<"  Enter trigger  "<<std::endl;
 
@@ -732,8 +734,6 @@ gROOT->SetBatch(kTRUE);
 	  //if(fabs(dphi_gD)>2.5) //What does this cut do?  Why do we want to make sure that the muons are back-to-back?
 
 	  //This begins the loop for A0
-	  //	  if(fabs(genA0_Lz) <= 46.5){ //second pixel endcap
-	  //	    if(genA0_Lxy <= 11.0){ //third tracker barrel
 	  if(fabs(genA0_Lz) <= 80){ //second pixel endcap
 	    if(genA0_Lxy <= 80){ //third tracker barrel
 	      //	      std::cout<<"  Fiducial  "<<std::endl;
@@ -845,8 +845,6 @@ gROOT->SetBatch(kTRUE);
 	    }//A0 Lxy
 	  }//A0 Lz
 	  //This begins the loop for A1
-	  //	  if(fabs(genA1_Lz) <= 46.5){ //Second pixel endcap
-	  //	    if(genA1_Lxy <= 11.0){ //Third tracker barrel
 	  if(fabs(genA1_Lz) <= 80){ //Second pixel endcap
 	    if(genA1_Lxy <= 80){ //Third tracker barrel
 	      for(int n=0;n<40;n++){
