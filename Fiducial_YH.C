@@ -22,7 +22,7 @@
 TString File_name = "2016";
 //TString File_name = "2017_1";
 //TString File_name = "2017_merged";
-TFile *BAM = new TFile("test_"+File_name+".root","RECREATE");
+TFile *BAM = new TFile("Fidicial_Region_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
