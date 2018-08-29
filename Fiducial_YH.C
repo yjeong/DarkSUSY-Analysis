@@ -19,9 +19,9 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-//TString File_name = "2016";
+TString File_name = "2016";
 //TString File_name = "2017_1";
-TString File_name = "2017_merged";
+//TString File_name = "2017_merged";
 TFile *BAM = new TFile("test_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
@@ -1769,9 +1769,6 @@ void makePlots(){
   //I am not quite sure what this did...    
   //if(l==0) c->SaveAs("eff_2D_LxyLz_A0_ct05.pdf","recreate");
 
-
-
-
   TCanvas *c1 = new TCanvas("c1","c1",my_canvas_x, my_canvas_y);
   set_canvas_style(c1);
   gStyle->SetTitleFontSize(0.07);
@@ -1806,6 +1803,47 @@ void makePlots(){
   //c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.C");
   //I am not quite sure what this did...    
   //if(l==0) c1->SaveAs("eff_2D_LxyLz_A1_ct05.pdf","recreate");
+
+  TCanvas *c2 = new TCanvas("c2","c2",my_canvas_x, my_canvas_y);
+  set_canvas_style(c2);
+  gStyle->SetTitleFontSize(0.07);
+  gStyle->SetTitleStyle( 0 );
+  gStyle->SetTitleAlign(13);
+  gStyle->SetTitleX(0.);
+  gStyle->SetTitleY(1.);
+  gStyle->SetTitleW(1);
+  gStyle->SetTitleH(0.058);
+  gStyle->SetTitleBorderSize( 0 );
+
+  c2->SetRightMargin(0.15);
+  dR_A0->GetYaxis()->SetTitle("#deltaR_A0");
+  dR_A0->GetXaxis()->SetTitle("# of Events");
+  gStyle->SetOptStat(0);
+  dR_A0->Draw();
+/*
+  c2->SaveAs(Save_dir+"dR_A0.pdf");
+  c2->SaveAs(Save_dir+"dR_A0.png");
+*/
+  TCanvas *c3 = new TCanvas("c3","c3",my_canvas_x, my_canvas_y);
+  set_canvas_style(c3);
+  gStyle->SetTitleFontSize(0.07);
+  gStyle->SetTitleStyle( 0 );
+  gStyle->SetTitleAlign(13);
+  gStyle->SetTitleX(0.);
+  gStyle->SetTitleY(1.);
+  gStyle->SetTitleW(1);
+  gStyle->SetTitleH(0.058);
+  gStyle->SetTitleBorderSize( 0 );
+
+  c3->SetRightMargin(0.15);
+  dR_A1->GetYaxis()->SetTitle("#deltaR_A0");
+  dR_A1->GetXaxis()->SetTitle("# of Events");
+  gStyle->SetOptStat(0);
+  dR_A1->Draw("ALP");
+/*
+  c3->SaveAs(Save_dir+"dR_A1.pdf");
+  c3->SaveAs(Save_dir+"dR_A1.png");
+*/
 
 }//closing method
 
