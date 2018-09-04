@@ -821,6 +821,10 @@ gROOT->SetBatch(kTRUE);
 			Float_t dphi1=0.0;
 			Float_t deta1=0.0;
 
+			Float_t dR1_muJetC_0 = 0.0;
+			Float_t dphi1_muJetC_0 = 0.0;
+			Float_t deta1_muJetC_0 = 0.0;
+
 			Int_t match_mu=0;
 
 			//This method matches RECO muons to GEN dark photons.  This is probably not the best way to do the matching.
@@ -839,6 +843,19 @@ gROOT->SetBatch(kTRUE);
 			  dR_A0->Fill(dR1);
 			  if(dR1<0.5) match_mu++;
 			}
+
+                        for(int j=0;j<npatm;j++){
+                          if(j==0){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu0_phi,genA0_phi); deta1_muJetC_0 = muJetC_Mu0_eta - genA0_eta;}
+                          if(j==1){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetC_Mu1_eta - genA0_eta;}
+                          if(j==2){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu0_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu0_eta - genA0_eta;}
+                          if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA0_eta;}
+
+                          dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
+                           match_mu++;
+                           dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+                           dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+                         }
+
 			if(match_mu>=2)   {
 			  count_rec_A0[n][m]++;
 			  num_1D_A0_LXY->Fill(genA0_Lxy);
