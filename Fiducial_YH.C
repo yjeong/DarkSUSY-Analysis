@@ -19,10 +19,10 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-TString File_name = "2016";
-//TString File_name = "2017_1";
+//TString File_name = "2016";
+TString File_name = "2017";
 //TString File_name = "2017_merged";
-TFile *BAM = new TFile("Fidicial_Region_"+File_name+".root","RECREATE");
+TFile *BAM = new TFile("out_Fiducial_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
@@ -231,6 +231,7 @@ TH1F *num_Trig_Gp9_1D_A0_mu0_pT = new TH1F("num_Trig_Gp9_1D_A0_mu0_pT", "mu0_pT"
 
 //Plots WITHOUT cuts
 TH2F *dR_vs_dPhi = new TH2F("dR_vs_dPhi", "dR_vs_dPhi", 100, 0, 1, 800, -4, 4);
+TH2F *dR_vs_dPhi_muJetC_0 = new TH2F("dR_vs_dPhi_muJetC_0", "dR_vs_dPhi_muJetC_0", 100, 0, 1, 800, -4, 4);
 
 TH2F *dR_vs_dLxy = new TH2F("dR_vs_dLxy", "dR_vs_dLxy", 100, 0, 1, 80, 0, 80);
 TH2F *dPhi_vs_dLxy = new TH2F("dPhi_vs_dLxy", "dPhi_vs_dLxy", 800, -4, 4, 80, 0, 80);
@@ -240,6 +241,7 @@ TH2F *dPhi_vs_dLz = new TH2F("dPhi_vs_dLz", "dPhi_vs_dLz", 800, -4, 4, 80, 0, 80
 
 
 TH2F *dR_vs_pt = new TH2F("dR_vs_pt", "dR_vs_pt", 100, 0, 1, 40, 0, 120);
+TH2F *dR_vs_pt_muJetC_0 = new TH2F("dR_vs_pt_muJetC_0", "dR_vs_pt_muJetC_0", 100, 0, 1, 40, 0, 120);
 TH2F *pt_vs_dPhi = new TH2F("pt_vs_dPhi", "pt_vs_dPhi", 130,0,130, 800, -4, 4);
 
 TH2F *pt_vs_dLxy = new TH2F("pt_vs_dLxy", "pt_vs_dLxy", 130,0,130, 80, 0, 80);
@@ -412,6 +414,7 @@ gROOT->SetBatch(kTRUE);
   //  bool verbose(true);
   bool verbose(false);
   TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/";
+  //TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_10_2_0/src/";
   TString dirname(fileName);
   tfile = new TFile(PATH_samples+"out_ana_"+File_name+".root");
   //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
@@ -472,6 +475,15 @@ gROOT->SetBatch(kTRUE);
   Float_t selMu1_eta;
   Float_t selMu2_eta;
   Float_t selMu3_eta;
+
+  Float_t muJetC_Mu0_eta;
+  Float_t muJetC_Mu0_phi;
+  Float_t muJetC_Mu1_eta;
+  Float_t muJetC_Mu1_phi;
+  Float_t muJetF_Mu0_eta;
+  Float_t muJetF_Mu0_phi;
+  Float_t muJetF_Mu1_eta;
+  Float_t muJetF_Mu1_phi;
 
   Float_t genA0_eta;
   Float_t genA0_phi;
@@ -620,6 +632,14 @@ gROOT->SetBatch(kTRUE);
     tree->SetBranchStatus("selMu1_eta",1);
     tree->SetBranchStatus("selMu2_eta",1);
     tree->SetBranchStatus("selMu3_eta",1);
+    tree->SetBranchStatus("muJetC_Mu0_eta",1);
+    tree->SetBranchStatus("muJetC_Mu0_phi",1);
+    tree->SetBranchStatus("muJetC_Mu1_eta",1);
+    tree->SetBranchStatus("muJetC_Mu1_phi",1);
+    tree->SetBranchStatus("muJetF_Mu0_eta",1);
+    tree->SetBranchStatus("muJetF_Mu0_phi",1);
+    tree->SetBranchStatus("muJetF_Mu1_eta",1);
+    tree->SetBranchStatus("muJetF_Mu1_phi",1);
     tree->SetBranchStatus("genA1_phi",1);
     tree->SetBranchStatus("genA1_eta",1);
     tree->SetBranchStatus("genA0_phi",1);
@@ -673,6 +693,14 @@ gROOT->SetBatch(kTRUE);
     tree->SetBranchAddress("selMu1_eta",&selMu1_eta);
     tree->SetBranchAddress("selMu2_eta",&selMu2_eta);
     tree->SetBranchAddress("selMu3_eta",&selMu3_eta);
+    tree->SetBranchAddress("muJetC_Mu0_eta",&muJetC_Mu0_eta);
+    tree->SetBranchAddress("muJetC_Mu0_phi",&muJetC_Mu0_phi);
+    tree->SetBranchAddress("muJetC_Mu1_eta",&muJetC_Mu1_eta);
+    tree->SetBranchAddress("muJetC_Mu1_phi",&muJetC_Mu1_phi);
+    tree->SetBranchAddress("muJetF_Mu0_eta",&muJetF_Mu0_eta);
+    tree->SetBranchAddress("muJetF_Mu0_phi",&muJetF_Mu0_phi);
+    tree->SetBranchAddress("muJetF_Mu1_eta",&muJetF_Mu1_eta);
+    tree->SetBranchAddress("muJetF_Mu1_phi",&muJetF_Mu1_phi);
     tree->SetBranchAddress("genA1_phi",&genA1_phi);
     tree->SetBranchAddress("genA1_eta",&genA1_eta);
     tree->SetBranchAddress("genA0_phi",&genA0_phi);
@@ -775,6 +803,10 @@ gROOT->SetBatch(kTRUE);
 		      if(selMu1_eta != -100) npatm++;
 		      if(selMu2_eta != -100) npatm++;
 		      if(selMu3_eta != -100) npatm++;
+		      if(muJetC_Mu0_eta != -100) npatm++;
+		      if(muJetC_Mu1_eta != -100) npatm++;
+		      if(muJetF_Mu0_eta != -100) npatm++;
+		      if(muJetF_Mu1_eta != -100) npatm++;
 
 		      /// Individual muon efficiencies                                                
 		      /*	if(abs(genA0_eta) <= 0.9)
@@ -884,6 +916,10 @@ gROOT->SetBatch(kTRUE);
 		      if(selMu1_eta != -100) npatm++;
 		      if(selMu2_eta != -100) npatm++;
 		      if(selMu3_eta != -100) npatm++;
+		      if(muJetC_Mu0_eta != -100) npatm++;
+		      if(muJetC_Mu1_eta != -100) npatm++;
+		      if(muJetF_Mu0_eta != -100) npatm++;
+		      if(muJetF_Mu1_eta != -100) npatm++;
 
 		      if(npatm>=2 && is2SelMu8){
 			Float_t dR1=0.0;
@@ -957,10 +993,19 @@ gROOT->SetBatch(kTRUE);
 		  if(selMu1_eta != -100) npatm++;
 		  if(selMu2_eta != -100) npatm++;
 		  if(selMu3_eta != -100) npatm++;
+		  if(muJetC_Mu0_eta != -100) npatm++;
+		  if(muJetC_Mu1_eta != -100) npatm++;
+		  if(muJetF_Mu0_eta != -100) npatm++;
+		  if(muJetF_Mu1_eta != -100) npatm++;
+
 		  if(npatm>=2 && is2SelMu8){
 		    Float_t dR1=0.0;
 		    Float_t dphi1=0.0;
 		    Float_t deta1=0.0;
+
+                    Float_t dR1_muJetC_0 = 0.0;
+                    Float_t dphi1_muJetC_0 = 0.0;
+                    Float_t deta1_muJetC_0 = 0.0;
 
 		    Int_t match_mu=0;
 		    //checkpoint
@@ -977,6 +1022,18 @@ gROOT->SetBatch(kTRUE);
 		      dR_vs_dPhi->Fill(dR1, dphi_gD);
 		      dR_vs_pt->Fill(dR1, sqrt(genA0_px*genA0_px + genA0_py*genA0_py));
 		    }
+
+                    for(int j=0;j<npatm;j++){
+                      if(j==0){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu0_phi,genA0_phi); deta1_muJetC_0 = muJetC_Mu0_eta - genA0_eta;}
+                      if(j==1){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetC_Mu1_eta - genA0_eta;}
+                      if(j==2){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu0_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu0_eta - genA0_eta;}
+                      if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA0_eta;}
+
+                      dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
+			match_mu++;
+			dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+			dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+                    }
 		    if(match_mu>=2)   {
 		      dR_vs_dLxy->Fill(dR1, genA0_Lxy);
 		      dPhi_vs_dLxy->Fill(dphi_gD, genA0_Lxy);
