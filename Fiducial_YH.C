@@ -851,10 +851,11 @@ gROOT->SetBatch(kTRUE);
                           if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA0_eta;}
 
                           dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
-                           match_mu++;
-                           dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
-                           dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
-                         }
+                          match_mu++;
+                          dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+                          dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+			  if(dR1_muJetC_0<0.5) match_mu++;
+                        }
 
 			if(match_mu>=2)   {
 			  count_rec_A0[n][m]++;
@@ -943,6 +944,10 @@ gROOT->SetBatch(kTRUE);
 			Float_t dphi1=0.0;
 			Float_t deta1=0.0;
 
+			Float_t dR1_muJetC_0 = 0.0;
+			Float_t dphi1_muJetC_0 = 0.0;
+			Float_t deta1_muJetC_0 = 0.0;
+
 			Int_t match_mu=0;
 			//checkpoint
 			for(int j=0;j<npatm;j++){	
@@ -956,6 +961,20 @@ gROOT->SetBatch(kTRUE);
 			  dR_A1->Fill(dR1);
 			  if(dR1<0.5) match_mu++;
 			}
+
+                        for(int j=0;j<npatm;j++){
+                          if(j==0){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu0_phi,genA1_phi); deta1_muJetC_0 = muJetC_Mu0_eta - genA1_eta;}
+                          if(j==1){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu1_phi,genA1_phi); deta1_muJetC_0 = muJetC_Mu1_eta - genA1_eta;}
+                          if(j==2){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu0_phi,genA1_phi); deta1_muJetC_0 = muJetF_Mu0_eta - genA1_eta;}
+                          if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA1_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA1_eta;}
+
+                          dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
+                          match_mu++;
+                          dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+                          dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+			  if(dR1_muJetC_0<0.5) match_mu++;
+                        }
+
 			if(match_mu>=2) {
 			  count_rec_A1[n][m]++;
 			  num_1D_A1_LXY->Fill(genA1_Lxy);
@@ -1047,9 +1066,9 @@ gROOT->SetBatch(kTRUE);
                       if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA0_eta;}
 
                       dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
-			match_mu++;
-			dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
-			dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+		      match_mu++;
+		      dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+	 	      dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
                     }
 		    if(match_mu>=2)   {
 		      dR_vs_dLxy->Fill(dR1, genA0_Lxy);
@@ -1087,6 +1106,10 @@ gROOT->SetBatch(kTRUE);
 		    Float_t dphi1=0.0;
 		    Float_t deta1=0.0;
 
+                    Float_t dR1_muJetC_0 = 0.0;
+		    Float_t dphi1_muJetC_0 = 0.0;
+		    Float_t deta1_muJetC_0 = 0.0;
+
 		    Int_t match_mu=0;
 		    //checkpoint
 		    for(int j=0;j<npatm;j++){	
@@ -1103,6 +1126,19 @@ gROOT->SetBatch(kTRUE);
 		      dR_vs_pt->Fill(dR1, sqrt(genA1_px*genA1_px + genA1_py*genA1_py));
 
 		    }
+
+                     for(int j=0;j<npatm;j++){
+                       if(j==0){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu0_phi,genA1_phi); deta1_muJetC_0 = muJetC_Mu0_eta - genA1_eta;}
+                       if(j==1){ dphi1_muJetC_0 = My_dPhi(muJetC_Mu1_phi,genA1_phi); deta1_muJetC_0 = muJetC_Mu1_eta - genA1_eta;}
+                       if(j==2){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu0_phi,genA1_phi); deta1_muJetC_0 = muJetF_Mu0_eta - genA1_eta;}
+                       if(j==3){ dphi1_muJetC_0 = My_dPhi(muJetF_Mu1_phi,genA1_phi); deta1_muJetC_0 = muJetF_Mu1_eta - genA1_eta;}
+
+                       dR1_muJetC_0 = sqrt(pow(dphi1_muJetC_0,2)+pow(deta1_muJetC_0,2));
+                       match_mu++;
+                       dR_vs_dPhi_muJetC_0->Fill(dR1_muJetC_0,dphi_gD);
+                       dR_vs_pt_muJetC_0->Fill(dR1_muJetC_0, sqrt(pow(genA0_px,2)+pow(genA0_py,2)));
+                    }
+
 		    if(match_mu>=2) {
 		      dR_vs_dLxy->Fill(dR1, genA1_Lxy);
 		      dPhi_vs_dLxy->Fill(dphi_gD, genA1_Lxy);
