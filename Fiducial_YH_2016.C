@@ -19,7 +19,10 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-TFile *BAM = new TFile("test_1.root","RECREATE");
+TString File_name = "2016";
+//TString File_name = "2017_1";
+//TString File_name = "2017_merged";
+TFile *BAM = new TFile("Fidicial_Region_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
@@ -408,8 +411,9 @@ gROOT->SetBatch(kTRUE);
   TFile *tfile;
   //  bool verbose(true);
   bool verbose(false);
+  TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/";
   TString dirname(fileName);
-  tfile = new TFile("out_ana.root");
+  tfile = new TFile(PATH_samples+"out_ana_"+File_name+".root");
   //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
   tree = (TTree*)tfile->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
   //TString ext("out_ana");
@@ -716,7 +720,7 @@ gROOT->SetBatch(kTRUE);
     for(int k=0;k<nentries;k++){
       tree->GetEntry(k);	
       //      std::cout<<"  Enter new event  "<<std::endl;
-      if(true or isDiMuonHLTFired == 1){ //Make sure that the event fired the HLT
+      if(isDiMuonHLTFired == 1){ //Make sure that the event fired the HLT
 	//Loop for Efficienies
 	//	std::cout<<"  Enter trigger  "<<std::endl;
 
@@ -730,8 +734,6 @@ gROOT->SetBatch(kTRUE);
 	  //if(fabs(dphi_gD)>2.5) //What does this cut do?  Why do we want to make sure that the muons are back-to-back?
 
 	  //This begins the loop for A0
-	  //	  if(fabs(genA0_Lz) <= 46.5){ //second pixel endcap
-	  //	    if(genA0_Lxy <= 11.0){ //third tracker barrel
 	  if(fabs(genA0_Lz) <= 80){ //second pixel endcap
 	    if(genA0_Lxy <= 80){ //third tracker barrel
 	      //	      std::cout<<"  Fiducial  "<<std::endl;
@@ -843,8 +845,6 @@ gROOT->SetBatch(kTRUE);
 	    }//A0 Lxy
 	  }//A0 Lz
 	  //This begins the loop for A1
-	  //	  if(fabs(genA1_Lz) <= 46.5){ //Second pixel endcap
-	  //	    if(genA1_Lxy <= 11.0){ //Third tracker barrel
 	  if(fabs(genA1_Lz) <= 80){ //Second pixel endcap
 	    if(genA1_Lxy <= 80){ //Third tracker barrel
 	      for(int n=0;n<40;n++){
@@ -1058,6 +1058,8 @@ gROOT->SetBatch(kTRUE);
 
 void makePlots(){
 
+  TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/plots_"+File_name+"/";
+
   TH2F *den_2D_A0 = new TH2F("den_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
   TH2F *num_2D_A0 = new TH2F("num_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
 
@@ -1129,8 +1131,9 @@ void makePlots(){
   leg->AddEntry(gr0,"#gamma_{D2}","LP");
   leg->Draw("same");
 
-  effxy->SaveAs("Efficiency_1D_LXY.pdf");
-  effxy->SaveAs("Efficiency_1D_LXY.C");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.pdf");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.png");
+  //effxy->SaveAs(Save_dir+"Efficiency_1D_LXY.C");
 
   
   gr1->GetXaxis()->SetLimits(0,12);
@@ -1138,8 +1141,9 @@ void makePlots(){
   gr0->Draw("P same");
   leg->Draw("same");
 
-  effxy->SaveAs("Efficiency_1D_LXY_0to12.pdf");
-  effxy->SaveAs("Efficiency_1D_LXY_0to12.C");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.pdf");
+  effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.png");
+  //effxy->SaveAs(Save_dir+"Efficiency_1D_LXY_0to12.C");
 
 
   TCanvas *effz2 = new TCanvas("effz2", "effz2", my_canvas_x, my_canvas_y);
@@ -1177,8 +1181,9 @@ void makePlots(){
 
   leg->Draw("same");
 
-  effz2->SaveAs("Efficiency_1D_Lz.pdf");
-  effz2->SaveAs("Efficiency_1D_Lz.C");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.pdf");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.png");
+  //effz2->SaveAs(Save_dir+"Efficiency_1D_Lz.C");
 
 
   gr2->GetXaxis()->SetLimits(0,12);
@@ -1186,8 +1191,9 @@ void makePlots(){
   gr3->Draw("P same");
   leg->Draw("same");
 
-  effz2->SaveAs("Efficiency_1D_Lz_0to12.pdf");
-  effz2->SaveAs("Efficiency_1D_Lz_0to12.C");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.pdf");
+  effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.png");
+  //effz2->SaveAs(Save_dir+"Efficiency_1D_Lz_0to12.C");
 
 
   TCanvas *effpt = new TCanvas("effpt", "effpt", my_canvas_x, my_canvas_y);
@@ -1222,8 +1228,9 @@ void makePlots(){
   set_title_and_label_style(gr_eff2);
 
   leg->Draw("same");
-  effpt->SaveAs("Efficiency_vs_Gen_pT.pdf");
-  effpt->SaveAs("Efficiency_vs_Gen_pT.C");
+  effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.pdf");
+  effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.png");
+  //effpt->SaveAs(Save_dir+"Efficiency_vs_Gen_pT.C");
 
   //Efficiency by Eta plots
   TLine *pixel_1 = new TLine(4.0, 0, 4.0, 1);
@@ -1350,8 +1357,9 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
 
-  eta_lxy->SaveAs("EfficiencyByEta_vs_Lxy.pdf");
-  eta_lxy->SaveAs("EfficiencyByEta_vs_Lxy.C");
+  eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.pdf");
+  eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.png");
+  //eta_lxy->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy.C");
 
   
   mg_lxy->GetXaxis()->SetLimits(0,12);
@@ -1363,8 +1371,9 @@ void makePlots(){
   tracker_innerbarrel->Draw("same");
   tracker_outerbarrel->Draw("same");
 
-  effxy->SaveAs("EfficiencyByEta_1D_vs_Lxy_0to12.pdf");
-  effxy->SaveAs("EfficiencyByEta_1D_vs_Lxy_0to12.C");
+  effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.pdf");
+  effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.png");
+  //effxy->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_0to12.C");
 
 
 
@@ -1434,8 +1443,9 @@ void makePlots(){
   pixel_endcap_2->Draw("same");
 
   etalegz->Draw("same");
-  eta_lz->SaveAs("EfficiencyByEta_vs_Lz.pdf");
-  eta_lz->SaveAs("EfficiencyByEta_vs_Lz.C");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.pdf");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.png");
+  //eta_lz->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz.C");
 
 
 
@@ -1448,8 +1458,9 @@ void makePlots(){
   tracker_innerbarrel->Draw("same");
   tracker_outerbarrel->Draw("same");
 
-  eta_lz->SaveAs("EfficiencyByEta_1D_vs_Lz_0to12.pdf");
-  eta_lz->SaveAs("EfficiencyByEta_1D_vs_Lz_0to12.C");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.pdf");
+  eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.png");
+  //eta_lz->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_0to12.C");
 
 
   //Eta plots including Trigger
@@ -1516,8 +1527,9 @@ void makePlots(){
   tracker_outerbarrel->Draw("same");
 
 
-  eta_lxy_trig->SaveAs("EfficiencyByEta_vs_Lxy_Trig.pdf");
-  eta_lxy_trig->SaveAs("EfficiencyByEta_vs_Lxy_Trig.C");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.pdf");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.png");
+  //eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lxy_Trig.C");
 
 
 
@@ -1530,8 +1542,9 @@ void makePlots(){
   tracker_innerbarrel->Draw("same");
   tracker_outerbarrel->Draw("same");
 
-  eta_lxy_trig->SaveAs("EfficiencyByEta_1D_vs_Lxy_Trig_0to12.pdf");
-  eta_lxy_trig->SaveAs("EfficiencyByEta_1D_vs_Lxy_Trig_0to12.C");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.pdf");
+  eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.png");
+  //eta_lxy_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lxy_Trig_0to12.C");
 
 
   TCanvas *eta_lz_trig = new TCanvas("eta_lz_trig", "eta_lz_trig", my_canvas_x, my_canvas_y);
@@ -1594,8 +1607,9 @@ void makePlots(){
   pixel_endcap_2->Draw("same");
 
   etalegz->Draw("same");
-  eta_lz_trig->SaveAs("EfficiencyByEta_vs_Lz_Trig.pdf");
-  eta_lz_trig->SaveAs("EfficiencyByEta_vs_Lz_Trig.C");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.pdf");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.png");
+  //eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_vs_Lz_Trig.C");
 
 
   mg_lz_trig->GetXaxis()->SetLimits(0,12);
@@ -1607,8 +1621,9 @@ void makePlots(){
   tracker_innerbarrel->Draw("same");
   tracker_outerbarrel->Draw("same");
 
-  eta_lz_trig->SaveAs("EfficiencyByEta_1D_vs_Lz_Trig_0to12.pdf");
-  eta_lz_trig->SaveAs("EfficiencyByEta_1D_vs_Lz_Trig_0to12.C");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.pdf");
+  eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.png");
+  //eta_lz_trig->SaveAs(Save_dir+"EfficiencyByEta_1D_vs_Lz_Trig_0to12.C");
 
 
   /*
@@ -1748,13 +1763,11 @@ void makePlots(){
   leg->AddEntry(pixel_3,"Fiducial volume","L");
   leg->Draw("same");
 
-  c->SaveAs("eff_2D_LxyLz_A0.pdf");
-  c->SaveAs("eff_2D_LxyLz_A0.C");
+  c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.pdf");
+  c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.png");
+  //c->SaveAs(Save_dir+"eff_2D_LxyLz_A0.C");
   //I am not quite sure what this did...    
   //if(l==0) c->SaveAs("eff_2D_LxyLz_A0_ct05.pdf","recreate");
-
-
-
 
   TCanvas *c1 = new TCanvas("c1","c1",my_canvas_x, my_canvas_y);
   set_canvas_style(c1);
@@ -1785,20 +1798,62 @@ void makePlots(){
   eta1p55->Draw("same");
   leg->Draw("same");
 
-  c1->SaveAs("eff_2D_LxyLz_A1.pdf");
-  c1->SaveAs("eff_2D_LxyLz_A1.C");
+  c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.pdf");
+  c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.png");
+  //c1->SaveAs(Save_dir+"eff_2D_LxyLz_A1.C");
   //I am not quite sure what this did...    
   //if(l==0) c1->SaveAs("eff_2D_LxyLz_A1_ct05.pdf","recreate");
 
+  TCanvas *c2 = new TCanvas("c2","c2",my_canvas_x, my_canvas_y);
+  set_canvas_style(c2);
+  gStyle->SetTitleFontSize(0.07);
+  gStyle->SetTitleStyle( 0 );
+  gStyle->SetTitleAlign(13);
+  gStyle->SetTitleX(0.);
+  gStyle->SetTitleY(1.);
+  gStyle->SetTitleW(1);
+  gStyle->SetTitleH(0.058);
+  gStyle->SetTitleBorderSize( 0 );
+
+  c2->SetRightMargin(0.15);
+  dR_A0->GetYaxis()->SetTitle("#deltaR_A0");
+  dR_A0->GetXaxis()->SetTitle("# of Events");
+  gStyle->SetOptStat(0);
+  dR_A0->Draw();
+/*
+  c2->SaveAs(Save_dir+"dR_A0.pdf");
+  c2->SaveAs(Save_dir+"dR_A0.png");
+*/
+  TCanvas *c3 = new TCanvas("c3","c3",my_canvas_x, my_canvas_y);
+  set_canvas_style(c3);
+  gStyle->SetTitleFontSize(0.07);
+  gStyle->SetTitleStyle( 0 );
+  gStyle->SetTitleAlign(13);
+  gStyle->SetTitleX(0.);
+  gStyle->SetTitleY(1.);
+  gStyle->SetTitleW(1);
+  gStyle->SetTitleH(0.058);
+  gStyle->SetTitleBorderSize( 0 );
+
+  c3->SetRightMargin(0.15);
+  dR_A1->GetYaxis()->SetTitle("#deltaR_A0");
+  dR_A1->GetXaxis()->SetTitle("# of Events");
+  gStyle->SetOptStat(0);
+  dR_A1->Draw("ALP");
+/*
+  c3->SaveAs(Save_dir+"dR_A1.pdf");
+  c3->SaveAs(Save_dir+"dR_A1.png");
+*/
+
 }//closing method
 
-void Fiducial_YH(){
+void Fiducial_YH_2016(){
   //  makeCounters();
 
   
-  //create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/out_ana.root");
-  create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/out_ana.root");
-  //create_eff_pergamD2DLxyLz("");
+  //create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/public/DarkSUSY/");
+  //create_eff_pergamD2DLxyLz("/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/");
+  create_eff_pergamD2DLxyLz("");
   /*create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p05_13TeV_20k_PAT_ANA_V2_v1/170128_023406/0000/");
   create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_20k_PAT_ANA_V2_v1/170128_024144/0000/");
   create_eff_pergamD2DLxyLz("/fdata/hepx/store/user/lpernie/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_80k_MG452_BR224_LHE_pythia8_GEN_SIM_MINIAOD_V2_v1/DarkSUSY_mH_125_mN1_10_mGammaD_0p25_cT_0p1_13TeV_80k_PAT_ANA_V2_v1/170128_024130/0000/");
