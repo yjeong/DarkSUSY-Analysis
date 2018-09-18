@@ -19,10 +19,9 @@
 
 //TFile *tfile;
 ///----Global Variables ----///
-TString File_name = "2016";
-//TString File_name = "2017_1";
-//TString File_name = "2017_merged";
-TFile *BAM = new TFile("Fidicial_Region_"+File_name+".root","RECREATE");
+//TString File_name = "2016";
+TString File_name = "New_Branch";
+TFile *BAM = new TFile("Fiducial_Region_"+File_name+".root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
@@ -463,15 +462,25 @@ gROOT->SetBatch(kTRUE);
   Float_t genA0_Lz;
   Float_t genA1_Lz;
 
-  Float_t selMu0_phi;
+  /*Float_t selMu0_phi;
   Float_t selMu1_phi;
   Float_t selMu2_phi;
-  Float_t selMu3_phi;
+  Float_t selMu3_phi;*/
 
-  Float_t selMu0_eta;
+  Float_t muJetC_Mu0_phi;
+  Float_t muJetC_Mu1_phi;
+  Float_t muJetF_Mu0_phi;
+  Float_t muJetF_Mu1_phi;
+
+  /*Float_t selMu0_eta;
   Float_t selMu1_eta;
   Float_t selMu2_eta;
-  Float_t selMu3_eta;
+  Float_t selMu3_eta;*/
+
+  Float_t muJetC_Mu0_eta;
+  Float_t muJetC_Mu1_eta;
+  Float_t muJetF_Mu0_eta;
+  Float_t muJetF_Mu1_eta;
 
   Float_t genA0_eta;
   Float_t genA0_phi;
@@ -612,14 +621,22 @@ gROOT->SetBatch(kTRUE);
     tree->SetBranchStatus("genA0_Lz",1);  
     tree->SetBranchStatus("genA1_Lxy",1); 
     tree->SetBranchStatus("genA1_Lz",1);  
-    tree->SetBranchStatus("selMu0_phi",1);
+    /*tree->SetBranchStatus("selMu0_phi",1);
     tree->SetBranchStatus("selMu1_phi",1);
     tree->SetBranchStatus("selMu2_phi",1);
     tree->SetBranchStatus("selMu3_phi",1);
     tree->SetBranchStatus("selMu0_eta",1);
     tree->SetBranchStatus("selMu1_eta",1);
     tree->SetBranchStatus("selMu2_eta",1);
-    tree->SetBranchStatus("selMu3_eta",1);
+    tree->SetBranchStatus("selMu3_eta",1);*/
+    tree->SetBranchStatus("muJetC_Mu0_phi",1);
+    tree->SetBranchStatus("muJetC_Mu1_phi",1);
+    tree->SetBranchStatus("muJetF_Mu0_phi",1);
+    tree->SetBranchStatus("muJetF_Mu1_phi",1);
+    tree->SetBranchStatus("muJetC_Mu0_eta",1);
+    tree->SetBranchStatus("muJetC_Mu1_eta",1);
+    tree->SetBranchStatus("muJetF_Mu0_eta",1);
+    tree->SetBranchStatus("muJetF_Mu1_eta",1);
     tree->SetBranchStatus("genA1_phi",1);
     tree->SetBranchStatus("genA1_eta",1);
     tree->SetBranchStatus("genA0_phi",1);
@@ -665,14 +682,22 @@ gROOT->SetBatch(kTRUE);
     tree->SetBranchAddress("genA0_Lz",  &genA0_Lz);
     tree->SetBranchAddress("genA1_Lxy", &genA1_Lxy);
     tree->SetBranchAddress("genA1_Lz",  &genA1_Lz);
-    tree->SetBranchAddress("selMu0_phi",&selMu0_phi);
+    /*tree->SetBranchAddress("selMu0_phi",&selMu0_phi);
     tree->SetBranchAddress("selMu1_phi",&selMu1_phi);
     tree->SetBranchAddress("selMu2_phi",&selMu2_phi);
     tree->SetBranchAddress("selMu3_phi",&selMu3_phi);
     tree->SetBranchAddress("selMu0_eta",&selMu0_eta);
     tree->SetBranchAddress("selMu1_eta",&selMu1_eta);
     tree->SetBranchAddress("selMu2_eta",&selMu2_eta);
-    tree->SetBranchAddress("selMu3_eta",&selMu3_eta);
+    tree->SetBranchAddress("selMu3_eta",&selMu3_eta);*/
+    tree->SetBranchAddress("muJetC_Mu0_phi",&muJetC_Mu0_phi);
+    tree->SetBranchAddress("muJetC_Mu1_phi",&muJetC_Mu1_phi);
+    tree->SetBranchAddress("muJetF_Mu0_phi",&muJetF_Mu0_phi);
+    tree->SetBranchAddress("muJetF_Mu1_phi",&muJetF_Mu1_phi);
+    tree->SetBranchAddress("muJetC_Mu0_eta",&muJetC_Mu0_eta);
+    tree->SetBranchAddress("muJetC_Mu1_eta",&muJetC_Mu1_eta);
+    tree->SetBranchAddress("muJetF_Mu0_eta",&muJetF_Mu0_eta);
+    tree->SetBranchAddress("muJetF_Mu1_eta",&muJetF_Mu1_eta);
     tree->SetBranchAddress("genA1_phi",&genA1_phi);
     tree->SetBranchAddress("genA1_eta",&genA1_eta);
     tree->SetBranchAddress("genA0_phi",&genA0_phi);
@@ -771,10 +796,14 @@ gROOT->SetBatch(kTRUE);
 		      }
 
 		      npatm = 0;
-		      if(selMu0_eta != -1000) npatm++;
-		      if(selMu1_eta != -1000) npatm++;
-		      if(selMu2_eta != -1000) npatm++;
-		      if(selMu3_eta != -1000) npatm++;
+		      /*if(selMu0_eta != -100) npatm++;
+		      if(selMu1_eta != -100) npatm++;
+		      if(selMu2_eta != -100) npatm++;
+		      if(selMu3_eta != -100) npatm++;*/
+		      if(muJetC_Mu0_eta != -1000) npatm++;
+		      if(muJetC_Mu1_eta != -1000) npatm++;
+		      if(muJetF_Mu0_eta != -1000) npatm++;
+		      if(muJetF_Mu1_eta != -1000) npatm++;
 
 		      /// Individual muon efficiencies                                                
 		      /*	if(abs(genA0_eta) <= 0.9)
@@ -798,10 +827,15 @@ gROOT->SetBatch(kTRUE);
 
 			for(int j=0;j<npatm;j++){
 
-			  if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA0_phi); deta1 = selMu0_eta - genA0_eta;}
+			  /*if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA0_phi); deta1 = selMu0_eta - genA0_eta;}
 			  if(j==1){ dphi1 = My_dPhi(selMu1_phi,genA0_phi); deta1 = selMu1_eta - genA0_eta;}
 			  if(j==2){ dphi1 = My_dPhi(selMu2_phi,genA0_phi); deta1 = selMu2_eta - genA0_eta;}
-			  if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA0_phi); deta1 = selMu3_eta - genA0_eta;}
+			  if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA0_phi); deta1 = selMu3_eta - genA0_eta;}*/
+			
+			  if(j==0){ dphi1 = My_dPhi(muJetC_Mu0_phi,genA0_phi); deta1 = muJetC_Mu0_eta - genA0_eta;}
+			  if(j==1){ dphi1 = My_dPhi(muJetC_Mu1_phi,genA0_phi); deta1 = muJetC_Mu1_eta - genA0_eta;}
+			  if(j==2){ dphi1 = My_dPhi(muJetF_Mu0_phi,genA0_phi); deta1 = muJetF_Mu0_eta - genA0_eta;}
+			  if(j==3){ dphi1 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1 = muJetF_Mu1_eta - genA0_eta;}
 
 			  dR1 = sqrt(dphi1*dphi1+deta1*deta1);
 			  dR_A0->Fill(dR1);
@@ -880,10 +914,14 @@ gROOT->SetBatch(kTRUE);
 			}
 		      }
 		      npatm = 0;
-		      if(selMu0_eta != -1000) npatm++;
-		      if(selMu1_eta != -1000) npatm++;
-		      if(selMu2_eta != -1000) npatm++;
-		      if(selMu3_eta != -1000) npatm++;
+		      /*if(selMu0_eta != -100) npatm++;
+		      if(selMu1_eta != -100) npatm++;
+		      if(selMu2_eta != -100) npatm++;
+		      if(selMu3_eta != -100) npatm++;*/
+		      if(muJetC_Mu0_eta != -1000) npatm++;
+		      if(muJetC_Mu1_eta != -1000) npatm++;
+		      if(muJetF_Mu0_eta != -1000) npatm++;
+		      if(muJetF_Mu1_eta != -1000) npatm++;
 
 		      if(npatm>=2 && is2SelMu8){
 			Float_t dR1=0.0;
@@ -894,10 +932,15 @@ gROOT->SetBatch(kTRUE);
 			//checkpoint
 			for(int j=0;j<npatm;j++){	
 
-			  if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA1_phi); deta1 = selMu0_eta - genA1_eta;}
+			/*  if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA1_phi); deta1 = selMu0_eta - genA1_eta;}
 			  if(j==1){ dphi1 = My_dPhi(selMu1_phi,genA1_phi); deta1 = selMu1_eta - genA1_eta;}
 			  if(j==2){ dphi1 = My_dPhi(selMu2_phi,genA1_phi); deta1 = selMu2_eta - genA1_eta;}
-			  if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA1_phi); deta1 = selMu3_eta - genA1_eta;}
+			  if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA1_phi); deta1 = selMu3_eta - genA1_eta;}*/
+
+			  if(j==0){ dphi1 = My_dPhi(muJetC_Mu0_phi,genA1_phi); deta1 = muJetC_Mu0_eta - genA1_eta;}
+			  if(j==1){ dphi1 = My_dPhi(muJetC_Mu1_phi,genA1_phi); deta1 = muJetC_Mu1_eta - genA1_eta;}
+			  if(j==2){ dphi1 = My_dPhi(muJetF_Mu0_phi,genA1_phi); deta1 = muJetF_Mu0_eta - genA1_eta;}
+			  if(j==3){ dphi1 = My_dPhi(muJetF_Mu1_phi,genA1_phi); deta1 = muJetF_Mu1_eta - genA1_eta;}
 
 			  dR1 = sqrt(dphi1*dphi1+deta1*deta1);
 			  dR_A1->Fill(dR1);
@@ -953,10 +996,14 @@ gROOT->SetBatch(kTRUE);
 		if(genA0_Lxy>bin_edges[m] && genA0_Lxy<bin_edges[m+1]){
 
 		  npatm = 0;
-		  if(selMu0_eta != -1000) npatm++;
-		  if(selMu1_eta != -1000) npatm++;
-		  if(selMu2_eta != -1000) npatm++;
-		  if(selMu3_eta != -1000) npatm++;
+		 /* if(selMu0_eta != -100) npatm++;
+		  if(selMu1_eta != -100) npatm++;
+		  if(selMu2_eta != -100) npatm++;
+		  if(selMu3_eta != -100) npatm++;*/
+		  if(muJetC_Mu0_eta != -1000) npatm++;
+		  if(muJetC_Mu1_eta != -1000) npatm++;
+		  if(muJetF_Mu0_eta != -1000) npatm++;
+		  if(muJetF_Mu1_eta != -1000) npatm++;
 		  if(npatm>=2 && is2SelMu8){
 		    Float_t dR1=0.0;
 		    Float_t dphi1=0.0;
@@ -966,10 +1013,14 @@ gROOT->SetBatch(kTRUE);
 		    //checkpoint
 		    for(int j=0;j<npatm;j++){
 
-		      if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA0_phi); deta1 = selMu0_eta - genA0_eta;}
+		   /*   if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA0_phi); deta1 = selMu0_eta - genA0_eta;}
 		      if(j==1){ dphi1 = My_dPhi(selMu1_phi,genA0_phi); deta1 = selMu1_eta - genA0_eta;}
 		      if(j==2){ dphi1 = My_dPhi(selMu2_phi,genA0_phi); deta1 = selMu2_eta - genA0_eta;}
-		      if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA0_phi); deta1 = selMu3_eta - genA0_eta;}
+		      if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA0_phi); deta1 = selMu3_eta - genA0_eta;}*/
+		      if(j==0){ dphi1 = My_dPhi(muJetC_Mu0_phi,genA0_phi); deta1 = muJetC_Mu0_eta - genA0_eta;}
+		      if(j==1){ dphi1 = My_dPhi(muJetC_Mu1_phi,genA0_phi); deta1 = muJetC_Mu1_eta - genA0_eta;}
+		      if(j==2){ dphi1 = My_dPhi(muJetF_Mu0_phi,genA0_phi); deta1 = muJetF_Mu0_eta - genA0_eta;}
+		      if(j==3){ dphi1 = My_dPhi(muJetF_Mu1_phi,genA0_phi); deta1 = muJetF_Mu1_eta - genA0_eta;}
 
 		      dR1 = sqrt(dphi1*dphi1+deta1*deta1);
 		      //if(dR1<0.5) match_mu++;
@@ -1003,10 +1054,14 @@ gROOT->SetBatch(kTRUE);
 		if(genA1_Lxy>bin_edges[m] && genA1_Lxy<bin_edges[m+1]){
 
 		  npatm = 0;
-		  if(selMu0_eta != -1000) npatm++;
-		  if(selMu1_eta != -1000) npatm++;
-		  if(selMu2_eta != -1000) npatm++;
-		  if(selMu3_eta != -1000) npatm++;
+		  /*if(selMu0_eta != -100) npatm++;
+		  if(selMu1_eta != -100) npatm++;
+		  if(selMu2_eta != -100) npatm++;
+		  if(selMu3_eta != -100) npatm++;*/
+		  if(muJetC_Mu0_eta != -1000) npatm++;
+		  if(muJetC_Mu1_eta != -1000) npatm++;
+		  if(muJetF_Mu0_eta != -1000) npatm++;
+		  if(muJetF_Mu1_eta != -1000) npatm++;
 
 		  if(npatm>=2 && is2SelMu8){
 		    Float_t dR1=0.0;
@@ -1017,10 +1072,14 @@ gROOT->SetBatch(kTRUE);
 		    //checkpoint
 		    for(int j=0;j<npatm;j++){	
 
-		      if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA1_phi); deta1 = selMu0_eta - genA1_eta;}
+		      /*if(j==0){ dphi1 = My_dPhi(selMu0_phi,genA1_phi); deta1 = selMu0_eta - genA1_eta;}
 		      if(j==1){ dphi1 = My_dPhi(selMu1_phi,genA1_phi); deta1 = selMu1_eta - genA1_eta;}
 		      if(j==2){ dphi1 = My_dPhi(selMu2_phi,genA1_phi); deta1 = selMu2_eta - genA1_eta;}
-		      if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA1_phi); deta1 = selMu3_eta - genA1_eta;}
+		      if(j==3){ dphi1 = My_dPhi(selMu3_phi,genA1_phi); deta1 = selMu3_eta - genA1_eta;}*/
+		      if(j==0){ dphi1 = My_dPhi(muJetC_Mu0_phi,genA1_phi); deta1 = muJetC_Mu0_eta - genA1_eta;}
+		      if(j==1){ dphi1 = My_dPhi(muJetC_Mu1_phi,genA1_phi); deta1 = muJetC_Mu1_eta - genA1_eta;}
+		      if(j==2){ dphi1 = My_dPhi(muJetF_Mu0_phi,genA1_phi); deta1 = muJetF_Mu0_eta - genA1_eta;}
+		      if(j==3){ dphi1 = My_dPhi(muJetF_Mu1_phi,genA1_phi); deta1 = muJetF_Mu1_eta - genA1_eta;}
 
 		      dR1 = sqrt(dphi1*dphi1+deta1*deta1);
 		      //if(dR1<0.5) match_mu++;
@@ -1847,7 +1906,7 @@ void makePlots(){
 
 }//closing method
 
-void Fiducial_YH_2016(){
+void Fiducial_YH_Run2(){
   //  makeCounters();
 
   
