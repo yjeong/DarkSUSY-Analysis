@@ -21,7 +21,7 @@
 ///----Global Variables ----///
 //TString File_name = "2016";
 TString File_name = "New_Branch";
-TFile *BAM = new TFile("Fiducial_Region_"+File_name+".root","RECREATE");
+TFile *BAM = new TFile(File_name+"_Fiducial_Region.root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
 int my_canvas_x = 600;
