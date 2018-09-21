@@ -800,10 +800,10 @@ gROOT->SetBatch(kTRUE);
 		      if(selMu1_eta != -100) npatm++;
 		      if(selMu2_eta != -100) npatm++;
 		      if(selMu3_eta != -100) npatm++;*/
-		      if(muJetC_Mu0_eta != -1000) npatm++;
-		      if(muJetC_Mu1_eta != -1000) npatm++;
-		      if(muJetF_Mu0_eta != -1000) npatm++;
-		      if(muJetF_Mu1_eta != -1000) npatm++;
+		      if(muJetC_Mu0_eta != -999) npatm++;
+		      if(muJetC_Mu1_eta != -999) npatm++;
+		      if(muJetF_Mu0_eta != -999) npatm++;
+		      if(muJetF_Mu1_eta != -999) npatm++;
 
 		      /// Individual muon efficiencies                                                
 		      /*	if(abs(genA0_eta) <= 0.9)
@@ -918,10 +918,10 @@ gROOT->SetBatch(kTRUE);
 		      if(selMu1_eta != -100) npatm++;
 		      if(selMu2_eta != -100) npatm++;
 		      if(selMu3_eta != -100) npatm++;*/
-		      if(muJetC_Mu0_eta != -1000) npatm++;
-		      if(muJetC_Mu1_eta != -1000) npatm++;
-		      if(muJetF_Mu0_eta != -1000) npatm++;
-		      if(muJetF_Mu1_eta != -1000) npatm++;
+		      if(muJetC_Mu0_eta != -999) npatm++;
+		      if(muJetC_Mu1_eta != -999) npatm++;
+		      if(muJetF_Mu0_eta != -999) npatm++;
+		      if(muJetF_Mu1_eta != -999) npatm++;
 
 		      if(npatm>=2 && is2SelMu8){
 			Float_t dR1=0.0;
@@ -1000,10 +1000,10 @@ gROOT->SetBatch(kTRUE);
 		  if(selMu1_eta != -100) npatm++;
 		  if(selMu2_eta != -100) npatm++;
 		  if(selMu3_eta != -100) npatm++;*/
-		  if(muJetC_Mu0_eta != -1000) npatm++;
-		  if(muJetC_Mu1_eta != -1000) npatm++;
-		  if(muJetF_Mu0_eta != -1000) npatm++;
-		  if(muJetF_Mu1_eta != -1000) npatm++;
+		  if(muJetC_Mu0_eta != -999) npatm++;
+		  if(muJetC_Mu1_eta != -999) npatm++;
+		  if(muJetF_Mu0_eta != -999) npatm++;
+		  if(muJetF_Mu1_eta != -999) npatm++;
 		  if(npatm>=2 && is2SelMu8){
 		    Float_t dR1=0.0;
 		    Float_t dphi1=0.0;
@@ -1058,10 +1058,10 @@ gROOT->SetBatch(kTRUE);
 		  if(selMu1_eta != -100) npatm++;
 		  if(selMu2_eta != -100) npatm++;
 		  if(selMu3_eta != -100) npatm++;*/
-		  if(muJetC_Mu0_eta != -1000) npatm++;
-		  if(muJetC_Mu1_eta != -1000) npatm++;
-		  if(muJetF_Mu0_eta != -1000) npatm++;
-		  if(muJetF_Mu1_eta != -1000) npatm++;
+		  if(muJetC_Mu0_eta != -999) npatm++;
+		  if(muJetC_Mu1_eta != -999) npatm++;
+		  if(muJetF_Mu0_eta != -999) npatm++;
+		  if(muJetF_Mu1_eta != -999) npatm++;
 
 		  if(npatm>=2 && is2SelMu8){
 		    Float_t dR1=0.0;
