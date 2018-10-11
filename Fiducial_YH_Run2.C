@@ -20,7 +20,15 @@
 //TFile *tfile;
 ///----Global Variables ----///
 //TString File_name = "2016";
-TString File_name = "New_Branch";
+//TString File_name = "Run2";
+//TString File_name = "60_58_MAD_10";
+//TString File_name = "60_1_MAD_100";
+//TString File_name = "60_0p4_MAD_100";
+//TString File_name = "60_0p25_MAD_100";
+//TString File_name = "60_0p25_MAD_0";
+//TString File_name = "10_0p4_MAD_3";
+//TString File_name = "10_0p25_MAD_100";
+TString File_name = "10_0p25_MAD_0";
 TFile *BAM = new TFile(File_name+"_Fiducial_Region.root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
@@ -410,11 +418,12 @@ gROOT->SetBatch(kTRUE);
   TFile *tfile;
   //  bool verbose(true);
   bool verbose(false);
-  TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/";
+  //TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/";
+  TString PATH_samples = "/afs/cern.ch/work/y/yjeong/CMSSW_10_2_0/src/";
   TString dirname(fileName);
   tfile = new TFile(PATH_samples+"out_ana_"+File_name+".root");
-  //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
   tree = (TTree*)tfile->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
+  //TChain* chain = new TChain("cutFlowAnalyzerPXBL3PXFL2/Events");
   //TString ext("out_ana");
 /*
   //Get the sample mass
