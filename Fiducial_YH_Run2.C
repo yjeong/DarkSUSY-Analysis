@@ -1121,7 +1121,7 @@ void makePlots(){
 
   //TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/plots_"+File_name+"/";
   //TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_10_2_0/src/plots_"+File_name+"/";
-  TString Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/Run2_script/plots_"+File_name+"/";
+  TString Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/Run2_script_plots/plots_"+File_name+"/";
 
   TH2F *den_2D_A0 = new TH2F("den_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
   TH2F *num_2D_A0 = new TH2F("num_2D_A0",cms_title2,40,0,80,80,0.0,80.0);

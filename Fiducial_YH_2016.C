@@ -24,8 +24,9 @@
 //TString File_name = "mN1_10_mGammaD_1_cT_0p1";
 //TString File_name = "mN1_10_mGammaD_2_cT_0p1";
 //TString File_name = "mN1_10_mGammaD_5_cT_0p5";
-TString File_name = "mN1_10_mGammaD_8p5_cT_2";
-//TString File_name = "Run2";
+//TString File_name = "mN1_10_mGammaD_8p5_cT_2";
+//TString File_name = "mN1_10_mGammaD_5_cT_50";
+TString File_name = "Run2";
 TFile *BAM = new TFile(File_name+"_Fiducial_Region.root","RECREATE");
 //tfile = new TFile("Efficiency_Plots.root");
 
@@ -1067,7 +1068,7 @@ void makePlots(){
 
   //TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_9_4_0/src/MuJetAnalysis/CutFlowAnalyzer/scripts/efficiency_plots/plots_"+File_name+"/";
   //TString Save_dir = "/afs/cern.ch/work/y/yjeong/CMSSW_10_2_0/src/plots_"+File_name+"/";
-  TString Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/2016_script/plots_"+File_name+"/";
+  TString Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/2016_script_plots/plots_"+File_name+"/";
 
   TH2F *den_2D_A0 = new TH2F("den_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
   TH2F *num_2D_A0 = new TH2F("num_2D_A0",cms_title2,40,0,80,80,0.0,80.0);
