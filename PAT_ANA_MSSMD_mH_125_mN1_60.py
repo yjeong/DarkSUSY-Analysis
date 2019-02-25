@@ -1,0 +1,25 @@
+from CRABClient.UserUtilities import config, getUsernameFromSiteDB
+config = config()
+#config.General.requestName = 'MSSMD_mH_125_mN1_60_mGammaD_8p5_cT_0'
+#config.General.requestName = 'MSSMD_mH_125_mN1_60_mGammaD_5_cT_3'
+#config.General.requestName = 'MSSMD_mH_125_mN1_60_mGammaD_35_cT_2'
+#config.General.requestName = 'MSSMD_mH_125_mN1_60_mGammaD_10_cT_20'
+config.General.requestName = 'MSSMD_mH_125_mN1_60_mGammaD_5_cT_10'
+config.General.workArea = 'crab_projects'
+config.General.transferOutputs = True
+config.JobType.pluginName = 'Analysis'
+config.JobType.psetName = '/afs/cern.ch/work/y/yjeong/CMSSW_9_4_7/src/MuJetAnalysis/DataFormats/scripts/patifyMC_13TeV/patTuple_cutana_mujets_MiniAOD_cfg.py'
+config.JobType.allowUndistributedCMSSW = True
+#config.Data.inputDataset = '/MSSMD_mH_125_mN1_60_mGammaD_8p5_cT_0_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+#config.Data.inputDataset = '/MSSMD_mH_125_mN1_60_mGammaD_5_cT_3_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+#config.Data.inputDataset = '/MSSMD_mH_125_mN1_60_mGammaD_35_cT_2_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+#config.Data.inputDataset = '/MSSMD_mH_125_mN1_60_mGammaD_10_cT_20_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+config.Data.inputDataset = '/MSSMD_mH_125_mN1_60_mGammaD_5_cT_10_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+config.Data.inputDBS = 'global'
+config.Data.splitting = 'FileBased'
+config.Data.unitsPerJob = 1
+config.Data.outLFNDirBase = '/store/user/yjeong/'
+config.Data.publication = True
+config.Data.outputDatasetTag = 'MSSMD_mH_125_mN1_60_Dataset'
+config.Site.storageSite = 'T2_KR_KISTI'
+config.Site.blacklist = ['T3_US_UCR']
