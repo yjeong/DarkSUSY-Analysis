@@ -1,4 +1,5 @@
 // echo 'gROOT->ProcessLine(".L foo_modified.C++"); analysis("ANA_mN1_10.txt" )' | root -l -b
+// echo 'gROOT->ProcessLine(".L foo_modified.C++"); analysis("ANA_mN1_60.txt" )' | root -l -b
 #include <iostream>
 #include <iomanip>
 using namespace std;
