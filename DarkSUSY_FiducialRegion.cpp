@@ -11,7 +11,6 @@
 
 	const int Sample_Num = 2;
 	const int nVariable = 2;
-	int event, lumi;//tree variable
 
 	TString Sample_name[Sample_Num] = {"mGammaD_0p25_cT_0p1","mGammaD_5_cT_50"};
 	TString Variable[nVariable] = {"event","lumi"};
