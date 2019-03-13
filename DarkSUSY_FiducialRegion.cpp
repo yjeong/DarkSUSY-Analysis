@@ -10,11 +10,11 @@
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
 	const int Sample_Num = 2;
-	const int nVariable = 1;
+	const int nVariable = 2;
 	int event, lumi;//tree variable
 
 	TString Sample_name[Sample_Num] = {"mGammaD_0p25_cT_0p1","mGammaD_5_cT_50"};
-	TString Variable[nVariable] = {"event"};
+	TString Variable[nVariable] = {"event","lumi"};
 
 	TFile *tfile[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
@@ -23,8 +23,6 @@
 	TTree *tree[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
 		tree[i] = (TTree*)tfile[i]->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
-		tree[i]->SetBranchAddress("event",&event);
-		//tree[i]->SetBranchAddress("lumi",&lumi);
 	}
 
 	TH1F *histo_event[Sample_Num][nVariable];
