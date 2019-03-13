@@ -2,7 +2,7 @@
 	gROOT->SetStyle("Plain");
 
 	gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
-	gStyle->SetOptDate(2);//display date position
+	gStyle->SetOptDate(0);//display date position
 
 	gStyle->SetPadLeftMargin(0.12);
 	gStyle->SetPadRightMargin(0.2);
