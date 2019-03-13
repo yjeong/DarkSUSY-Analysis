@@ -1,7 +1,7 @@
 {
 	gROOT->SetStyle("Plain");
 
-	gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
+	gStyle->SetOptStat("mr");//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
 	gStyle->SetOptDate(0);//display date position
 
 	gStyle->SetPadLeftMargin(0.12);
@@ -110,9 +110,9 @@
 	TH1F *histo_event[Sample_Num][nVariable];
 	TCanvas *canv_[Sample_Num][nVariable];
 
-	int nbin[Sample_Num] = {1000,2000};
-	float xmin[Sample_Num] = {0,0};
-	float xmax[Sample_Num] = {100000,300000};
+	int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};
+	float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
+	float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};
 
 	int eff_nbin_x = 40;
 	int eff_nbin_y = 80;
@@ -124,7 +124,7 @@
 	for(int nSam=0; nSam < Sample_Num; nSam++){
 		for(int nVar=0; nVar < nVariable; nVar++){
 			canv_[nVar][nSam] = new TCanvas(Form("Canv_%d_%d",nVar,nSam),Form(""),canvas_x,canvas_y);
-			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nSam],xmin[nSam],xmax[nSam]);
+			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
 			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
 
 			histo_event[nVar][nSam]->Draw();
