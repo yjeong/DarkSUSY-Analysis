@@ -1,6 +1,30 @@
 {
 	gROOT->SetStyle("Plain");
+
+	gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
+	gStyle->SetOptDate(2);//display date position
+
+	gStyle->SetPadLeftMargin(0.12);
+	gStyle->SetPadRightMargin(0.2);
+	gStyle->SetPadTopMargin(0.12);
+	gStyle->SetPadBottomMargin(0.1);
+	gStyle->SetPadBorderMode(0);
+
 	int canvas_x = 600, canvas_y = 600;
+
+	/*static Int_t  colors[50];
+	static Bool_t initialized = kFALSE;
+	Double_t Red[3]    = { 1.00, 0.00, 0.00};
+	Double_t Green[3]  = { 0.00, 1.00, 0.00};
+	Double_t Blue[3]   = { 1.00, 0.00, 1.00};
+	Double_t Length[3] = { 0.00, 0.50, 1.00};
+	if(!initialized){
+		Int_t FI = TColor::CreateGradientColorTable(3,Length,Red,Green,Blue,50);
+		for (int i=0; i<50; i++) colors[i] = FI+i;
+		initialized = kTRUE;
+		return;
+	}
+	gStyle->SetPalette(50,colors);*/
 
 	TString PATH_samples;
 	PATH_samples = "/afs/cern.ch/work/y/yjeong/Run2_DarkSUSY_CentralMC/";
