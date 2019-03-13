@@ -13,7 +13,7 @@
 	const int nVariable = 2;
 
 	bool isDiMuonHLTFired;
-	int lumi, run, event;
+	int lumi_, run, event;
 	float selMu0_px, selMu1_px, selMu2_px, selMu3_px;
 	float selMu0_py, selMu1_py, selMu2_py, selMu3_py;
 	float selMu0_pT, selMu1_pT, selMu2_pT, selMu3_pT;
@@ -34,7 +34,7 @@
 		tree[i] = (TTree*)tfile[i]->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
 		tree[i]->SetBranchAddress("event",&event);
 		tree[i]->SetBranchAddress("run",&run);
-		tree[i]->SetBranchAddress("lumi",&lumi);
+		tree[i]->SetBranchAddress("lumi",&lumi_);
 		tree[i]->SetBranchAddress("isDiMuonHLTFired",&isDiMuonHLTFired);
 		tree[i]->SetBranchAddress("selMu0_px",&selMu0_px);
 		tree[i]->SetBranchAddress("selMu1_px",&selMu1_px);
@@ -90,17 +90,15 @@
 	float xmin[Sample_Num] = {0,0};
 	float xmax[Sample_Num] = {100000,300000};
 
-	if(isDiMuonHLTFired==true) continue;
-	//----------------------------------initial value cut-----------------------------------
-	if(!(selMu0_px!=-100 && selMu0_py!=-100 && selMu0_pT!=-100 && selMu0_eta!=-100 && selMu0_phi!=-100)) continue;
-	if(!(selMu1_px!=-100 && selMu1_py!=-100 && selMu1_pT!=-100 && selMu1_eta!=-100 && selMu1_phi!=-100)) continue;
-	if(!(selMu2_px!=-100 && selMu2_py!=-100 && selMu2_pT!=-100 && selMu2_eta!=-100 && selMu2_phi!=-100)) continue;
-	if(!(selMu3_px!=-100 && selMu3_py!=-100 && selMu3_pT!=-100 && selMu3_eta!=-100 && selMu3_phi!=-100)) continue;
-	if(!(genA0_Lx!=-1000 && genA0_Ly!=-1000 && genA0_Lz!=-1000 && genA0_Lxy!=-1000 && genA0_L!=-1000)) continue;
-	if(!(genA1_Lx!=-1000 && genA1_Ly!=-1000 && genA1_Lz!=-1000 && genA1_Lxy!=-1000 && genA1_L!=-1000)) continue;
+	int eff_nbin_x = 40;
+	int eff_nbin_y = 80;
+	float eff_xmin_x = 0;
+	float eff_xmax_x = 250;
+	float eff_xmin_y = 0;
+	float eff_xmax_y = 500;
 
-	for(int nVar=0; nVar < nVariable; nVar++){
-		for(int nSam=0; nSam < Sample_Num; nSam++){
+	for(int nSam=0; nSam < Sample_Num; nSam++){
+		for(int nVar=0; nVar < nVariable; nVar++){
 			canv_[nVar][nSam] = new TCanvas(Form("Canv_%d_%d",nVar,nSam),Form(""),canvas_x,canvas_y);
 			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nSam],xmin[nSam],xmax[nSam]);
 			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
@@ -108,6 +106,38 @@
 			histo_event[nVar][nSam]->Draw();
 			canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 		}
+	}
+
+	TH2F *histo_den_A0[Sample_Num];
+	TH2F *histo_den_A1[Sample_Num];
+	TCanvas *canv_eff_den_A0[Sample_Num];
+	TCanvas *canv_eff_den_A1[Sample_Num];
+	for(int nSam=0; nSam < Sample_Num; nSam++){
+		canv_eff_den_A0[nSam] = new TCanvas(Form("canv_eff_den_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+		canv_eff_den_A1[nSam] = new TCanvas(Form("canv_eff_den_A1_%d",nSam),Form(""),canvas_x,canvas_y);
+		histo_den_A0[nSam] = new TH2F(Form("histo_den_A0_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		histo_den_A1[nSam] = new TH2F(Form("histo_den_A1_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+
+		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
+			tree[nSam]->GetEntry(nev);
+			//------------------------exclude initial value----------------------
+			if(isDiMuonHLTFired == true) continue;
+			if(!(selMu0_px!=-100 && selMu0_py!=-100 && selMu0_pT!=-100 && selMu0_eta!=-100 && selMu0_phi!=-100)) continue;
+			if(!(selMu1_px!=-100 && selMu1_py!=-100 && selMu1_pT!=-100 && selMu1_eta!=-100 && selMu1_phi!=-100)) continue;
+			if(!(selMu2_px!=-100 && selMu2_py!=-100 && selMu2_pT!=-100 && selMu2_eta!=-100 && selMu2_phi!=-100)) continue;
+			if(!(selMu3_px!=-100 && selMu3_py!=-100 && selMu3_pT!=-100 && selMu3_eta!=-100 && selMu3_phi!=-100)) continue;
+			if(!(genA0_Lx!=-1000 && genA0_Ly!=-1000 && genA0_Lz!=-1000 && genA0_Lxy!=-1000 && genA0_L!=-1000)) continue;
+			if(!(genA1_Lx!=-1000 && genA1_Ly!=-1000 && genA1_Lz!=-1000 && genA1_Lxy!=-1000 && genA1_L!=-1000)) continue;
+
+			histo_den_A0[nSam]->Fill(genA0_Lxy,genA0_Lz);
+			histo_den_A1[nSam]->Fill(genA1_Lxy,genA1_Lz);
+		}
+		canv_eff_den_A0[nSam]->cd();
+		histo_den_A0[nSam]->Draw("colz");
+		canv_eff_den_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A0.png");
+		canv_eff_den_A1[nSam]->cd();
+		histo_den_A1[nSam]->Draw("colz");
+		canv_eff_den_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A1.png");
 	}
 }
 
