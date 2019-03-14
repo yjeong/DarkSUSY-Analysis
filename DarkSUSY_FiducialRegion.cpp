@@ -28,8 +28,8 @@
 
 	TString PATH_samples;
 	PATH_samples = "/afs/cern.ch/work/y/yjeong/Run2_DarkSUSY_CentralMC/";
-	TString Sample_type_mN1_10;
-	Sample_type_mN1_10 = "out_ana_mN1_10_";
+	TString Sample_type;
+	Sample_type = "out_ana_";
 	TString Save_dir;
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
@@ -46,13 +46,14 @@
 	float genA0_m, genA0_px, genA0_py, genA0_pz, genA0_eta, genA0_phi, genA0_Lx, genA0_Ly, genA0_Lz, genA0_Lxy, genA0_L;
 	float genA1_m, genA1_px, genA1_py, genA1_pz, genA1_eta, genA1_phi, genA1_Lx, genA1_Ly, genA1_Lz, genA1_Lxy, genA1_L;
 
-	//TString Sample_name[Sample_Num] = {"mGammaD_5_cT_50","mGammaD_0p25_cT_0p1"};
-	TString Sample_name[Sample_Num] = {"mGammaD_5_cT_50"};
+	//TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_50","mGammaD_0p25_cT_0p1"};
+	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
+	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_50"};
 	TString Variable[nVariable] = {"event","lumi"};
 
 	TFile *tfile[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
-		tfile[i] = new TFile(PATH_samples+Sample_type_mN1_10+Sample_name[i]+".root");
+		tfile[i] = new TFile(PATH_samples+Sample_type+Sample_name[i]+".root");
 	}
 	TTree *tree[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
@@ -130,7 +131,7 @@
 			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
 
 			histo_event[nVar][nSam]->Draw();
-			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 		}
 	}
 
@@ -229,25 +230,25 @@
 		}
 		canv_eff_den_A0[nSam]->cd();
 		histo_den_A0[nSam]->Draw();
-		canv_eff_den_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A0.png");
+		canv_eff_den_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_den_A0.png");
 		canv_eff_num_A0[nSam]->cd();
 		histo_num_A0[nSam]->Draw();
-		canv_eff_num_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_num_A0.png");
+		canv_eff_num_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_num_A0.png");
 		canv_dR_A0[nSam]->cd();
 		canv_dR_A0[nSam]->SetLogy();
 		histo_dR_A0[nSam]->Draw();
-		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"dR_A0.png");
+		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A0.png");
 
 		canv_eff_den_A1[nSam]->cd();
 		histo_den_A1[nSam]->Draw();
-		canv_eff_den_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A1.png");
+		canv_eff_den_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_den_A1.png");
 		canv_eff_num_A1[nSam]->cd();
 		histo_num_A1[nSam]->Draw();
-		canv_eff_num_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_num_A1.png");
+		canv_eff_num_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_num_A1.png");
 		canv_dR_A1[nSam]->cd();
 		canv_dR_A1[nSam]->SetLogy();
 		histo_dR_A1[nSam]->Draw();
-		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"dR_A1.png");
+		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A1.png");
 	}
 }
 
