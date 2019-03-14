@@ -1,8 +1,8 @@
 {
 	gROOT->SetStyle("Plain");
 
-	gStyle->SetOptStat("mr");//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
-	gStyle->SetOptDate(0);//display date position
+	//gStyle->SetOptStat("mr");//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
+	//gStyle->SetOptDate(0);//display date position
 
 	gStyle->SetPadLeftMargin(0.12);
 	gStyle->SetPadRightMargin(0.2);
@@ -13,18 +13,18 @@
 	int canvas_x = 600, canvas_y = 600;
 
 	/*static Int_t  colors[50];
-	static Bool_t initialized = kFALSE;
-	Double_t Red[3]    = { 1.00, 0.00, 0.00};
-	Double_t Green[3]  = { 0.00, 1.00, 0.00};
-	Double_t Blue[3]   = { 1.00, 0.00, 1.00};
-	Double_t Length[3] = { 0.00, 0.50, 1.00};
-	if(!initialized){
-		Int_t FI = TColor::CreateGradientColorTable(3,Length,Red,Green,Blue,50);
-		for (int i=0; i<50; i++) colors[i] = FI+i;
-		initialized = kTRUE;
-		return;
-	}
-	gStyle->SetPalette(50,colors);*/
+	  static Bool_t initialized = kFALSE;
+	  Double_t Red[3]    = { 1.00, 0.00, 0.00};
+	  Double_t Green[3]  = { 0.00, 1.00, 0.00};
+	  Double_t Blue[3]   = { 1.00, 0.00, 1.00};
+	  Double_t Length[3] = { 0.00, 0.50, 1.00};
+	  if(!initialized){
+	  Int_t FI = TColor::CreateGradientColorTable(3,Length,Red,Green,Blue,50);
+	  for (int i=0; i<50; i++) colors[i] = FI+i;
+	  initialized = kTRUE;
+	  return;
+	  }
+	  gStyle->SetPalette(50,colors);*/
 
 	TString PATH_samples;
 	PATH_samples = "/afs/cern.ch/work/y/yjeong/Run2_DarkSUSY_CentralMC/";
@@ -33,7 +33,7 @@
 	TString Save_dir;
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
-	const int Sample_Num = 2;
+	const int Sample_Num = 1;
 	const int nVariable = 2;
 
 	bool isDiMuonHLTFired;
@@ -46,7 +46,8 @@
 	float genA0_m, genA0_px, genA0_py, genA0_pz, genA0_eta, genA0_phi, genA0_Lx, genA0_Ly, genA0_Lz, genA0_Lxy, genA0_L;
 	float genA1_m, genA1_px, genA1_py, genA1_pz, genA1_eta, genA1_phi, genA1_Lx, genA1_Ly, genA1_Lz, genA1_Lxy, genA1_L;
 
-	TString Sample_name[Sample_Num] = {"mGammaD_0p25_cT_0p1","mGammaD_5_cT_50"};
+	//TString Sample_name[Sample_Num] = {"mGammaD_5_cT_50","mGammaD_0p25_cT_0p1"};
+	TString Sample_name[Sample_Num] = {"mGammaD_5_cT_50"};
 	TString Variable[nVariable] = {"event","lumi"};
 
 	TFile *tfile[Sample_Num];
@@ -110,58 +111,143 @@
 	TH1F *histo_event[Sample_Num][nVariable];
 	TCanvas *canv_[Sample_Num][nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};
+	/*int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};
 	float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
-	float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};
+	float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};*/
 
-	int eff_nbin_x = 40;
-	int eff_nbin_y = 80;
-	float eff_xmin_x = 0;
-	float eff_xmax_x = 250;
-	float eff_xmin_y = 0;
-	float eff_xmax_y = 500;
+	int eff_nbin_x = 100;
+	//int eff_nbin_y = 80;
+	float eff_xmin_x = -7;
+	float eff_xmax_x = 7;
+	//float eff_xmin_y = 0;
+	//float eff_xmax_y = 500;
 
 	for(int nSam=0; nSam < Sample_Num; nSam++){
 		for(int nVar=0; nVar < nVariable; nVar++){
 			canv_[nVar][nSam] = new TCanvas(Form("Canv_%d_%d",nVar,nSam),Form(""),canvas_x,canvas_y);
-			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+			//histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),100,0,300000);
 			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
 
 			histo_event[nVar][nSam]->Draw();
-			canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 		}
 	}
 
-	TH2F *histo_den_A0[Sample_Num];
-	TH2F *histo_den_A1[Sample_Num];
+	TH1F *histo_den_A0[Sample_Num];
+	TH1F *histo_num_A0[Sample_Num];
+	TH1F *histo_dR_A0[Sample_Num];
 	TCanvas *canv_eff_den_A0[Sample_Num];
+	TCanvas *canv_eff_num_A0[Sample_Num];
+	TCanvas *canv_dR_A0[Sample_Num];
+
+	TH1F *histo_den_A1[Sample_Num];
+	TH1F *histo_num_A1[Sample_Num];
+	TH1F *histo_dR_A1[Sample_Num];
 	TCanvas *canv_eff_den_A1[Sample_Num];
+	TCanvas *canv_eff_num_A1[Sample_Num];
+	TCanvas *canv_dR_A1[Sample_Num];
+
+
+	int nGenMuA0 = 0;
+	float RecMuEta = 0;
+	float dEta_A0 = 0;
+	float dPhi_A0 = 0;
+	float dR_A0 = 0;
+	float dEta_A1 = 0;
+	float dPhi_A1 = 0;
+	float dR_A1 = 0;
+
 	for(int nSam=0; nSam < Sample_Num; nSam++){
 		canv_eff_den_A0[nSam] = new TCanvas(Form("canv_eff_den_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+		canv_eff_num_A0[nSam] = new TCanvas(Form("canv_eff_num_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+		canv_dR_A0[nSam] = new TCanvas(Form("canv_dR_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+
+
+		histo_den_A0[nSam] = new TH1F(Form("histo_den_A0_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x);
+		//tree[nSam]->Project(Form("histo_den_A0_%d",nSam),"genA0_eta");
+		histo_num_A0[nSam] = new TH1F(Form("histo_num_A0_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x);
+		histo_dR_A0[nSam] = new TH1F(Form("histo_dR_A0_%d",nSam),Form(""),200,0,1);
+
+
 		canv_eff_den_A1[nSam] = new TCanvas(Form("canv_eff_den_A1_%d",nSam),Form(""),canvas_x,canvas_y);
-		histo_den_A0[nSam] = new TH2F(Form("histo_den_A0_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
-		histo_den_A1[nSam] = new TH2F(Form("histo_den_A1_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		canv_eff_num_A1[nSam] = new TCanvas(Form("canv_eff_num_A1_%d",nSam),Form(""),canvas_x,canvas_y);
+		canv_dR_A1[nSam] = new TCanvas(Form("canv_dR_A1_%d",nSam),Form(""),canvas_x,canvas_y);
+
+
+		histo_den_A1[nSam] = new TH1F(Form("histo_den_A1_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x);
+		//tree[nSam]->Project(Form("histo_den_A1_%d",nSam),"genA1_eta");
+		histo_num_A1[nSam] = new TH1F(Form("histo_num_A1_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x);
+		histo_dR_A1[nSam] = new TH1F(Form("histo_dR_A1_%d",nSam),Form(""),200,0,1);
+
 
 		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
 			tree[nSam]->GetEntry(nev);
-			//------------------------exclude initial value----------------------
-			if(isDiMuonHLTFired == true) continue;
-			if(!(selMu0_px!=-100 && selMu0_py!=-100 && selMu0_pT!=-100 && selMu0_eta!=-100 && selMu0_phi!=-100)) continue;
-			if(!(selMu1_px!=-100 && selMu1_py!=-100 && selMu1_pT!=-100 && selMu1_eta!=-100 && selMu1_phi!=-100)) continue;
-			if(!(selMu2_px!=-100 && selMu2_py!=-100 && selMu2_pT!=-100 && selMu2_eta!=-100 && selMu2_phi!=-100)) continue;
-			if(!(selMu3_px!=-100 && selMu3_py!=-100 && selMu3_pT!=-100 && selMu3_eta!=-100 && selMu3_phi!=-100)) continue;
-			if(!(genA0_Lx!=-1000 && genA0_Ly!=-1000 && genA0_Lz!=-1000 && genA0_Lxy!=-1000 && genA0_L!=-1000)) continue;
-			if(!(genA1_Lx!=-1000 && genA1_Ly!=-1000 && genA1_Lz!=-1000 && genA1_Lxy!=-1000 && genA1_L!=-1000)) continue;
 
-			histo_den_A0[nSam]->Fill(genA0_Lxy,genA0_Lz);
-			histo_den_A1[nSam]->Fill(genA1_Lxy,genA1_Lz);
+			if(isDiMuonHLTFired == true) continue;
+			if(fabs(selMu0_eta)!=100){
+				dEta_A0 = genA0_eta-selMu0_eta;
+				dPhi_A0 = genA0_phi-selMu0_phi;
+				dEta_A1 = genA1_eta-selMu0_eta;
+				dPhi_A1 = genA1_phi-selMu0_phi;
+				RecMuEta = selMu0_eta;
+			}
+
+			if(fabs(selMu1_eta)!=100){
+				dEta_A0 = genA0_eta-selMu1_eta;
+				dPhi_A0 = genA0_phi-selMu1_phi;
+				dEta_A1 = genA1_eta-selMu1_eta;
+				dPhi_A1 = genA1_phi-selMu1_phi;
+				RecMuEta = selMu1_eta;
+			}
+
+			if(fabs(selMu2_eta)!=100){
+				dEta_A0 = genA0_eta-selMu2_eta;
+				dPhi_A0 = genA0_phi-selMu2_phi;
+				dEta_A1 = genA1_eta-selMu2_eta;
+				dPhi_A1 = genA1_phi-selMu2_phi;
+				RecMuEta = selMu2_eta;
+			}
+
+			if(fabs(selMu3_eta)!=100){
+				dEta_A0 = genA0_eta-selMu3_eta;
+				dPhi_A0 = genA0_phi-selMu3_phi;
+				dEta_A1 = genA1_eta-selMu3_eta;
+				dPhi_A1 = genA1_phi-selMu3_phi;
+				RecMuEta = selMu3_eta;
+			}
+
+			dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
+			histo_dR_A0[nSam]->Fill(dR_A0);
+			dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
+			histo_dR_A1[nSam]->Fill(dR_A1);
+
+			if(dR_A0<0.1) histo_num_A0[nSam]->Fill(RecMuEta);
+			histo_den_A0[nSam]->Fill(genA0_eta);
+			if(dR_A1<0.1) histo_num_A1[nSam]->Fill(RecMuEta);
+			histo_den_A1[nSam]->Fill(genA1_eta);
 		}
 		canv_eff_den_A0[nSam]->cd();
-		histo_den_A0[nSam]->Draw("colz");
+		histo_den_A0[nSam]->Draw();
 		canv_eff_den_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A0.png");
+		canv_eff_num_A0[nSam]->cd();
+		histo_num_A0[nSam]->Draw();
+		canv_eff_num_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_num_A0.png");
+		canv_dR_A0[nSam]->cd();
+		canv_dR_A0[nSam]->SetLogy();
+		histo_dR_A0[nSam]->Draw();
+		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"dR_A0.png");
+
 		canv_eff_den_A1[nSam]->cd();
-		histo_den_A1[nSam]->Draw("colz");
+		histo_den_A1[nSam]->Draw();
 		canv_eff_den_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_den_A1.png");
+		canv_eff_num_A1[nSam]->cd();
+		histo_num_A1[nSam]->Draw();
+		canv_eff_num_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"eff_num_A1.png");
+		canv_dR_A1[nSam]->cd();
+		canv_dR_A1[nSam]->SetLogy();
+		histo_dR_A1[nSam]->Draw();
+		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type_mN1_10+Sample_name[nSam]+"_"+"dR_A1.png");
 	}
 }
 
