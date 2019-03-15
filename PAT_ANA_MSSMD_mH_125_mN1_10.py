@@ -18,7 +18,8 @@ config = config()
 #config.General.requestName = 'MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_50'
 #config.General.requestName = 'MSSMD_mH_125_mN1_10_mGammaD_1_cT_1'
 #---
-config.General.requestName = 'MSSMD_mH_125_mN1_10_mGammaD_0p25_cT_0p2'
+#config.General.requestName = 'MSSMD_mH_125_mN1_10_mGammaD_0p25_cT_0p2'
+config.General.requestName = 'MSSMD_mH_125_mN1_10_mGammaD_1_cT_0p05'
 
 config.General.workArea = 'crab_projects'
 config.General.transferOutputs = True
@@ -43,7 +44,8 @@ config.JobType.allowUndistributedCMSSW = True
 #config.Data.inputDataset = '/MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_50_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
 #config.Data.inputDataset = '/MSSMD_mH_125_mN1_10_mGammaD_1_cT_1_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
 #---
-config.Data.inputDataset = '/MSSMD_mH_125_mN1_10_mGammaD_0p25_cT_0p2_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+#config.Data.inputDataset = '/MSSMD_mH_125_mN1_10_mGammaD_0p25_cT_0p2_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
+config.Data.inputDataset = '/MSSMD_mH_125_mN1_10_mGammaD_1_cT_0p05_TuneCP5_13TeV-madgraph-pythia8/RunIIFall17MiniAODv2-PU2017_12Apr2018_94X_mc2017_realistic_v14-v1/MINIAODSIM'
 
 config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
