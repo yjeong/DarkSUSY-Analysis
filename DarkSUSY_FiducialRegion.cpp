@@ -148,6 +148,8 @@
 		canv_eff_2D_den_A0[nSam] = new TCanvas(Form("canv_eff_2D_den_A0_%d",nSam),Form(""),canvas_x,canvas_y);
 		canv_eff_2D_A0[nSam] = new TCanvas(Form("canv_eff_2D_A0_%d",nSam),Form(""),canvas_x,canvas_y);
 
+		unsigned int recMuA0 = 0;
+
 		float RecMuPt = 0;
 		float RecMuPz = 0;
 		float RecMuEta = 0;
@@ -175,6 +177,7 @@
 				dEta_A1 = genA1_eta-selMu0_eta;
 				dPhi_A1 = genA1_phi-selMu0_phi;
 				RecMuEta = selMu0_eta;
+				recMuA0++;
 			}
 
 			if(fabs(selMu1_eta)!=100){
@@ -183,6 +186,7 @@
 				dEta_A1 = genA1_eta-selMu1_eta;
 				dPhi_A1 = genA1_phi-selMu1_phi;
 				RecMuEta = selMu1_eta;
+				recMuA0++;
 			}
 
 			if(fabs(selMu2_eta)!=100){
@@ -191,6 +195,7 @@
 				dEta_A1 = genA1_eta-selMu2_eta;
 				dPhi_A1 = genA1_phi-selMu2_phi;
 				RecMuEta = selMu2_eta;
+				recMuA0++;
 			}
 
 			if(fabs(selMu3_eta)!=100){
@@ -199,7 +204,10 @@
 				dEta_A1 = genA1_eta-selMu3_eta;
 				dPhi_A1 = genA1_phi-selMu3_phi;
 				RecMuEta = selMu3_eta;
+				recMuA0++;
 			}
+
+			//cout<<recMuA0<<endl;
 
 			dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
 			histo_dR_A0[nSam]->Fill(dR_A0);
