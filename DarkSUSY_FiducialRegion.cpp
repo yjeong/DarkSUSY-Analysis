@@ -5,6 +5,23 @@ double My_dPhi(double phi1, double phi2){
 	return fabs(dPhi);
 }
 
+void set_canvas_style(TCanvas* c)
+{
+	c->SetFillColor(0);
+	c->SetBorderMode(0);
+	c->SetBorderSize(2);
+	c->SetTickx(1);
+	c->SetTicky(1);
+	c->SetLeftMargin(0.15);
+	c->SetRightMargin(0.18);
+	c->SetTopMargin(0.07);
+	c->SetBottomMargin(0.17);
+	c->SetFrameFillStyle(0);
+	c->SetFrameBorderMode(0);
+	c->SetFrameFillStyle(0);
+	c->SetFrameBorderMode(0);
+}
+
 void DarkSUSY_FiducialRegion(){
 	gROOT->SetStyle("Plain");
 
@@ -241,11 +258,13 @@ void DarkSUSY_FiducialRegion(){
 
 		}
 		canv_dR_A0[nSam]->cd();
+		set_canvas_style(canv_dR_A0[nSam]);
 		canv_dR_A0[nSam]->SetLogy();
 		histo_dR_A0[nSam]->Draw();
 		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A0.png");
 
 		canv_dR_A1[nSam]->cd();
+		set_canvas_style(canv_dR_A1[nSam]);
 		canv_dR_A1[nSam]->SetLogy();
 		histo_dR_A1[nSam]->Draw();
 		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A1.png");
