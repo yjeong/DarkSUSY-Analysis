@@ -17,13 +17,6 @@ void DarkSUSY_FiducialRegion(){
 	gStyle->SetPadBottomMargin(0.1);
 	gStyle->SetPadBorderMode(0);
 
-	//double My_dPhi(double phi1, double phi2);{
-	/*double dPhi = phi1 - phi2;
-	  if(dPhi > TMath::Pi()) dPhi -= 2.*TMath::Pi();
-	  if(dPhi < -TMath::Pi()) dPhi += 2.*TMth::Pi();
-	  return fabs(dPhi);
-	  }*/
-
 	int canvas_x = 600, canvas_y = 600;
 
 	TString PATH_samples;
