@@ -1,4 +1,11 @@
-{
+double My_dPhi(double phi1, double phi2){
+	double dPhi = phi1 - phi2;
+	if(dPhi > TMath::Pi()) dPhi -= 2*TMath::Pi();
+	if(dPhi < -TMath::Pi()) dPhi += 2*TMath::Pi();
+	return fabs(dPhi);
+}
+
+void DarkSUSY_FiducialRegion(){
 	gROOT->SetStyle("Plain");
 
 	//gStyle->SetOptStat("mr");//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
@@ -9,6 +16,13 @@
 	gStyle->SetPadTopMargin(0.12);
 	gStyle->SetPadBottomMargin(0.1);
 	gStyle->SetPadBorderMode(0);
+
+	//double My_dPhi(double phi1, double phi2);{
+	/*double dPhi = phi1 - phi2;
+	  if(dPhi > TMath::Pi()) dPhi -= 2.*TMath::Pi();
+	  if(dPhi < -TMath::Pi()) dPhi += 2.*TMth::Pi();
+	  return fabs(dPhi);
+	  }*/
 
 	int canvas_x = 600, canvas_y = 600;
 
@@ -168,43 +182,47 @@
 		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
 			tree[nSam]->GetEntry(nev);
 
-			if(isDiMuonHLTFired == true) continue;
+			if(!(isDiMuonHLTFired == true)) continue;
+			if(!(genA0_Lz<=80 && genA0_Lxy<=80)) continue;
 			genA0_pT = sqrt(pow(genA0_px,2)+pow(genA0_py,2));
 			genA1_pT = sqrt(pow(genA1_px,2)+pow(genA1_py,2));
-			if(fabs(selMu0_eta)!=100){
-				dEta_A0 = genA0_eta-selMu0_eta;
-				dPhi_A0 = genA0_phi-selMu0_phi;
-				dEta_A1 = genA1_eta-selMu0_eta;
-				dPhi_A1 = genA1_phi-selMu0_phi;
-				RecMuEta = selMu0_eta;
-				recMuA0++;
-			}
+			if(fabs(selMu0_eta)!=100) recMuA0++;
+			if(fabs(selMu1_eta)!=100) recMuA0++;
+			if(fabs(selMu2_eta)!=100) recMuA0++;
+			if(fabs(selMu3_eta)!=100) recMuA0++;
 
-			if(fabs(selMu1_eta)!=100){
-				dEta_A0 = genA0_eta-selMu1_eta;
-				dPhi_A0 = genA0_phi-selMu1_phi;
-				dEta_A1 = genA1_eta-selMu1_eta;
-				dPhi_A1 = genA1_phi-selMu1_phi;
-				RecMuEta = selMu1_eta;
-				recMuA0++;
-			}
+			for(int i = 0; i < recMuA0; i++){
+				if(i==0){
+					dEta_A0 = genA0_eta-selMu0_eta;
+					dPhi_A0 = My_dPhi(selMu0_phi,genA0_phi);
+					dEta_A1 = genA1_eta-selMu0_eta;
+					dPhi_A1 = My_dPhi(selMu1_phi,genA0_phi);
+					RecMuEta = selMu0_eta;
+				}
 
-			if(fabs(selMu2_eta)!=100){
-				dEta_A0 = genA0_eta-selMu2_eta;
-				dPhi_A0 = genA0_phi-selMu2_phi;
-				dEta_A1 = genA1_eta-selMu2_eta;
-				dPhi_A1 = genA1_phi-selMu2_phi;
-				RecMuEta = selMu2_eta;
-				recMuA0++;
-			}
+				if(i==1){
+					dEta_A0 = genA0_eta-selMu1_eta;
+					dPhi_A0 = My_dPhi(selMu1_phi,genA0_phi);
+					dEta_A1 = genA1_eta-selMu1_eta;
+					dPhi_A1 = My_dPhi(selMu1_phi,genA0_phi);
+					RecMuEta = selMu1_eta;
+				}
 
-			if(fabs(selMu3_eta)!=100){
-				dEta_A0 = genA0_eta-selMu3_eta;
-				dPhi_A0 = genA0_phi-selMu3_phi;
-				dEta_A1 = genA1_eta-selMu3_eta;
-				dPhi_A1 = genA1_phi-selMu3_phi;
-				RecMuEta = selMu3_eta;
-				recMuA0++;
+				if(i==2){
+					dEta_A0 = genA0_eta-selMu2_eta;
+					dPhi_A0 = My_dPhi(selMu2_phi,genA0_phi);
+					dEta_A1 = genA1_eta-selMu2_eta;
+					dPhi_A1 = My_dPhi(selMu2_phi,genA0_phi);
+					RecMuEta = selMu2_eta;
+				}
+
+				if(i==3){
+					dEta_A0 = genA0_eta-selMu3_eta;
+					dPhi_A0 = My_dPhi(selMu3_phi,genA0_phi);
+					dEta_A1 = genA1_eta-selMu3_eta;
+					dPhi_A1 = My_dPhi(selMu3_phi,genA0_phi);
+					RecMuEta = selMu3_eta;
+				}
 			}
 
 			//cout<<recMuA0<<endl;
@@ -214,18 +232,9 @@
 			dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
 			histo_dR_A1[nSam]->Fill(dR_A1);
 
-			genA0_pT = sqrt(pow(genA0_px,2)+pow(genA0_py,2));
-
 			if(dR_A0<0.1){
 				if(fabs(selMu0_pT)!=100) RecMuPt = selMu0_pT;
-				/*if(fabs(selMu1_pT)!=100) RecMuPt = selMu1_pT;
-				  if(fabs(selMu2_pT)!=100) RecMuPt = selMu2_pT;
-				  if(fabs(selMu3_pT)!=100) RecMuPt = selMu3_pT;*/
-
 				if(fabs(selMu0_pz)!=100) RecMuPz = selMu0_pz;
-				/*if(fabs(selMu1_pz)!=100) RecMuPz = selMu1_pz;
-				  if(fabs(selMu2_pz)!=100) RecMuPz = selMu2_pz;
-				  if(fabs(selMu3_pz)!=100) RecMuPz = selMu3_pz;*/
 			}
 
 			//effPt = RecMuPt/genA0_pT;
@@ -261,4 +270,3 @@
 		canv_eff_2D_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_A0.png");
 	}
 }
-
