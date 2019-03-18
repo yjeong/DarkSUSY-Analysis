@@ -5,6 +5,29 @@ double My_dPhi(double phi1, double phi2){
 	return fabs(dPhi);
 }
 
+void makeCounters(){
+
+	float count_gam_A0[41][81];
+	float count_rec_A0[41][81];
+	float eff_A0[41][81];
+
+	float count_gam_A1[41][81];
+	float count_rec_A1[41][81];
+	float eff_A1[41][81];
+
+	for(int k=0;k<40;k++){
+		for(int j=0;j<80;j++){
+			count_gam_A0[k][j]=0.0;
+			count_rec_A0[k][j]=0.0;
+			eff_A0[k][j]=0.0;
+
+			count_gam_A1[k][j]=0.0;
+			count_rec_A1[k][j]=0.0;
+			eff_A1[k][j]=0.0;
+		}
+	}
+}
+
 void set_canvas_style(TCanvas* c)
 {
 	c->SetFillColor(0);
@@ -46,7 +69,7 @@ void DarkSUSY_FiducialRegion(){
 	const int Sample_Num = 1;
 	const int nVariable = 2;
 
-	bool isDiMuonHLTFired;
+	bool isDiMuonHLTFired, is4GenMu8;
 	int event;
 	float selMu0_px, selMu1_px, selMu2_px, selMu3_px;
 	float selMu0_pz, selMu1_pz, selMu2_pz, selMu3_pz;
@@ -70,6 +93,7 @@ void DarkSUSY_FiducialRegion(){
 		tree[i] = (TTree*)tfile[i]->Get("cutFlowAnalyzerPXBL3PXFL2/Events");
 		tree[i]->SetBranchAddress("event",&event);
 		tree[i]->SetBranchAddress("isDiMuonHLTFired",&isDiMuonHLTFired);
+		tree[i]->SetBranchAddress("is4GenMu8",&is4GenMu8);
 		tree[i]->SetBranchAddress("selMu0_px",&selMu0_px);
 		tree[i]->SetBranchAddress("selMu1_px",&selMu1_px);
 		tree[i]->SetBranchAddress("selMu2_px",&selMu2_px);
@@ -120,6 +144,10 @@ void DarkSUSY_FiducialRegion(){
 	/*int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};
 	  float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
 	  float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};*/
+
+	float bin_edges_Lxy[81] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80};
+
+	float bin_edges_Lz[41] = {0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80};
 
 	int nbin = 100;
 	int xmin = -7;
@@ -172,7 +200,7 @@ void DarkSUSY_FiducialRegion(){
 		canv_eff_2D_den_A0[nSam] = new TCanvas(Form("canv_eff_2D_den_A0_%d",nSam),Form(""),canvas_x,canvas_y);
 		canv_eff_2D_A0[nSam] = new TCanvas(Form("canv_eff_2D_A0_%d",nSam),Form(""),canvas_x,canvas_y);
 
-		unsigned int recMuA0 = 0;
+		unsigned int recMuA0;
 
 		float RecMuPt = 0;
 		float RecMuPz = 0;
@@ -193,9 +221,11 @@ void DarkSUSY_FiducialRegion(){
 			tree[nSam]->GetEntry(nev);
 
 			if(!(isDiMuonHLTFired == true)) continue;
-			if(!(genA0_Lz<=80 && genA0_Lxy<=80)) continue;
+			if(!(is4GenMu8 == true)) continue;
+			if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
 			genA0_pT = sqrt(pow(genA0_px,2)+pow(genA0_py,2));
 			genA1_pT = sqrt(pow(genA1_px,2)+pow(genA1_py,2));
+			recMuA0 = 0;
 			if(fabs(selMu0_eta)!=100) recMuA0++;
 			if(fabs(selMu1_eta)!=100) recMuA0++;
 			if(fabs(selMu2_eta)!=100) recMuA0++;
@@ -243,20 +273,17 @@ void DarkSUSY_FiducialRegion(){
 			histo_dR_A1[nSam]->Fill(dR_A1);
 
 			if(dR_A0<0.1){
-				if(fabs(selMu0_pT)!=100) RecMuPt = selMu0_pT;
-				if(fabs(selMu0_pz)!=100) RecMuPz = selMu0_pz;
 			}
 
 			//effPt = RecMuPt/genA0_pT;
 			//effPz = genA0_pT/genA0_pz;
-			effPt = selMu0_pT/genA0_pT;
-			effPz = selMu0_pz/genA0_pz;
-
-			eff_2D_num_A0[nSam]->Fill(selMu0_pT,selMu0_pz);
-			eff_2D_den_A0[nSam]->Fill(genA0_pT,genA0_pz);
-			eff_2D_A0[nSam]->Fill(effPt,effPz);
 
 		}
+		for(int k = 0; k < 40; k++){
+			for(int j = 0; j < 80; j++){
+			}
+		}
+
 		canv_dR_A0[nSam]->cd();
 		set_canvas_style(canv_dR_A0[nSam]);
 		canv_dR_A0[nSam]->SetLogy();
@@ -268,17 +295,17 @@ void DarkSUSY_FiducialRegion(){
 		canv_dR_A1[nSam]->SetLogy();
 		histo_dR_A1[nSam]->Draw();
 		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A1.png");
+		/*
+		   canv_eff_2D_num_A0[nSam]->cd();
+		   eff_2D_num_A0[nSam]->Draw("colz");
+		   canv_eff_2D_num_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_num_A0.png");
 
-		canv_eff_2D_num_A0[nSam]->cd();
-		eff_2D_num_A0[nSam]->Draw("colz");
-		canv_eff_2D_num_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_num_A0.png");
+		   canv_eff_2D_den_A0[nSam]->cd();
+		   eff_2D_den_A0[nSam]->Draw("colz");
+		   canv_eff_2D_den_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_den_A0.png");
 
-		canv_eff_2D_den_A0[nSam]->cd();
-		eff_2D_den_A0[nSam]->Draw("colz");
-		canv_eff_2D_den_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_den_A0.png");
-
-		canv_eff_2D_A0[nSam]->cd();
-		eff_2D_A0[nSam]->Draw("colz");
-		canv_eff_2D_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_A0.png");
+		   canv_eff_2D_A0[nSam]->cd();
+		   eff_2D_A0[nSam]->Draw("colz");
+		   canv_eff_2D_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"eff_2D_A0.png");*/
 	}
 }
