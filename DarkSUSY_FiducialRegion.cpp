@@ -130,6 +130,7 @@ void DarkSUSY_FiducialRegion(){
 	  int xmax = 7;*/
 
 	float bin_edges[81] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80};
+	//float bin_edges_Lz[81] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80};
 
 	float bin_edges_Lz[41] = {0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80};
 
@@ -202,7 +203,7 @@ void DarkSUSY_FiducialRegion(){
 		float dPhi_A1 = 0;
 		float dR_A1 = 0;
 
-		float dR_cut = 0.1;
+		float dR_cut = 0.2;
 
 		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
 			tree[nSam]->GetEntry(nev);
@@ -323,11 +324,13 @@ void DarkSUSY_FiducialRegion(){
 
 		canv_2D_A0[nSam]->cd();
 		set_canvas_style(canv_2D_A0[nSam]);
+		gStyle->SetOptStat(0);
 		eff_2D_A0[nSam]->Draw("colz");
 		canv_2D_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A0.png");
 
 		canv_2D_A1[nSam]->cd();
 		set_canvas_style(canv_2D_A1[nSam]);
+		gStyle->SetOptStat(0);
 		eff_2D_A1[nSam]->Draw("colz");
 		canv_2D_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A1.png");
 	}
