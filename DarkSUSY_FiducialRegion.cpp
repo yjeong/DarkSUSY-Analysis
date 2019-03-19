@@ -44,7 +44,7 @@ void DarkSUSY_FiducialRegion(){
 	const int Sample_Num = 2;
 	const int nVariable = 2;
 
-	bool isDiMuonHLTFired, is4GenMu8, is2SelMu8;
+	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
 	int event;
 	float selMu0_px, selMu1_px, selMu2_px, selMu3_px;
 	float selMu0_pz, selMu1_pz, selMu2_pz, selMu3_pz;
@@ -99,6 +99,7 @@ void DarkSUSY_FiducialRegion(){
 		tree[i]->SetBranchAddress("event",&event);
 		tree[i]->SetBranchAddress("isDiMuonHLTFired",&isDiMuonHLTFired);
 		tree[i]->SetBranchAddress("is4GenMu8",&is4GenMu8);
+		tree[i]->SetBranchAddress("is1SelMu17",&is2SelMu8);
 		tree[i]->SetBranchAddress("is2SelMu8",&is2SelMu8);
 		tree[i]->SetBranchAddress("selMu0_px",&selMu0_px);
 		tree[i]->SetBranchAddress("selMu1_px",&selMu1_px);
@@ -229,16 +230,16 @@ void DarkSUSY_FiducialRegion(){
 		float dPhi_A1 = 0;
 		float dR_A1 = 0;
 
-		float dR_cut = 0.1;
+		float dR_cut = 0.2;
 
 		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
 			tree[nSam]->GetEntry(nev);
 
 			if(!(isDiMuonHLTFired == true)) continue;
 			if(!(is4GenMu8 == true)) continue;
+			if(!(is2SelMu8 == true)) continue;
 			if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
 			if(!(fabs(genA1_Lz)<=80 && genA1_Lxy<=80)) continue;
-			if(!(is2SelMu8==true)) continue;
 			for(int k = 0; k < 40; k++){
 				if(!(fabs(genA0_Lz)>bin_edges_Lz[k] && fabs(genA0_Lz)<bin_edges_Lz[k+1])) continue;
 				for(int j = 0; j < 80; j++){
@@ -249,7 +250,7 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=100) recMu++;
 					if(fabs(selMu2_eta)!=100) recMu++;
 					if(fabs(selMu3_eta)!=100) recMu++;
-					if(!(recMu>3 && is2SelMu8==true)) continue;
+					if(!(recMu>1)) continue;
 					unsigned int match_mu = 0;
 					for(int i = 0; i < recMu; i++){
 						if(i==0){
@@ -275,7 +276,7 @@ void DarkSUSY_FiducialRegion(){
 						histo_dR_A0[nSam]->Fill(dR_A0);
 						if(dR_A0<dR_cut) match_mu++;
 					}
-					if(match_mu>1){
+					if(match_mu==2){
 						count_rec_A0[k][j]++;
 					}
 				}
@@ -291,7 +292,7 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=-100) recMu++;
 					if(fabs(selMu2_eta)!=-100) recMu++;
 					if(fabs(selMu3_eta)!=-100) recMu++;
-					if(!(recMu>3 && is2SelMu8==true)) continue;
+					if(!(recMu>1)) continue;
 					unsigned int match_mu=0;
 					for(int j = 0; j < recMu; j++){
 						if(j==0){
@@ -314,7 +315,7 @@ void DarkSUSY_FiducialRegion(){
 						histo_dR_A1[nSam]->Fill(dR_A1);
 						if(dR_A1<dR_cut) match_mu++;
 					}
-					if(match_mu>1){
+					if(match_mu==2){
 						count_rec_A1[k][j]++;
 					}
 				}	
