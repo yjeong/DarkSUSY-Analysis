@@ -63,6 +63,32 @@ void DarkSUSY_FiducialRegion(){
 	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
 	  int nResult = mkdir(strFolderPath);*/
 
+
+	const int Number = 5;
+	double Red[Number] = {0.00, 0.09, 0.18, 0.09, 0.00};
+	double Green[Number] = {0.01, 0.02, 0.39, 0.68, 0.97};
+	double Blue[Number] = {0.17, 0.39, 0.62, 0.79, 0.97};
+	double Length[Number] = {0.00, 0.34, 0.61, 0.84, 1.00};
+
+	const int nb = 50;
+	TColor::CreateGradientColorTable(Number,Length,Red,Green,Blue,nb);
+	int colors[] = {0,1,2,3,4,5,6};
+	gStyle->SetPalette((sizeof(colors)/sizeof(Int_t)), colors);
+
+	double levels[8] = {-10,0.0,0.2,0.4,0.6,0.8,1.0, 3.4e38};
+
+	const int NRGBs = 5;
+	const int NCont = 104;
+
+	double stops[NRGBs] = {0.00, 0.34, 0.61, 0.84, 1.00};
+	double red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+	double green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+	double blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+
+	TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+
+	gStyle->SetNumberContours(NCont);
+
 	TFile *tfile[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
 		tfile[i] = new TFile(PATH_samples+Sample_name[i]+".root");
@@ -203,7 +229,7 @@ void DarkSUSY_FiducialRegion(){
 		float dPhi_A1 = 0;
 		float dR_A1 = 0;
 
-		float dR_cut = 0.2;
+		float dR_cut = 0.1;
 
 		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
 			tree[nSam]->GetEntry(nev);
@@ -212,7 +238,7 @@ void DarkSUSY_FiducialRegion(){
 			if(!(is4GenMu8 == true)) continue;
 			if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
 			if(!(fabs(genA1_Lz)<=80 && genA1_Lxy<=80)) continue;
-
+			if(!(is2SelMu8==true)) continue;
 			for(int k = 0; k < 40; k++){
 				if(!(fabs(genA0_Lz)>bin_edges_Lz[k] && fabs(genA0_Lz)<bin_edges_Lz[k+1])) continue;
 				for(int j = 0; j < 80; j++){
@@ -223,7 +249,7 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=100) recMu++;
 					if(fabs(selMu2_eta)!=100) recMu++;
 					if(fabs(selMu3_eta)!=100) recMu++;
-					if(!(recMu>0 && is2SelMu8==true)) continue;
+					if(!(recMu>3 && is2SelMu8==true)) continue;
 					unsigned int match_mu = 0;
 					for(int i = 0; i < recMu; i++){
 						if(i==0){
@@ -265,7 +291,7 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=-100) recMu++;
 					if(fabs(selMu2_eta)!=-100) recMu++;
 					if(fabs(selMu3_eta)!=-100) recMu++;
-					if(!(recMu>0 && is2SelMu8==true)) continue;
+					if(!(recMu>3 && is2SelMu8==true)) continue;
 					unsigned int match_mu=0;
 					for(int j = 0; j < recMu; j++){
 						if(j==0){
@@ -325,11 +351,15 @@ void DarkSUSY_FiducialRegion(){
 		canv_2D_A0[nSam]->cd();
 		set_canvas_style(canv_2D_A0[nSam]);
 		gStyle->SetOptStat(0);
+		eff_2D_A0[nSam]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
+		eff_2D_A0[nSam]->SetContour(NCont);
 		eff_2D_A0[nSam]->Draw("colz");
 		canv_2D_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A0.png");
 
 		canv_2D_A1[nSam]->cd();
 		set_canvas_style(canv_2D_A1[nSam]);
+		eff_2D_A1[nSam]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
+		eff_2D_A1[nSam]->SetContour(NCont);
 		gStyle->SetOptStat(0);
 		eff_2D_A1[nSam]->Draw("colz");
 		canv_2D_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A1.png");
