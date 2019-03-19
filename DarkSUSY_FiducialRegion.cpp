@@ -37,9 +37,7 @@ void DarkSUSY_FiducialRegion(){
 	int canvas_x = 600, canvas_y = 600;
 
 	TString PATH_samples;
-	PATH_samples = "/afs/cern.ch/work/y/yjeong/Run2_DarkSUSY_CentralMC/";
-	TString Sample_type;
-	Sample_type = "out_ana_";
+	PATH_samples = "/afs/cern.ch/work/y/yjeong/Run2_DarkSUSY_CentralMC/out_ana_";
 	TString Save_dir;
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
@@ -61,9 +59,13 @@ void DarkSUSY_FiducialRegion(){
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
 	TString Variable[nVariable] = {"event","lumi"};
 
+	/*int mkdir (const char *dirname);
+	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
+	  int nResult = mkdir(strFolderPath);*/
+
 	TFile *tfile[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
-		tfile[i] = new TFile(PATH_samples+Sample_type+Sample_name[i]+".root");
+		tfile[i] = new TFile(PATH_samples+Sample_name[i]+".root");
 	}
 	TTree *tree[Sample_Num];
 	for(int i = 0; i < Sample_Num; i++){
@@ -119,7 +121,7 @@ void DarkSUSY_FiducialRegion(){
 	TH1F *histo_event[Sample_Num][nVariable];
 	TCanvas *canv_[Sample_Num][nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};
+	int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
 	float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
 	float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};
 
@@ -151,12 +153,12 @@ void DarkSUSY_FiducialRegion(){
 		}
 	}
 
-	int eff_nbin_x = 100;
+	int eff_nbin_x = 40;
 	int eff_nbin_y = 80;
 	float eff_xmin_x = 0;
 	float eff_xmax_x = 80;
-	float eff_xmin_y = 0;
-	float eff_xmax_y = 80;
+	float eff_xmin_y = 0.0;
+	float eff_xmax_y = 80.0;
 
 	for(int nSam=0; nSam < Sample_Num; nSam++){
 		for(int nVar=0; nVar < nVariable; nVar++){
@@ -166,7 +168,7 @@ void DarkSUSY_FiducialRegion(){
 			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
 
 			histo_event[nVar][nSam]->Draw();
-			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 		}
 	}
 
@@ -176,12 +178,22 @@ void DarkSUSY_FiducialRegion(){
 	TH1F *histo_dR_A1[Sample_Num];
 	TCanvas *canv_dR_A1[Sample_Num];
 
+	TH2F *eff_2D_A0[Sample_Num];
+	TH2F *eff_2D_A1[Sample_Num];
+	TCanvas *canv_2D_A0[Sample_Num];
+	TCanvas *canv_2D_A1[Sample_Num];
+
 	for(int nSam=0; nSam < Sample_Num; nSam++){
 		canv_dR_A0[nSam] = new TCanvas(Form("canv_dR_A0_%d",nSam),Form(""),canvas_x,canvas_y);
 		histo_dR_A0[nSam] = new TH1F(Form("histo_dR_A0_%d",nSam),Form(""),200,0,1);
 
 		canv_dR_A1[nSam] = new TCanvas(Form("canv_dR_A1_%d",nSam),Form(""),canvas_x,canvas_y);
 		histo_dR_A1[nSam] = new TH1F(Form("histo_dR_A1_%d",nSam),Form(""),200,0,1);
+
+		eff_2D_A0[nSam] = new TH2F(Form("eff_2D_A0_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		eff_2D_A1[nSam] = new TH2F(Form("eff_2D_A1_%d",nSam),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		canv_2D_A0[nSam] = new TCanvas(Form("canv_2D_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+		canv_2D_A1[nSam] = new TCanvas(Form("canv_2D_A1_%d",nSam),Form(""),canvas_x,canvas_y);
 
 		float dEta_A0 = 0;
 		float dPhi_A0 = 0;
@@ -210,35 +222,34 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=100) recMu++;
 					if(fabs(selMu2_eta)!=100) recMu++;
 					if(fabs(selMu3_eta)!=100) recMu++;
-					if(recMu>1 && is2SelMu8==true){
-						unsigned int match_mu = 0;
-						for(int i = 0; i < recMu; i++){
-							if(i==0){
-								dEta_A0 = genA0_eta-selMu0_eta;
-								dPhi_A0 = My_dPhi(selMu0_phi,genA0_phi);
-							}
-
-							if(i==1){
-								dEta_A0 = genA0_eta-selMu1_eta;
-								dPhi_A0 = My_dPhi(selMu1_phi,genA0_phi);
-							}
-
-							if(i==2){
-								dEta_A0 = genA0_eta-selMu2_eta;
-								dPhi_A0 = My_dPhi(selMu2_phi,genA0_phi);
-							}
-
-							if(i==3){
-								dEta_A0 = genA0_eta-selMu3_eta;
-								dPhi_A0 = My_dPhi(selMu3_phi,genA0_phi);
-							}
-							dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
-							histo_dR_A0[nSam]->Fill(dR_A0);
-							if(dR_A0<dR_cut) match_mu++;
+					if(!(recMu>0 && is2SelMu8==true)) continue;
+					unsigned int match_mu = 0;
+					for(int i = 0; i < recMu; i++){
+						if(i==0){
+							dEta_A0 = genA0_eta-selMu0_eta;
+							dPhi_A0 = My_dPhi(selMu0_phi,genA0_phi);
 						}
-						if(match_mu>1){
-							count_rec_A0[k][j]++;
+
+						if(i==1){
+							dEta_A0 = genA0_eta-selMu1_eta;
+							dPhi_A0 = My_dPhi(selMu1_phi,genA0_phi);
 						}
+
+						if(i==2){
+							dEta_A0 = genA0_eta-selMu2_eta;
+							dPhi_A0 = My_dPhi(selMu2_phi,genA0_phi);
+						}
+
+						if(i==3){
+							dEta_A0 = genA0_eta-selMu3_eta;
+							dPhi_A0 = My_dPhi(selMu3_phi,genA0_phi);
+						}
+						dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
+						histo_dR_A0[nSam]->Fill(dR_A0);
+						if(dR_A0<dR_cut) match_mu++;
+					}
+					if(match_mu>1){
+						count_rec_A0[k][j]++;
 					}
 				}
 			}
@@ -253,46 +264,71 @@ void DarkSUSY_FiducialRegion(){
 					if(fabs(selMu1_eta)!=-100) recMu++;
 					if(fabs(selMu2_eta)!=-100) recMu++;
 					if(fabs(selMu3_eta)!=-100) recMu++;
-					if(recMu>1 && is2SelMu8==true){
-						unsigned int match_mu=0;
-						for(int j = 0; j < recMu; j++){
-							if(j==0){
-								dEta_A1 = genA1_eta-selMu0_eta;
-								dPhi_A1 = My_dPhi(selMu0_phi,genA1_phi);
-							}
-							if(j==1){
-								dEta_A1 = genA1_eta-selMu1_eta;
-								dPhi_A1 = My_dPhi(selMu1_phi,genA1_phi);
-							}
-							if(j==2){
-								dEta_A1 = genA1_eta-selMu2_eta;
-								dPhi_A1 = My_dPhi(selMu2_phi,genA1_phi);
-							}
-							if(j==3){
-								dEta_A1 = genA1_eta-selMu3_eta;
-								dPhi_A1 = My_dPhi(selMu3_phi,genA1_phi);
-							}
-							dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
-							histo_dR_A1[nSam]->Fill(dR_A1);
-							if(dR_A1<dR_cut) match_mu++;
+					if(!(recMu>0 && is2SelMu8==true)) continue;
+					unsigned int match_mu=0;
+					for(int j = 0; j < recMu; j++){
+						if(j==0){
+							dEta_A1 = genA1_eta-selMu0_eta;
+							dPhi_A1 = My_dPhi(selMu0_phi,genA1_phi);
 						}
-						if(match_mu>1){
-							count_rec_A1[k][j]++;
+						if(j==1){
+							dEta_A1 = genA1_eta-selMu1_eta;
+							dPhi_A1 = My_dPhi(selMu1_phi,genA1_phi);
 						}
+						if(j==2){
+							dEta_A1 = genA1_eta-selMu2_eta;
+							dPhi_A1 = My_dPhi(selMu2_phi,genA1_phi);
+						}
+						if(j==3){
+							dEta_A1 = genA1_eta-selMu3_eta;
+							dPhi_A1 = My_dPhi(selMu3_phi,genA1_phi);
+						}
+						dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
+						histo_dR_A1[nSam]->Fill(dR_A1);
+						if(dR_A1<dR_cut) match_mu++;
+					}
+					if(match_mu>1){
+						count_rec_A1[k][j]++;
 					}
 				}	
 			}
 		}
+
+		for(int k = 0; k < 40; k++){
+			for(int j = 0; j < 80; j++){
+				if(count_gam_A0[k][j]!=0) eff_A0[k][j] = count_rec_A0[k][j]/count_gam_A0[k][j];
+				if(count_rec_A0[k][j]==0 && count_gam_A0[k][j]!=0) eff_A0[k][j] = 0.0001;
+				eff_2D_A0[nSam]->SetBinContent(k+1,j+1,eff_A0[k][j]);
+
+				if(count_gam_A1[k][j]!=0) eff_A1[k][j] = count_rec_A1[k][j]/count_gam_A1[k][j];
+				if(count_rec_A1[k][j]==0 && count_gam_A1[k][j]!=0) eff_A1[k][j] = 0.0001;
+				eff_2D_A1[nSam]->SetBinContent(k+1,j+1,eff_A1[k][j]);
+			}
+		}
+
+		eff_2D_A0[nSam]->GetZaxis()->SetRangeUser(0,1);
+		eff_2D_A1[nSam]->GetZaxis()->SetRangeUser(0,1);
+
 		canv_dR_A0[nSam]->cd();
 		set_canvas_style(canv_dR_A0[nSam]);
 		canv_dR_A0[nSam]->SetLogy();
 		histo_dR_A0[nSam]->Draw();
-		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A0.png");
+		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
 
 		canv_dR_A1[nSam]->cd();
 		set_canvas_style(canv_dR_A1[nSam]);
 		canv_dR_A1[nSam]->SetLogy();
 		histo_dR_A1[nSam]->Draw();
-		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_type+Sample_name[nSam]+"_"+"dR_A1.png");
+		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
+
+		canv_2D_A0[nSam]->cd();
+		set_canvas_style(canv_2D_A0[nSam]);
+		eff_2D_A0[nSam]->Draw("colz");
+		canv_2D_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A0.png");
+
+		canv_2D_A1[nSam]->cd();
+		set_canvas_style(canv_2D_A1[nSam]);
+		eff_2D_A1[nSam]->Draw("colz");
+		canv_2D_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"eff_2D_A1.png");
 	}
 }
