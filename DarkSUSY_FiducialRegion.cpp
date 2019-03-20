@@ -54,10 +54,11 @@ void DarkSUSY_FiducialRegion(){
 	float genA0_px, genA0_py, genA0_pz, genA0_pT, genA0_eta, genA0_phi, genA0_Lx, genA0_Ly, genA0_Lz, genA0_Lxy, genA0_L;
 	float genA1_px, genA1_py, genA1_pz, genA1_pT, genA1_eta, genA1_phi, genA1_Lx, genA1_Ly, genA1_Lz, genA1_Lxy, genA1_L;
 
-	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_50","mN1_10_mGammaD_0p25_cT_0p1"};
+	//TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_50","mN1_10_mGammaD_0p25_cT_0p1"};
+	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
-	TString Variable[nVariable] = {"event","lumi"};
+	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy"};
 
 	/*int mkdir (const char *dirname);
 	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
@@ -143,14 +144,15 @@ void DarkSUSY_FiducialRegion(){
 		tree[i]->SetBranchAddress("genA1_Lz",&genA1_Lz);
 		tree[i]->SetBranchAddress("genA1_Lxy",&genA1_Lxy);
 		tree[i]->SetBranchAddress("genA1_L",&genA1_L);
-
 	}
-	TH1F *histo_event[Sample_Num][nVariable];
-	TCanvas *canv_[Sample_Num][nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{1000,2000},{100,150}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
+	TH1F *mN1_10_mGammaD_5_cT_10[Sample_Num][nVariable];
+	TH1F *mN1_10_mGammaD_5_cT_50[Sample_Num][nVariable];
+	TCanvas *canv_[nVariable];
+
+	int nbin[nVariable][Sample_Num] = {{20,100},{10,40}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
 	float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
-	float xmax[nVariable][Sample_Num] = {{100000,300000},{100,150}};
+	float xmax[nVariable][Sample_Num] = {{100,500},{50,200}};
 
 	/*int nbin = 100;
 	  int xmin = -7;
@@ -188,16 +190,21 @@ void DarkSUSY_FiducialRegion(){
 	float eff_xmin_y = 0.0;
 	float eff_xmax_y = 80.0;
 
-	for(int nSam=0; nSam < Sample_Num; nSam++){
-		for(int nVar=0; nVar < nVariable; nVar++){
-			canv_[nVar][nSam] = new TCanvas(Form("Canv_%d_%d",nVar,nSam),Form(""),canvas_x,canvas_y);
-			histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
-			//histo_event[nVar][nSam] = new TH1F(Form("histo_event_%d_%d",nVar,nSam),Form(""),100,0,300000);
-			tree[nSam]->Project(Form("histo_event_%d_%d",nVar,nSam),Variable[nVar]);
-
-			histo_event[nVar][nSam]->Draw();
-			//canv_[nVar][nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+	for(int nVar=0; nVar < nVariable; nVar++){
+		canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
+		for(int nSam=0; nSam < Sample_Num; nSam++){
+			if(nSam==0){
+			mN1_10_mGammaD_5_cT_10[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+			tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar]);
+			}
+			if(nSam==1){
+			mN1_10_mGammaD_5_cT_50[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+			tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar]);
+			}
+			if(nSam==0) mN1_10_mGammaD_5_cT_10[nVar][nSam]->Draw();
+			if(nSam==1) mN1_10_mGammaD_5_cT_50[nVar][nSam]->Draw("same");
 		}
+		canv_[nVar]->SaveAs(Save_dir+"_"+Variable[nVar]+".png");
 	}
 
 	TH1F *histo_dR_A0[Sample_Num];
