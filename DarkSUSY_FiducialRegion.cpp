@@ -5,31 +5,46 @@ double My_dPhi(double phi1, double phi2){
 	return fabs(dPhi);
 }
 
-void set_canvas_style(TCanvas* c)
-{
+void set_canvas_style(TCanvas* c){
 	c->SetFillColor(0);
 	c->SetBorderMode(0);
 	c->SetBorderSize(2);
 	c->SetTickx(1);
 	c->SetTicky(1);
-	c->SetLeftMargin(0.15);
-	c->SetRightMargin(0.18);
-	c->SetTopMargin(0.07);
-	c->SetBottomMargin(0.17);
+	c->SetLeftMargin(0.12);
+	c->SetRightMargin(0.15);
+	c->SetTopMargin(0.12);
+	c->SetBottomMargin(0.12);
 	c->SetFrameFillStyle(0);
 	c->SetFrameBorderMode(0);
 	c->SetFrameFillStyle(0);
 	c->SetFrameBorderMode(0);
+	c->RedrawAxis();
+}
+
+void set_legend_style(TLegend *l){
+	l->SetFillColor(0);
+	l->SetLineColor(0);
+	l->SetLineStyle(kSolid);
+	l->SetLineWidth(1);
+	l->SetFillStyle(1001);
+	l->SetTextFont(42);
+	l->SetTextSize(0.03);
+}
+
+void set_histo_frame_1D(TH1F *h){
+	h->GetXaxis()->SetLabelSize(0.025);
+	h->GetXaxis()->SetTitleSize(0.04);
 }
 
 void DarkSUSY_FiducialRegion(){
 	gROOT->SetStyle("Plain");
 
-	//gStyle->SetOptStat("mr");//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
+	gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
 	//gStyle->SetOptDate(0);//display date position
 
 	gStyle->SetPadLeftMargin(0.12);
-	gStyle->SetPadRightMargin(0.2);
+	gStyle->SetPadRightMargin(0.12);
 	gStyle->SetPadTopMargin(0.12);
 	gStyle->SetPadBottomMargin(0.1);
 	gStyle->SetPadBorderMode(0);
@@ -42,7 +57,7 @@ void DarkSUSY_FiducialRegion(){
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
 	const int Sample_Num = 2;
-	const int nVariable = 2;
+	const int nVariable = 4;
 
 	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
 	int event;
@@ -58,7 +73,8 @@ void DarkSUSY_FiducialRegion(){
 	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
-	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy"};
+	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz"};
+	TString Legend_name[Sample_Num] = {"#gamma_{D}=5, c#tau=10","#gamma_{D}=5, c#tau=50"};
 
 	/*int mkdir (const char *dirname);
 	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
@@ -149,10 +165,11 @@ void DarkSUSY_FiducialRegion(){
 	TH1F *mN1_10_mGammaD_5_cT_10[Sample_Num][nVariable];
 	TH1F *mN1_10_mGammaD_5_cT_50[Sample_Num][nVariable];
 	TCanvas *canv_[nVariable];
+	TLegend *l_1[nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{20,100},{10,40}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
-	float xmin[nVariable][Sample_Num] = {{0,0},{0,0}};
-	float xmax[nVariable][Sample_Num] = {{100,500},{50,200}};
+	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
+	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000}};
+	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000}};
 
 	/*int nbin = 100;
 	  int xmin = -7;
@@ -182,28 +199,47 @@ void DarkSUSY_FiducialRegion(){
 			eff_A1[k][j]=0.0;
 		}
 	}
-
+	//------histo setting------
 	int eff_nbin_x = 40;
 	int eff_nbin_y = 80;
 	float eff_xmin_x = 0;
 	float eff_xmax_x = 80;
-	float eff_xmin_y = 0.0;
-	float eff_xmax_y = 80.0;
+	float eff_xmin_y = 0;
+	float eff_xmax_y = 80;
+
+	//------legend setting-----
+	float lx1 = 0.60;
+	float ly1 = 0.64;
+	float lx2 = 0.80;
+	float ly2 = 0.74;
 
 	for(int nVar=0; nVar < nVariable; nVar++){
 		canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
+		l_1[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+		set_legend_style(l_1[nVar]);
+
 		for(int nSam=0; nSam < Sample_Num; nSam++){
 			if(nSam==0){
-			mN1_10_mGammaD_5_cT_10[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
-			tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar]);
+				mN1_10_mGammaD_5_cT_10[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar]);
+				mN1_10_mGammaD_5_cT_10[nVar][nSam]->SetLineColor(kRed);
+				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_10[nVar][nSam],Legend_name[nSam],"l");
 			}
 			if(nSam==1){
-			mN1_10_mGammaD_5_cT_50[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
-			tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar]);
+				mN1_10_mGammaD_5_cT_50[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar]);
+				mN1_10_mGammaD_5_cT_50[nVar][nSam]->SetLineColor(kBlue);
+				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_50[nVar][nSam],Legend_name[nSam],"l");
 			}
-			if(nSam==0) mN1_10_mGammaD_5_cT_10[nVar][nSam]->Draw();
+			if(nSam==0){
+				mN1_10_mGammaD_5_cT_10[nVar][nSam]->GetXaxis()->SetTitle(Variable[nVar]);
+				set_histo_frame_1D(mN1_10_mGammaD_5_cT_10[nVar][nSam]);
+				mN1_10_mGammaD_5_cT_10[nVar][nSam]->Draw();
+			}
 			if(nSam==1) mN1_10_mGammaD_5_cT_50[nVar][nSam]->Draw("same");
 		}
+		canv_[nVar]->SetLogy();
+		l_1[nVar]->Draw();
 		canv_[nVar]->SaveAs(Save_dir+"_"+Variable[nVar]+".png");
 	}
 
@@ -345,14 +381,16 @@ void DarkSUSY_FiducialRegion(){
 		eff_2D_A1[nSam]->GetZaxis()->SetRangeUser(0,1);
 
 		canv_dR_A0[nSam]->cd();
-		set_canvas_style(canv_dR_A0[nSam]);
 		canv_dR_A0[nSam]->SetLogy();
+		set_histo_frame_1D(histo_dR_A0[nSam]);
+		histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"_"+"#deltaR A0");
 		histo_dR_A0[nSam]->Draw();
 		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
 
 		canv_dR_A1[nSam]->cd();
-		set_canvas_style(canv_dR_A1[nSam]);
 		canv_dR_A1[nSam]->SetLogy();
+		set_histo_frame_1D(histo_dR_A1[nSam]);
+		histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"_"+"#deltaR A1");
 		histo_dR_A1[nSam]->Draw();
 		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
 
