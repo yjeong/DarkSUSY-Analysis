@@ -41,6 +41,11 @@ void set_histo_frame_1D(TH1F *h){
 	h->GetYaxis()->SetLabelSize(0.03);
 }
 
+void set_histo_frame_2D(TH2F *h){
+	h->GetXaxis()->SetTitleSize(0.04);
+	h->GetXaxis()->SetTitleOffset(1.2);
+}
+
 void DarkSUSY_FiducialRegion(){
 	gROOT->SetStyle("Plain");
 
@@ -256,7 +261,10 @@ void DarkSUSY_FiducialRegion(){
 
 	const int ndeltaR = 5;
 	float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
-	TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};
+	TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
+	/*const int ndeltaR = 1;
+	float dR_cut[ndeltaR] = {0.2};
+	TString dR_txt[ndeltaR] = {"dR<0.2"};//-*/
 
 	TH2F *eff_2D_A0[Sample_Num][ndeltaR];
 	TH2F *eff_2D_A1[Sample_Num][ndeltaR];
@@ -388,25 +396,13 @@ void DarkSUSY_FiducialRegion(){
 			eff_2D_A0[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
 			eff_2D_A1[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
 
-			canv_dR_A0[nSam]->cd();
-			canv_dR_A0[nSam]->SetLogy();
-			set_histo_frame_1D(histo_dR_A0[nSam]);
-			histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A0");
-			histo_dR_A0[nSam]->Draw();
-			canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
-
-			canv_dR_A1[nSam]->cd();
-			canv_dR_A1[nSam]->SetLogy();
-			set_histo_frame_1D(histo_dR_A1[nSam]);
-			histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A1");
-			histo_dR_A1[nSam]->Draw();
-			canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
-
 			canv_2D_A0[nSam][ndR]->cd();
 			set_canvas_style(canv_2D_A0[nSam][ndR]);
 			gStyle->SetOptStat(0);
 			eff_2D_A0[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
 			eff_2D_A0[nSam][ndR]->SetContour(NCont);
+			set_histo_frame_2D(eff_2D_A0[nSam][ndR]);
+			eff_2D_A0[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
 			eff_2D_A0[nSam][ndR]->Draw("colz");
 			canv_2D_A0[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A0.png");
 
@@ -415,8 +411,23 @@ void DarkSUSY_FiducialRegion(){
 			eff_2D_A1[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
 			eff_2D_A1[nSam][ndR]->SetContour(NCont);
 			gStyle->SetOptStat(0);
+			set_histo_frame_2D(eff_2D_A1[nSam][ndR]);
+			eff_2D_A1[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
 			eff_2D_A1[nSam][ndR]->Draw("colz");
 			canv_2D_A1[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A1.png");
 		}
+		canv_dR_A0[nSam]->cd();
+		canv_dR_A0[nSam]->SetLogy();
+		set_histo_frame_1D(histo_dR_A0[nSam]);
+		histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A0");
+		histo_dR_A0[nSam]->Draw();
+		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
+
+		canv_dR_A1[nSam]->cd();
+		canv_dR_A1[nSam]->SetLogy();
+		set_histo_frame_1D(histo_dR_A1[nSam]);
+		histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A1");
+		histo_dR_A1[nSam]->Draw();
+		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
 	}
 }
