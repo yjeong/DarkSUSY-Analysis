@@ -66,7 +66,7 @@ void DarkSUSY_FiducialRegion(){
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
 	const int Sample_Num = 2;
-	const int nVariable = 10;
+	const int nVariable = 15;
 
 	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
 	int event;
@@ -82,8 +82,11 @@ void DarkSUSY_FiducialRegion(){
 	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
-	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz","sqrt(pow(genA0_px,2)+pow(genA0_py,2))","sqrt(pow(genA1_px,2)+pow(genA1_py,2))","genA0_m","genA1_m","genA0_L","genA1_L"};
-	TString Legend_name[Sample_Num] = {"#gamma_{D}=5, c#tau=10","#gamma_{D}=5, c#tau=50"};
+	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz","sqrt(pow(genA0_px,2)+pow(genA0_py,2))","sqrt(pow(genA1_px,2)+pow(genA1_py,2))","genA0_m","genA1_m","genA0_L","genA1_L","genH_m","diMuonC_FittedVtx_m","diMuonF_FittedVtx_m","diMuonC_FittedVtx_Lxy","diMuonF_FittedVtx_Lxy"};
+	TString Legend_name[Sample_Num] = {"#gamma_{D}=5 GeV, c#tau=10 mm","#gamma_{D}=5 GeV, c#tau=50 mm"};
+	TString xTitle[nVariable] = {"genA0_Lxy [cm]","genA1_Lxy [cm]","genA0_Lz [cm]","genA1_Lz [cm]","genA0_P_{t} [GeV]","genA1_P_{t} [GeV]","genA0_m [GeV]","genA1_m [GeV]","genA0_L [cm]","genA1_L [cm]","genH_m [GeV]","diMuonC_FittedVtx_m [GeV]","diMuonF_FittedVtx_m [GeV]","diMuonC_FittedVtx_Lxy [cm]","diMuonF_FittedVtx_Lxy [cm]"};
+	TString Cut_base;
+	Cut_base = "diMuonF_FittedVtx_Lxy != 1000 && diMuonF_FittedVtx_m != 1000 && diMuonC_FittedVtx_Lxy != 1000 && diMuonC_FittedVtx_m != 1000";
 
 	/*int mkdir (const char *dirname);
 	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
@@ -176,9 +179,9 @@ void DarkSUSY_FiducialRegion(){
 	TCanvas *canv_[nVariable];
 	TLegend *l_1[nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
-	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000},{0,0},{0,0},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0}};
-	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000},{1000,1000},{400,400},{5.0015,5.0015},{5.0015,5.0015},{12000,12000},{9000,9000}};
+	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
+	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000},{0,0},{0,0},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0},{124,124},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0}};
+	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000},{1000,1000},{400,400},{5.0015,5.0015},{5.0015,5.0015},{12000,12000},{9000,9000},{126,126},{5.0015,5.0015},{5.0015,5.0015},{200,200},{200,200}};
 
 	/*int nbin = 100;
 	  int xmin = -7;
@@ -230,18 +233,18 @@ void DarkSUSY_FiducialRegion(){
 		for(int nSam=0; nSam < Sample_Num; nSam++){
 			if(nSam==0){
 				mN1_10_mGammaD_5_cT_10[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
-				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar]);
+				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
 				mN1_10_mGammaD_5_cT_10[nVar][nSam]->SetLineColor(kRed);
 				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_10[nVar][nSam],Legend_name[nSam],"l");
 			}
 			if(nSam==1){
 				mN1_10_mGammaD_5_cT_50[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
-				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar]);
+				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
 				mN1_10_mGammaD_5_cT_50[nVar][nSam]->SetLineColor(kBlue);
 				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_50[nVar][nSam],Legend_name[nSam],"l");
 			}
 			if(nSam==0){
-				mN1_10_mGammaD_5_cT_10[nVar][nSam]->GetXaxis()->SetTitle(Variable[nVar]);
+				mN1_10_mGammaD_5_cT_10[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
 				set_histo_frame_1D(mN1_10_mGammaD_5_cT_10[nVar][nSam]);
 				mN1_10_mGammaD_5_cT_10[nVar][nSam]->Draw();
 			}
@@ -296,7 +299,7 @@ void DarkSUSY_FiducialRegion(){
 
 				if(!(isDiMuonHLTFired == true)) continue;
 				if(!(is4GenMu8 == true)) continue;
-				if(!(is2SelMu8 == true)) continue;
+				//if(!(is2SelMu8 == true)) continue;
 				if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
 				if(!(fabs(genA1_Lz)<=80 && genA1_Lxy<=80)) continue;
 				for(int k = 0; k < 40; k++){
