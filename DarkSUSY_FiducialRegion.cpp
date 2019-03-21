@@ -49,7 +49,7 @@ void set_histo_frame_2D(TH2F *h){
 void DarkSUSY_FiducialRegion(){
 	gROOT->SetStyle("Plain");
 
-	gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
+	//gStyle->SetOptStat(0);//To display the mean and RMS: SetOptStat("mr"), nemruoi, ;
 	//gStyle->SetOptDate(0);//display date position
 
 	gStyle->SetPadLeftMargin(0.12);
@@ -66,7 +66,7 @@ void DarkSUSY_FiducialRegion(){
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
 	const int Sample_Num = 2;
-	const int nVariable = 4;
+	const int nVariable = 10;
 
 	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
 	int event;
@@ -82,7 +82,7 @@ void DarkSUSY_FiducialRegion(){
 	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
-	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz"};
+	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz","sqrt(pow(genA0_px,2)+pow(genA0_py,2))","sqrt(pow(genA1_px,2)+pow(genA1_py,2))","genA0_m","genA1_m","genA0_L","genA1_L"};
 	TString Legend_name[Sample_Num] = {"#gamma_{D}=5, c#tau=10","#gamma_{D}=5, c#tau=50"};
 
 	/*int mkdir (const char *dirname);
@@ -176,9 +176,9 @@ void DarkSUSY_FiducialRegion(){
 	TCanvas *canv_[nVariable];
 	TLegend *l_1[nVariable];
 
-	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
-	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000}};
-	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000}};
+	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
+	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000},{0,0},{0,0},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0}};
+	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000},{1000,1000},{400,400},{5.0015,5.0015},{5.0015,5.0015},{12000,12000},{9000,9000}};
 
 	/*int nbin = 100;
 	  int xmin = -7;
@@ -259,10 +259,10 @@ void DarkSUSY_FiducialRegion(){
 	TCanvas *canv_dR_A1[Sample_Num];
 
 
-	const int ndeltaR = 5;
+	/*const int ndeltaR = 5;
 	float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
 	TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
-	/*const int ndeltaR = 1;
+	const int ndeltaR = 1;
 	float dR_cut[ndeltaR] = {0.2};
 	TString dR_txt[ndeltaR] = {"dR<0.2"};//-*/
 
