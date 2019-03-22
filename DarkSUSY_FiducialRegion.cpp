@@ -29,7 +29,7 @@ void set_legend_style(TLegend *l){
 	l->SetLineWidth(1);
 	l->SetFillStyle(1001);
 	l->SetTextFont(42);
-	l->SetTextSize(0.03);
+	l->SetTextSize(0.025);
 }
 
 void set_histo_frame_1D(TH1F *h){
@@ -65,7 +65,7 @@ void DarkSUSY_FiducialRegion(){
 	TString Save_dir;
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/test/";
 
-	const int Sample_Num = 2;
+	const int Sample_Num = 4;
 	const int nVariable = 15;
 
 	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
@@ -79,14 +79,19 @@ void DarkSUSY_FiducialRegion(){
 	float genA1_px, genA1_py, genA1_pz, genA1_pT, genA1_eta, genA1_phi, genA1_Lx, genA1_Ly, genA1_Lz, genA1_Lxy, genA1_L;
 
 	//TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_50","mN1_10_mGammaD_0p25_cT_0p1"};
-	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50"};
+	TString Sample_name[Sample_Num] = {"mN1_10_mGammaD_5_cT_10","mN1_10_mGammaD_5_cT_50","mN1_60_mGammaD_58_cT_50","mN1_60_mGammaD_58_cT_2"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10","mN1_10_mGammaD_5_cT_50"};
 	TString Variable[nVariable] = {"genA0_Lxy","genA1_Lxy","genA0_Lz","genA1_Lz","sqrt(pow(genA0_px,2)+pow(genA0_py,2))","sqrt(pow(genA1_px,2)+pow(genA1_py,2))","genA0_m","genA1_m","genA0_L","genA1_L","genH_m","diMuonC_FittedVtx_m","diMuonF_FittedVtx_m","diMuonC_FittedVtx_Lxy","diMuonF_FittedVtx_Lxy"};
-	TString Legend_name[Sample_Num] = {"#gamma_{D}=5 GeV, c#tau=10 mm","#gamma_{D}=5 GeV, c#tau=50 mm"};
+	TString Legend_name[Sample_Num] = {"mN1=10 Gev, #gamma_{D}=5 GeV, c#tau=10 mm","mN1=10 GeV, #gamma_{D}=5 GeV, c#tau=50 mm","mN1=60 GeV, #gamma_{D}=58 GeV, c#tau=50 mm","mN1=60 GeV, #gamma_{D}=58 GeV, c#tau=2 mm"};
 	TString xTitle[nVariable] = {"genA0_Lxy [cm]","genA1_Lxy [cm]","genA0_Lz [cm]","genA1_Lz [cm]","genA0_P_{t} [GeV]","genA1_P_{t} [GeV]","genA0_m [GeV]","genA1_m [GeV]","genA0_L [cm]","genA1_L [cm]","genH_m [GeV]","diMuonC_FittedVtx_m [GeV]","diMuonF_FittedVtx_m [GeV]","diMuonC_FittedVtx_Lxy [cm]","diMuonF_FittedVtx_Lxy [cm]"};
 	TString Cut_base;
 	Cut_base = "diMuonF_FittedVtx_Lxy != 1000 && diMuonF_FittedVtx_m != 1000 && diMuonC_FittedVtx_Lxy != 1000 && diMuonC_FittedVtx_m != 1000";
+
+	int nbin[nVariable][Sample_Num] = {{100,100,100,100},{40,40,40,40},{100,100,100,100},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50},{50,50,50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
+	float xmin[nVariable][Sample_Num] = {{0,0,0,0},{0,0,0,0},{-10000,-10000,-1000,-1000},{-10000,-10000,-100,-100},{0,0,0,0},{0,0,0,0},{4.9985,4.9985,57.99985,57.99985},{4.9985,4.9985,57.99985,57.99985},{0,0,0,0},{0,0,0,0},{124,124,124,124},{4.9985,4.9985,-100,-100},{4.9985,4.9985,-100,-100},{0,0,0,0},{0,0,0,0}};
+	float xmax[nVariable][Sample_Num] = {{2000,2000,300,300},{1000,1000,150,150},{10000,10000,1000,1000},{10000,10000,100,100},{1000,1000,1000,1000},{400,400,600,600},{5.0015,5.0015,58.00015,58.00015},{5.0015,5.0015,58.00015,58.00015},{12000,12000,1200,1200},{9000,9000,1000,1000},{126,126,126,126},{5.0015,5.0015,100,100},{5.0015,5.0015,100,100},{200,200,200,200},{200,200,200,200}};
+
 
 	/*int mkdir (const char *dirname);
 	  char strFolderPath[] = {"/afs/cern.ch/work/y/yjeong/darkSUSY_script/abs"};
@@ -176,12 +181,11 @@ void DarkSUSY_FiducialRegion(){
 
 	TH1F *mN1_10_mGammaD_5_cT_10[Sample_Num][nVariable];
 	TH1F *mN1_10_mGammaD_5_cT_50[Sample_Num][nVariable];
+	TH1F *mN1_60_mGammaD_58_cT_2[Sample_Num][nVariable];
+	TH1F *mN1_60_mGammaD_58_cT_50[Sample_Num][nVariable];
 	TCanvas *canv_[nVariable];
 	TLegend *l_1[nVariable];
-
-	int nbin[nVariable][Sample_Num] = {{100,100},{40,40},{100,100},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50},{50,50}};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
-	float xmin[nVariable][Sample_Num] = {{0,0},{0,0},{-10000,-10000},{-10000,-10000},{0,0},{0,0},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0},{124,124},{4.9985,4.9985},{4.9985,4.9985},{0,0},{0,0}};
-	float xmax[nVariable][Sample_Num] = {{2000,2000},{1000,1000},{10000,10000},{10000,10000},{1000,1000},{400,400},{5.0015,5.0015},{5.0015,5.0015},{12000,12000},{9000,9000},{126,126},{5.0015,5.0015},{5.0015,5.0015},{200,200},{200,200}};
+	TLegend *l_2[nVariable];
 
 	/*int nbin = 100;
 	  int xmin = -7;
@@ -220,39 +224,67 @@ void DarkSUSY_FiducialRegion(){
 	float eff_xmax_y = 80;
 
 	//------legend setting-----
-	float lx1 = 0.60;
+	float lx1 = 0.55;
 	float ly1 = 0.64;
-	float lx2 = 0.80;
+	float lx2 = 0.70;
 	float ly2 = 0.74;
 
 	for(int nVar=0; nVar < nVariable; nVar++){
 		canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
 		l_1[nVar] = new TLegend(lx1,ly1,lx2,ly2);
 		set_legend_style(l_1[nVar]);
+		l_2[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+		set_legend_style(l_2[nVar]);
 
 		for(int nSam=0; nSam < Sample_Num; nSam++){
 			if(nSam==0){
 				mN1_10_mGammaD_5_cT_10[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
 				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_10_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
 				mN1_10_mGammaD_5_cT_10[nVar][nSam]->SetLineColor(kRed);
-				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_10[nVar][nSam],Legend_name[nSam],"l");
 			}
 			if(nSam==1){
 				mN1_10_mGammaD_5_cT_50[nVar][nSam] = new TH1F(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
 				tree[nSam]->Project(Form("mN1_10_mGammaD_5_cT_50_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
 				mN1_10_mGammaD_5_cT_50[nVar][nSam]->SetLineColor(kBlue);
-				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_50[nVar][nSam],Legend_name[nSam],"l");
 			}
+			if(nSam==2){
+				mN1_60_mGammaD_58_cT_50[nVar][nSam] = new TH1F(Form("mN1_60_mGammaD_58_cT_50_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+				tree[nSam]->Project(Form("mN1_60_mGammaD_58_cT_50_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
+				mN1_60_mGammaD_58_cT_50[nVar][nSam]->SetLineColor(kBlue);
+			}
+			if(nSam==3){
+				mN1_60_mGammaD_58_cT_2[nVar][nSam] = new TH1F(Form("mN1_60_mGammaD_58_cT_2_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+				tree[nSam]->Project(Form("mN1_60_mGammaD_58_cT_2_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
+				mN1_60_mGammaD_58_cT_2[nVar][nSam]->SetLineColor(kRed);
+			}
+
 			if(nSam==0){
+				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_10[nVar][nSam],Legend_name[nSam],"l");
 				mN1_10_mGammaD_5_cT_10[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
 				set_histo_frame_1D(mN1_10_mGammaD_5_cT_10[nVar][nSam]);
 				mN1_10_mGammaD_5_cT_10[nVar][nSam]->Draw();
 			}
-			if(nSam==1) mN1_10_mGammaD_5_cT_50[nVar][nSam]->Draw("same");
+			if(nSam==1){
+				l_1[nVar]->AddEntry(mN1_10_mGammaD_5_cT_50[nVar][nSam],Legend_name[nSam],"l");
+				mN1_10_mGammaD_5_cT_50[nVar][nSam]->Draw("same");
+				canv_[nVar]->SetLogy();
+				l_1[nVar]->Draw();
+				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			}
+			if(nSam==2){
+				l_2[nVar]->AddEntry(mN1_60_mGammaD_58_cT_50[nVar][nSam],Legend_name[nSam],"l");
+				mN1_60_mGammaD_58_cT_50[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				set_histo_frame_1D(mN1_60_mGammaD_58_cT_50[nVar][nSam]);
+				mN1_60_mGammaD_58_cT_50[nVar][nSam]->Draw();
+			}
+			if(nSam==3){
+				l_2[nVar]->AddEntry(mN1_60_mGammaD_58_cT_2[nVar][nSam],Legend_name[nSam],"l");
+				mN1_60_mGammaD_58_cT_2[nVar][nSam]->Draw("same");
+				canv_[nVar]->SetLogy();
+				l_2[nVar]->Draw();
+				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			}
 		}
-		canv_[nVar]->SetLogy();
-		l_1[nVar]->Draw();
-		canv_[nVar]->SaveAs(Save_dir+"_"+Variable[nVar]+".png");
 	}
 
 	TH1F *histo_dR_A0[Sample_Num];
@@ -263,8 +295,8 @@ void DarkSUSY_FiducialRegion(){
 
 
 	/*const int ndeltaR = 5;
-	float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
-	TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
+	  float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
+	  TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
 	const int ndeltaR = 1;
 	float dR_cut[ndeltaR] = {0.2};
 	TString dR_txt[ndeltaR] = {"dR<0.2"};//-*/
