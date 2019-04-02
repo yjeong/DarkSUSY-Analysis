@@ -93,3 +93,11 @@ hadd out_ana_mN1_60_mGammaD_2_cT_0p2.root MSSMD_mH_125_mN1_60_mGammaD_2_cT_0p2_T
 hadd out_ana_mN1_60_mGammaD_15_cT_100.root MSSMD_mH_125_mN1_60_mGammaD_15_cT_100_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_60_Dataset/190329_152217/0000/*.root
 
 hadd out_ana_mN1_60_mGammaD_0p7_cT_3.root MSSMD_mH_125_mN1_60_mGammaD_0p7_cT_3_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_60_Dataset/190329_152715/0000/*.root
+
+#---
+
+hadd out_ana_mN1_60_mGammaD_15_cT_3.root MSSMD_mH_125_mN1_60_mGammaD_15_cT_3_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_60_Dataset/190401_204318/0000/*.root
+
+hadd out_ana_mN1_60_mGammaD_15_cT_0p05.root MSSMD_mH_125_mN1_60_mGammaD_15_cT_0p05_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_60_Dataset/190401_204351/0000/*.root
+
+hadd out_ana_mN1_60_mGammaD_0p7_cT_0p05.root MSSMD_mH_125_mN1_60_mGammaD_0p7_cT_0p05_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_60_Dataset/190401_151635/0000/*.root
