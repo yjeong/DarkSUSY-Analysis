@@ -85,3 +85,27 @@ hadd out_ana_mN1_10_mGammaD_0p7_cT_100.root MSSMD_mH_125_mN1_10_mGammaD_0p7_cT_1
 #---
 
 hadd out_ana_mN1_10_mGammaD_0p25_cT_0.root MSSMD_mH_125_mN1_10_mGammaD_0p25_cT_0_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190401_152051/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_8p5_cT_100.root MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_100_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190402_163732/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_5_cT_3.root MSSMD_mH_125_mN1_10_mGammaD_5_cT_3_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190402_163924/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_8p5_cT_20.root MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_20_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190403_124754/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_8p5_cT_0p5.root MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_0p5_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190403_124854/0000/*.root
+
+#---
+
+hadd out_ana_mN1_10_mGammaD_0p4_cT_1.root MSSMD_mH_125_mN1_10_mGammaD_0p4_cT_1_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190403_125117/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_2_cT_0p5.root MSSMD_mH_125_mN1_10_mGammaD_2_cT_0p5_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190404_092455/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_2_cT_2.root MSSMD_mH_125_mN1_10_mGammaD_2_cT_2_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190404_092331/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_1_cT_5.root MSSMD_mH_125_mN1_10_mGammaD_1_cT_5_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190404_092902/0000/*.root
+
+hadd out_ana_mN1_10_mGammaD_2_cT_0.root MSSMD_mH_125_mN1_10_mGammaD_2_cT_0_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190404_092804/0000/*.root
+
+#---
+
+hadd out_ana_mN1_10_mGammaD_8p5_cT_0p05.root MSSMD_mH_125_mN1_10_mGammaD_8p5_cT_0p05_TuneCP5_13TeV-madgraph-pythia8/MSSMD_mH_125_mN1_10_Dataset/190404_093448/0000/*.root
