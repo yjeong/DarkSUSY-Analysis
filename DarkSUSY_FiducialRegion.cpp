@@ -112,14 +112,14 @@ void DarkSUSY_FiducialRegion(){
 	};
 
 	TString Legend_name[Sample_Num] = {
-		"mN1=10 Gev, #gamma_{D}=5 GeV, c#tau=10 mm",
+		"mN1=10 GeV, #gamma_{D}=5 GeV, c#tau=10 mm",
 		"mN1=10 GeV, #gamma_{D}=5 GeV, c#tau=50 mm",
 		"mN1=60 GeV, #gamma_{D}=58 GeV, c#tau=50 mm",
 		"mN1=60 GeV, #gamma_{D}=58 GeV, c#tau=2 mm",
-		"mN1=10 Gev, #gamma_{D}=0.7 GeV, c#tau=100 mm",
-		"mN1=10 Gev, #gamma_{D}=0.7 GeV, c#tau=0.05 mm",
-		"mN1=10 Gev, #gamma_{D}=8.5 GeV, c#tau=100 mm",
-		"mN1=10 Gev, #gamma_{D}=8.5 GeV, c#tau=0.05 mm"
+		"mN1=10 GeV, #gamma_{D}=0.7 GeV, c#tau=100 mm",
+		"mN1=10 GeV, #gamma_{D}=0.7 GeV, c#tau=0.05 mm",
+		"mN1=10 GeV, #gamma_{D}=8.5 GeV, c#tau=100 mm",
+		"mN1=10 GeV, #gamma_{D}=8.5 GeV, c#tau=0.05 mm"
 	};
 
 	TString xTitle[nVariable] = {
