@@ -65,7 +65,7 @@ void DarkSUSY_FiducialRegion(){
 	TString Save_dir;
 	Save_dir = "/afs/cern.ch/work/y/yjeong/darkSUSY_script/plots/";
 
-	const int Sample_Num = 8;
+	const int Sample_Num = 12;
 	const int nVariable = 15;
 
 	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
@@ -87,7 +87,11 @@ void DarkSUSY_FiducialRegion(){
 		"mN1_10_mGammaD_0p7_cT_100",
 		"mN1_10_mGammaD_0p7_cT_0p05",
 		"mN1_10_mGammaD_8p5_cT_100",
-		"mN1_10_mGammaD_8p5_cT_0p05"
+		"mN1_10_mGammaD_8p5_cT_0p05",
+		"mN1_60_mGammaD_10_cT_100",
+		"mN1_60_mGammaD_10_cT_0p05",
+		"mN1_60_mGammaD_15_cT_100",
+		"mN1_60_mGammaD_15_cT_0p05"
 	};
 
 	//TString Sample_name[Sample_Num] = {"Run2_mN1_10"};
@@ -119,7 +123,11 @@ void DarkSUSY_FiducialRegion(){
 		"mN1=10 GeV, #gamma_{D}=0.7 GeV, c#tau=100 mm",
 		"mN1=10 GeV, #gamma_{D}=0.7 GeV, c#tau=0.05 mm",
 		"mN1=10 GeV, #gamma_{D}=8.5 GeV, c#tau=100 mm",
-		"mN1=10 GeV, #gamma_{D}=8.5 GeV, c#tau=0.05 mm"
+		"mN1=10 GeV, #gamma_{D}=8.5 GeV, c#tau=0.05 mm",
+		"mN1=60 GeV, #gamma_{D}=10 GeV, c#tau=100 mm",
+		"mN1=60 GeV, #gamma_{D}=10 GeV, c#tau=0.05 mm",
+		"mN1=60 GeV, #gamma_{D}=15 GeV, c#tau=100 mm",
+		"mN1=60 GeV, #gamma_{D}=15 GeV, c#tau=0.05 mm"
 	};
 
 	TString xTitle[nVariable] = {
@@ -144,57 +152,57 @@ void DarkSUSY_FiducialRegion(){
 	Cut_base = "diMuonF_FittedVtx_Lxy != 1000 && diMuonF_FittedVtx_m != 1000 && diMuonC_FittedVtx_Lxy != 1000 && diMuonC_FittedVtx_m != 1000";
 
 	int nbin[nVariable][Sample_Num] = {
-		{100,100,100,100,100,100,100,100},//genA0_Lxy
-		{40,40,40,40,40,40,40,40},//genA1_Lxy
-		{100,100,100,100,100,100,100,100},//genA0_Lz
-		{50,50,50,50,50,50,50,50},//genA1_Lz
-		{50,50,50,50,50,50,50,50},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
-		{50,50,50,50,50,50,50,50},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
-		{50,50,50,50,50,50,50,50},//genA0_m
-		{50,50,50,50,50,50,50,50},//genA1_m
-		{50,50,50,50,50,50,50,50},//genA0_L
-		{50,50,50,50,50,50,50,50},//genA1_L
-		{50,50,50,50,50,50,50,50},//genH_m
-		{50,50,50,50,50,50,50,50},//diMuonC_FittedVtx_m
-		{50,50,50,50,50,50,50,50},//diMuonF_FittedVtx_m
-		{50,50,50,50,50,50,50,50},//diMuonC_FittedVtx_Lxy
-		{50,50,50,50,50,50,50,50}//diMuonF_FittedVtx_Lxy
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA0_Lxy
+		{40,40,40,40,40,40,40,40,40,40,40,40},//genA1_Lxy
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA0_Lz
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA1_Lz
+		{50,50,50,50,50,50,50,50,50,50,50,50},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
+		{50,50,50,50,50,50,50,50,50,50,50,50},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA0_m
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA1_m
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA0_L
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genA1_L
+		{50,50,50,50,50,50,50,50,50,50,50,50},//genH_m
+		{50,50,50,50,50,50,50,50,50,50,50,50},//diMuonC_FittedVtx_m
+		{50,50,50,50,50,50,50,50,50,50,50,50},//diMuonF_FittedVtx_m
+		{50,50,50,50,50,50,50,50,50,50,50,50},//diMuonC_FittedVtx_Lxy
+		{50,50,50,50,50,50,50,50,50,50,50,50}//diMuonF_FittedVtx_Lxy
 	};//===[2][4] = {{1,2,3,4},{1,2,3,4}};//---
 
 	float xmin[nVariable][Sample_Num] = {
-		{0,0,0,0,0,0,0,0},//genA0_Lxy
-		{0,0,0,0,0,0,0,0},//genA1_Lxy
-		{-10000,-10000,-1000,-1000,-40000,-40000,-2000,-2000},//genA0_Lz
-		{-10000,-10000,-100,-100,-10000,-10000,-1500,-1500},//genA1_Lz
-		{0,0,0,0,0,0,0,0},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
-		{0,0,0,0,0,0,0,0},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
-		{4,4,59.5,59.5,0.69,0.69,8.49,8.49},//genA0_m
-		{4,4,59.5,59.5,0.69,0.69,8.49,8.49},//genA1_m
-		{0,0,0,0,0,0,0,0},//genA0_L
-		{0,0,0,0,0,0,0,0},//genA1_L
-		{124,124,124,124,124,124,124,124},//genH_m
-		{4.9985,4.9985,-100,-100,-15,-15,-20,-20},//diMuonC_FittedVtx_m
-		{4.9985,4.9985,-100,-100,-10,-10,-20,-20},//diMuonF_FittedVtx_m
-		{-40,-40,-40,-40,-10,-10,-40,-40},//diMuonC_FittedVtx_Lxy
-		{-40,-40,-40,-40,-10,-10,-40,-40}//diMuonF_FittedVtx_Lxy
+		{0,0,0,0,0,0,0,0,0,0,0,0},//genA0_Lxy
+		{0,0,0,0,0,0,0,0,0,0,0,0},//genA1_Lxy
+		{-10000,-10000,-1000,-1000,-40000,-40000,-2000,-2000,-1500,-1500,-600,-600},//genA0_Lz
+		{-10000,-10000,-100,-100,-10000,-10000,-1500,-1500,-1000,-1000,-600,-600},//genA1_Lz
+		{0,0,0,0,0,0,0,0,0,0,0,0},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
+		{0,0,0,0,0,0,0,0,0,0,0,0},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
+		{4,4,59.5,59.5,0.69,0.69,8.49,8.49,9.9,9.9,14.9,14.9},//genA0_m
+		{4,4,59.5,59.5,0.69,0.69,8.49,8.49,9.9,9.9,14.9,14.9},//genA1_m
+		{0,0,0,0,0,0,0,0,0,0,0,0},//genA0_L
+		{0,0,0,0,0,0,0,0,0,0,0,0},//genA1_L
+		{124,124,124,124,124,124,124,124,124,124,124,124},//genH_m
+		{-20,-20,-20,-20,-15,-15,-20,-20,-20,-20,-20,-20},//diMuonC_FittedVtx_m
+		{-20,-20,-20,-20,-10,-10,5,5,-20,-20,-20,-20},//diMuonF_FittedVtx_m
+		{-40,-40,-40,-40,-10,-10,-40,-40,-70,-70,-25,-25},//diMuonC_FittedVtx_Lxy
+		{-40,-40,-40,-40,-10,-10,-40,-40,-60,-60,-60,-60}//diMuonF_FittedVtx_Lxy
 	};
 
 	float xmax[nVariable][Sample_Num] = {
-		{2000,2000,300,300,6000,6000,600,600},//genA0_Lxy
-		{1000,1000,150,150,2500,2500,300,300},//genA1_Lxy
-		{10000,10000,1000,1000,40000,40000,2000,2000},//genA0_Lz
-		{10000,10000,100,100,10000,10000,1500,1500},//genA1_Lz
-		{1000,1000,1000,1000,1000,1000,1000},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
-		{400,400,600,600,1000,1000,1000},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
-		{6,6,58.5,58.5,0.71,0.71,8.51,8.51},//genA0_m
-		{6,6,58.5,58.5,0.71,0.71,8.51,8.51},//genA1_m
-		{12000,12000,1200,1200,25000,25000,2000,2000},//genA0_L
-		{9000,9000,1000,1000,10000,10000,2000,2000},//genA1_L
-		{126,126,126,126,126,126,126,126},//genH_m
-		{5.0015,5.0015,100,100,15,15,20,20},//diMuonC_FittedVtx_m
-		{5.0015,5.0015,100,100,10,10,20,20},//diMuonF_FittedVtx_m
-		{40,40,40,40,10,10,40,40},//diMuonC_FittedVtx_Lxy
-		{40,40,40,40,10,10,40,40}//diMuonF_FittedVtx_Lxy
+		{2000,2000,300,300,6000,6000,600,600,300,300,200,200},//genA0_Lxy
+		{1000,1000,150,150,2500,2500,300,300,200,200,150,150},//genA1_Lxy
+		{10000,10000,1000,1000,40000,40000,2000,2000,1500,1500,600,600},//genA0_Lz
+		{10000,10000,100,100,10000,10000,1500,1500,1000,1000,600,600},//genA1_Lz
+		{1000,1000,1000,1000,1000,1000,300,300,200,200,200,200},//sqrt(pow(genA0_px,2)+pow(genA0_py,2))
+		{400,400,600,600,1000,1000,200,200,150,150,150,150},//sqrt(pow(genA1_px,2)+pow(genA1_py,2))
+		{6,6,58.5,58.5,0.71,0.71,8.51,8.51,10.1,10.1,15.1,15.1},//genA0_m
+		{6,6,58.5,58.5,0.71,0.71,8.51,8.51,10.1,10.1,15.1,15.1},//genA1_m
+		{12000,12000,1200,1200,25000,25000,2000,2000,1000,1000,500,500},//genA0_L
+		{9000,9000,1000,1000,10000,10000,2000,2000,800,800,500,500},//genA1_L
+		{126,126,126,126,126,126,126,126,126,126,126,126},//genH_m
+		{20,20,20,20,15,15,20,20,20,20,20,20},//diMuonC_FittedVtx_m
+		{20,20,20,20,10,10,10,10,20,20,20,20},//diMuonF_FittedVtx_m
+		{40,40,40,40,10,10,40,40,70,70,25,25},//diMuonC_FittedVtx_Lxy
+		{40,40,40,40,10,10,40,40,60,60,60,60}//diMuonF_FittedVtx_Lxy
 	};
 
 	/*int mkdir (const char *dirname);
@@ -331,9 +339,15 @@ void DarkSUSY_FiducialRegion(){
 	TLegend *l_2[nVariable];
 	TLegend *l_3[nVariable];
 	TLegend *l_4[nVariable];
+	TLegend *l_5[nVariable];
+	TLegend *l_6[nVariable];
+
+	double ymax = 0;
+	double yMulti = 10;
 
 	for(int nVar=0; nVar < nVariable; nVar++){
 		canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
+		canv_[nVar]->SetLogy();
 		l_1[nVar] = new TLegend(lx1,ly1,lx2,ly2);
 		set_legend_style(l_1[nVar]);
 		l_2[nVar] = new TLegend(lx1,ly1,lx2,ly2);
@@ -342,16 +356,26 @@ void DarkSUSY_FiducialRegion(){
 		set_legend_style(l_3[nVar]);
 		l_4[nVar] = new TLegend(lx1,ly1,lx2,ly2);
 		set_legend_style(l_4[nVar]);
+		l_5[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+		set_legend_style(l_5[nVar]);
+		l_6[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+		set_legend_style(l_6[nVar]);
 
 		for(int nSam=0; nSam < Sample_Num; nSam++){
 			histo[nVar][nSam] = new TH1F(Form("histo_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+
 			tree[nSam]->Project(Form("histo_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
-			if(nSam==0 || nSam==2 || nSam==4 || nSam==6)histo[nVar][nSam]->SetLineColor(kRed);
-			if(nSam==1 || nSam==3 || nSam==5 || nSam==7)histo[nVar][nSam]->SetLineColor(kBlue);
+			if(nSam==0 || nSam==2 || nSam==4 || nSam==6 || nSam==8 || nSam==10){
+				histo[nVar][nSam]->SetLineColor(kRed);
+				ymax = histo[nVar][nSam]->GetMaximum();
+			}
+
+			if(nSam==1 || nSam==3 || nSam==5 || nSam==7 || nSam==9 || nSam==11)histo[nVar][nSam]->SetLineColor(kBlue);
 
 			if(nSam==0){//mN1_10_mGammaD_5_cT_10
 				l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
 				set_histo_frame_1D(histo[nVar][nSam]);
 				histo[nVar][nSam]->Draw();
 			}
@@ -359,11 +383,12 @@ void DarkSUSY_FiducialRegion(){
 				l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->Draw("same");
 				l_1[nVar]->Draw();
-				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 			}
 			if(nSam==2){//mN1_10_mGammaD_58_cT_50
 				l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
 				set_histo_frame_1D(histo[nVar][nSam]);
 				histo[nVar][nSam]->Draw();
 			}
@@ -371,11 +396,12 @@ void DarkSUSY_FiducialRegion(){
 				l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->Draw("same");
 				l_2[nVar]->Draw();
-				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 			}
 			if(nSam==4){//mN1_10_mGammaD_0p7_cT_100
 				l_3[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
 				set_histo_frame_1D(histo[nVar][nSam]);
 				histo[nVar][nSam]->Draw();
 			}
@@ -388,6 +414,7 @@ void DarkSUSY_FiducialRegion(){
 			if(nSam==6){//mN1_10_mGammaD_8p5_cT_100
 				l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
 				set_histo_frame_1D(histo[nVar][nSam]);
 				histo[nVar][nSam]->Draw();
 			}
@@ -395,6 +422,32 @@ void DarkSUSY_FiducialRegion(){
 				l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
 				histo[nVar][nSam]->Draw("same");
 				l_4[nVar]->Draw();
+				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			}
+			if(nSam==8){//mN1_60_mGammaD_10_cT_100
+				l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+				set_histo_frame_1D(histo[nVar][nSam]);
+				histo[nVar][nSam]->Draw();
+			}
+			if(nSam==9){//mN1_60_mGammaD_10_cT_0p05
+				l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+				histo[nVar][nSam]->Draw("same");
+				l_5[nVar]->Draw();
+				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+			}
+			if(nSam==10){//mN1_60_mGammaD_15_cT_100
+				l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+				set_histo_frame_1D(histo[nVar][nSam]);
+				histo[nVar][nSam]->Draw();
+			}
+			if(nSam==11){//mN1_60_mGammaD_15_cT_0p05
+				l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+				histo[nVar][nSam]->Draw("same");
+				l_6[nVar]->Draw();
 				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 			}
 		}
@@ -552,7 +605,7 @@ void DarkSUSY_FiducialRegion(){
 			set_histo_frame_2D(eff_2D_A0[nSam][ndR]);
 			eff_2D_A0[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
 			eff_2D_A0[nSam][ndR]->Draw("colz");
-			canv_2D_A0[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A0.png");
+			//canv_2D_A0[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A0.png");
 
 			canv_2D_A1[nSam][ndR]->cd();
 			set_canvas_style(canv_2D_A1[nSam][ndR]);
@@ -562,20 +615,20 @@ void DarkSUSY_FiducialRegion(){
 			set_histo_frame_2D(eff_2D_A1[nSam][ndR]);
 			eff_2D_A1[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
 			eff_2D_A1[nSam][ndR]->Draw("colz");
-			canv_2D_A1[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A1.png");
+			//canv_2D_A1[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A1.png");
 		}
 		canv_dR_A0[nSam]->cd();
 		canv_dR_A0[nSam]->SetLogy();
 		set_histo_frame_1D(histo_dR_A0[nSam]);
 		histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A0");
 		histo_dR_A0[nSam]->Draw();
-		canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
+		//canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
 
 		canv_dR_A1[nSam]->cd();
 		canv_dR_A1[nSam]->SetLogy();
 		set_histo_frame_1D(histo_dR_A1[nSam]);
 		histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A1");
 		histo_dR_A1[nSam]->Draw();
-		canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
+		//canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
 	}
 }
