@@ -579,3 +579,37 @@ xrdcp -rf root://cms-t2-se01.sdfarm.kr:1094//pnfs/sdfarm.kr/data/cms/store/user/
 
 cd ..;
 
+
+mkdir MSSMD_mH_125_mN1_10_mGammaD_2_cT_50_TuneCP5_13TeV-madgraph-pythia8;
+cd MSSMD_mH_125_mN1_10_mGammaD_2_cT_50_TuneCP5_13TeV-madgraph-pythia8;
+
+xrdcp -rf root://cms-t2-se01.sdfarm.kr:1094//pnfs/sdfarm.kr/data/cms/store/user/yjeong/MSSMD_mH_125_mN1_10_mGammaD_2_cT_50_TuneCP5_13TeV-madgraph-pythia8 .;
+
+cd ..;
+
+
+mkdir MSSMD_mH_125_mN1_10_mGammaD_2_cT_10_TuneCP5_13TeV-madgraph-pythia8;
+cd MSSMD_mH_125_mN1_10_mGammaD_2_cT_10_TuneCP5_13TeV-madgraph-pythia8;
+
+xrdcp -rf root://cms-t2-se01.sdfarm.kr:1094//pnfs/sdfarm.kr/data/cms/store/user/yjeong/MSSMD_mH_125_mN1_10_mGammaD_2_cT_10_TuneCP5_13TeV-madgraph-pythia8 .;
+
+cd ..;
+
+
+#---70
+
+
+mkdir MSSMD_mH_125_mN1_10_mGammaD_2_cT_100_TuneCP5_13TeV-madgraph-pythia8;
+cd MSSMD_mH_125_mN1_10_mGammaD_2_cT_100_TuneCP5_13TeV-madgraph-pythia8;
+
+xrdcp -rf root://cms-t2-se01.sdfarm.kr:1094//pnfs/sdfarm.kr/data/cms/store/user/yjeong/MSSMD_mH_125_mN1_10_mGammaD_2_cT_100_TuneCP5_13TeV-madgraph-pythia8 .;
+
+cd ..;
+
+
+mkdir MSSMD_mH_125_mN1_10_mGammaD_0p4_cT_20_TuneCP5_13TeV-madgraph-pythia8;
+cd MSSMD_mH_125_mN1_10_mGammaD_0p4_cT_20_TuneCP5_13TeV-madgraph-pythia8;
+
+xrdcp -rf root://cms-t2-se01.sdfarm.kr:1094//pnfs/sdfarm.kr/data/cms/store/user/yjeong/MSSMD_mH_125_mN1_10_mGammaD_0p4_cT_20_TuneCP5_13TeV-madgraph-pythia8 .;
+
+cd ..;
