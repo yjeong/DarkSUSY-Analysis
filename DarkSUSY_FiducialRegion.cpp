@@ -68,7 +68,7 @@ void DarkSUSY_FiducialRegion(){
 	const int Sample_Num = 20;
 	const int nVariable = 15;
 
-	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8;
+	bool isDiMuonHLTFired, is4GenMu8, is1SelMu17 , is2SelMu8, is3SelMu8;
 	int event;
 	float selMu0_px, selMu1_px, selMu2_px, selMu3_px;
 	float selMu0_pz, selMu1_pz, selMu2_pz, selMu3_pz;
@@ -261,8 +261,9 @@ void DarkSUSY_FiducialRegion(){
 		tree[i]->SetBranchAddress("event",&event);
 		tree[i]->SetBranchAddress("isDiMuonHLTFired",&isDiMuonHLTFired);
 		tree[i]->SetBranchAddress("is4GenMu8",&is4GenMu8);
-		tree[i]->SetBranchAddress("is1SelMu17",&is2SelMu8);
+		tree[i]->SetBranchAddress("is1SelMu17",&is1SelMu17);
 		tree[i]->SetBranchAddress("is2SelMu8",&is2SelMu8);
+		tree[i]->SetBranchAddress("is3SelMu8",&is3SelMu8);
 		tree[i]->SetBranchAddress("selMu0_px",&selMu0_px);
 		tree[i]->SetBranchAddress("selMu1_px",&selMu1_px);
 		tree[i]->SetBranchAddress("selMu2_px",&selMu2_px);
@@ -364,352 +365,352 @@ void DarkSUSY_FiducialRegion(){
 
 	double ymax = 0;
 	double yMulti = 10;
+	/*
+	   for(int nVar=0; nVar < nVariable; nVar++){
+	   canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
+	   canv_[nVar]->SetLogy();
 
-	for(int nVar=0; nVar < nVariable; nVar++){
-		canv_[nVar] = new TCanvas(Form("canv_%d",nVar),Form(""),canvas_x,canvas_y);
-		canv_[nVar]->SetLogy();
+	   l_1[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_1[nVar]);
+	   l_2[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_2[nVar]);
+	   l_3[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_3[nVar]);
+	   l_4[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_4[nVar]);
+	   l_5[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_5[nVar]);
+	   l_6[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_6[nVar]);
+	   l_7[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_7[nVar]);
+	   l_8[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_8[nVar]);
+	   l_9[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_9[nVar]);
+	   l_10[nVar] = new TLegend(lx1,ly1,lx2,ly2);
+	   set_legend_style(l_10[nVar]);
 
-		l_1[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_1[nVar]);
-		l_2[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_2[nVar]);
-		l_3[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_3[nVar]);
-		l_4[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_4[nVar]);
-		l_5[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_5[nVar]);
-		l_6[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_6[nVar]);
-		l_7[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_7[nVar]);
-		l_8[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_8[nVar]);
-		l_9[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_9[nVar]);
-		l_10[nVar] = new TLegend(lx1,ly1,lx2,ly2);
-		set_legend_style(l_10[nVar]);
+	   for(int nSam=0; nSam < Sample_Num; nSam++){
+	   histo[nVar][nSam] = new TH1F(Form("histo_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
 
-		for(int nSam=0; nSam < Sample_Num; nSam++){
-			histo[nVar][nSam] = new TH1F(Form("histo_%d_%d",nVar,nSam),Form(""),nbin[nVar][nSam],xmin[nVar][nSam],xmax[nVar][nSam]);
+	   tree[nSam]->Project(Form("histo_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
+	   if(nSam==0 || nSam==2 || nSam==4 || nSam==6 || nSam==8 || nSam==10 || nSam==12 || nSam==14 || nSam==16 || nSam==18){
+	   histo[nVar][nSam]->SetLineColor(kRed);
+	   ymax = histo[nVar][nSam]->GetMaximum();
+	   }
 
-			tree[nSam]->Project(Form("histo_%d_%d",nVar,nSam),Variable[nVar],Cut_base);
-			if(nSam==0 || nSam==2 || nSam==4 || nSam==6 || nSam==8 || nSam==10 || nSam==12 || nSam==14 || nSam==16 || nSam==18){
-				histo[nVar][nSam]->SetLineColor(kRed);
-				ymax = histo[nVar][nSam]->GetMaximum();
-			}
+	   if(nSam==1 || nSam==3 || nSam==5 || nSam==7 || nSam==9 || nSam==11 || nSam==13 || nSam==15 || nSam==17 || nSam==19)histo[nVar][nSam]->SetLineColor(kBlue);
 
-			if(nSam==1 || nSam==3 || nSam==5 || nSam==7 || nSam==9 || nSam==11 || nSam==13 || nSam==15 || nSam==17 || nSam==19)histo[nVar][nSam]->SetLineColor(kBlue);
-
-			if(nSam==0){//mN1_10_mGammaD_5_cT_10
-				l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==1){//mN1_10_mGammaD_5_cT_50
-				l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_1[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==2){//mN1_10_mGammaD_58_cT_50
-				l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==3){//mN1_10_mGammaD_58_cT_2
-				l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_2[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==4){//mN1_10_mGammaD_0p7_cT_100
-				l_3[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==5){//mN1_10_mGammaD_0p7_cT_0p05
-				l_3[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_3[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==6){//mN1_10_mGammaD_8p5_cT_100
-				l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==7){//mN1_10_mGammaD_8p5_cT_0p05
-				l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_4[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==8){//mN1_60_mGammaD_10_cT_100
-				l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==9){//mN1_60_mGammaD_10_cT_0p05
-				l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_5[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==10){//mN1_60_mGammaD_15_cT_100
-				l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==11){//mN1_60_mGammaD_15_cT_0p05
-				l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_6[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==12){//mN1_60_mGammaD_25_cT_100
-				l_7[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==13){//mN1_60_mGammaD_25_cT_0p05
-				l_7[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_7[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==14){//mN1_60_mGammaD_35_cT_100
-				l_8[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==15){//mN1_60_mGammaD_35_cT_0p05
-				l_8[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_8[nVar]->Draw();
-				//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==16){//mN1_10_mGammaD_2_cT_100
-				l_9[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==17){//mN1_10_mGammaD_2_cT_0p05
-				l_9[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_9[nVar]->Draw();
-				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-			if(nSam==18){//mN1_60_mGammaD_5_cT_100
-				l_10[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
-				histo[nVar][nSam]->SetMaximum(ymax*yMulti);
-				set_histo_frame_1D(histo[nVar][nSam]);
-				histo[nVar][nSam]->Draw();
-			}
-			if(nSam==19){//mN1_10_mGammaD_5_cT_0p05
-				l_10[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
-				histo[nVar][nSam]->Draw("same");
-				l_10[nVar]->Draw();
-				canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
-			}
-		}
+	   if(nSam==0){//mN1_10_mGammaD_5_cT_10
+	   l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	   histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	   histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	   set_histo_frame_1D(histo[nVar][nSam]);
+	   histo[nVar][nSam]->Draw();
+	   }
+	   if(nSam==1){//mN1_10_mGammaD_5_cT_50
+	   l_1[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	   histo[nVar][nSam]->Draw("same");
+	   l_1[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
 	}
+	if(nSam==2){//mN1_10_mGammaD_58_cT_50
+	l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+	}
+	if(nSam==3){//mN1_10_mGammaD_58_cT_2
+	l_2[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_2[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+	}
+	if(nSam==4){//mN1_10_mGammaD_0p7_cT_100
+	l_3[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+	}
+	if(nSam==5){//mN1_10_mGammaD_0p7_cT_0p05
+	l_3[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_3[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==6){//mN1_10_mGammaD_8p5_cT_100
+	l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==7){//mN1_10_mGammaD_8p5_cT_0p05
+	l_4[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_4[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==8){//mN1_60_mGammaD_10_cT_100
+	l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==9){//mN1_60_mGammaD_10_cT_0p05
+	l_5[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_5[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==10){//mN1_60_mGammaD_15_cT_100
+	l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==11){//mN1_60_mGammaD_15_cT_0p05
+	l_6[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_6[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==12){//mN1_60_mGammaD_25_cT_100
+	l_7[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==13){//mN1_60_mGammaD_25_cT_0p05
+	l_7[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_7[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==14){//mN1_60_mGammaD_35_cT_100
+	l_8[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==15){//mN1_60_mGammaD_35_cT_0p05
+	l_8[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_8[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==16){//mN1_10_mGammaD_2_cT_100
+	l_9[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==17){//mN1_10_mGammaD_2_cT_0p05
+	l_9[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_9[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+if(nSam==18){//mN1_60_mGammaD_5_cT_100
+	l_10[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->GetXaxis()->SetTitle(xTitle[nVar]);
+	histo[nVar][nSam]->SetMaximum(ymax*yMulti);
+	set_histo_frame_1D(histo[nVar][nSam]);
+	histo[nVar][nSam]->Draw();
+}
+if(nSam==19){//mN1_10_mGammaD_5_cT_0p05
+	l_10[nVar]->AddEntry(histo[nVar][nSam],Legend_name[nSam],"l");
+	histo[nVar][nSam]->Draw("same");
+	l_10[nVar]->Draw();
+	//canv_[nVar]->SaveAs(Save_dir+"_"+Sample_name[nSam]+"_"+Variable[nVar]+".png");
+}
+}
+}
+*/
+TH1F *histo_dR_A0[Sample_Num];
+TCanvas *canv_dR_A0[Sample_Num];
 
-	TH1F *histo_dR_A0[Sample_Num];
-	TCanvas *canv_dR_A0[Sample_Num];
-
-	TH1F *histo_dR_A1[Sample_Num];
-	TCanvas *canv_dR_A1[Sample_Num];
+TH1F *histo_dR_A1[Sample_Num];
+TCanvas *canv_dR_A1[Sample_Num];
 
 
-	/*const int ndeltaR = 5;
-	  float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
-	  TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
-	const int ndeltaR = 1;
-	float dR_cut[ndeltaR] = {0.2};
-	TString dR_txt[ndeltaR] = {"dR<0.2"};//-*/
+/*const int ndeltaR = 5;
+float dR_cut[ndeltaR] = {0.1,0.2,0.3,0.4,0.5};
+TString dR_txt[ndeltaR] = {"dR<0.1","dR<0.2","dR<0.3","dR<0.4","dR<0.5"};//-*/
+const int ndeltaR = 1;
+  float dR_cut[ndeltaR] = {0.5};
+  TString dR_txt[ndeltaR] = {"dR<0.5"};//-*/
 
-	TH2F *eff_2D_A0[Sample_Num][ndeltaR];
-	TH2F *eff_2D_A1[Sample_Num][ndeltaR];
-	TCanvas *canv_2D_A0[Sample_Num][ndeltaR];
-	TCanvas *canv_2D_A1[Sample_Num][ndeltaR];
+TH2F *eff_2D_A0[Sample_Num][ndeltaR];
+TH2F *eff_2D_A1[Sample_Num][ndeltaR];
+TCanvas *canv_2D_A0[Sample_Num][ndeltaR];
+TCanvas *canv_2D_A1[Sample_Num][ndeltaR];
 
-	for(int nSam=0; nSam < Sample_Num; nSam++){
-		canv_dR_A0[nSam] = new TCanvas(Form("canv_dR_A0_%d",nSam),Form(""),canvas_x,canvas_y);
-		histo_dR_A0[nSam] = new TH1F(Form("histo_dR_A0_%d",nSam),Form(""),200,0,1);
+for(int nSam=0; nSam < Sample_Num; nSam++){
+	canv_dR_A0[nSam] = new TCanvas(Form("canv_dR_A0_%d",nSam),Form(""),canvas_x,canvas_y);
+	histo_dR_A0[nSam] = new TH1F(Form("histo_dR_A0_%d",nSam),Form(""),200,0,1);
 
-		canv_dR_A1[nSam] = new TCanvas(Form("canv_dR_A1_%d",nSam),Form(""),canvas_x,canvas_y);
-		histo_dR_A1[nSam] = new TH1F(Form("histo_dR_A1_%d",nSam),Form(""),200,0,1);
+	canv_dR_A1[nSam] = new TCanvas(Form("canv_dR_A1_%d",nSam),Form(""),canvas_x,canvas_y);
+	histo_dR_A1[nSam] = new TH1F(Form("histo_dR_A1_%d",nSam),Form(""),200,0,1);
 
-		for(int ndR = 0; ndR < ndeltaR; ndR++){
-			eff_2D_A0[nSam][ndR] = new TH2F(Form("eff_2D_A0_%d_%d",nSam,ndR),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
-			eff_2D_A1[nSam][ndR] = new TH2F(Form("eff_2D_A1_%d_%d",nSam,ndR),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
-			canv_2D_A0[nSam][ndR] = new TCanvas(Form("canv_2D_A0_%d_%d",nSam,ndR),Form(""),canvas_x,canvas_y);
-			canv_2D_A1[nSam][ndR] = new TCanvas(Form("canv_2D_A1_%d_%d",nSam,ndR),Form(""),canvas_x,canvas_y);
+	for(int ndR = 0; ndR < ndeltaR; ndR++){
+		eff_2D_A0[nSam][ndR] = new TH2F(Form("eff_2D_A0_%d_%d",nSam,ndR),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		eff_2D_A1[nSam][ndR] = new TH2F(Form("eff_2D_A1_%d_%d",nSam,ndR),Form(""),eff_nbin_x,eff_xmin_x,eff_xmax_x,eff_nbin_y,eff_xmin_y,eff_xmax_y);
+		canv_2D_A0[nSam][ndR] = new TCanvas(Form("canv_2D_A0_%d_%d",nSam,ndR),Form(""),canvas_x,canvas_y);
+		canv_2D_A1[nSam][ndR] = new TCanvas(Form("canv_2D_A1_%d_%d",nSam,ndR),Form(""),canvas_x,canvas_y);
 
-			float dEta_A0 = 0;
-			float dPhi_A0 = 0;
-			float dR_A0 = 0;
-			float dEta_A1 = 0;
-			float dPhi_A1 = 0;
-			float dR_A1 = 0;
+		float dEta_A0 = 0;
+		float dPhi_A0 = 0;
+		float dR_A0 = 0;
+		float dEta_A1 = 0;
+		float dPhi_A1 = 0;
+		float dR_A1 = 0;
 
-			for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
-				tree[nSam]->GetEntry(nev);
+		for(int nev=0; nev < tree[nSam]->GetEntries(); nev++){
+			tree[nSam]->GetEntry(nev);
 
-				if(!(isDiMuonHLTFired == true)) continue;
-				if(!(is4GenMu8 == true)) continue;
-				if(!(is2SelMu8 == true)) continue;
-				if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
-				if(!(fabs(genA1_Lz)<=80 && genA1_Lxy<=80)) continue;
-				for(int k = 0; k < 40; k++){
-					if(!(fabs(genA0_Lz)>bin_edges_Lz[k] && fabs(genA0_Lz)<bin_edges_Lz[k+1])) continue;
-					for(int j = 0; j < 80; j++){
-						if(!(genA0_Lxy>bin_edges[j] && genA0_Lxy<bin_edges[j+1])) continue;
-						count_gam_A0[k][j]++;
-						unsigned int recMu = 0;
-						if(fabs(selMu0_eta)!=100) recMu++;
-						if(fabs(selMu1_eta)!=100) recMu++;
-						if(fabs(selMu2_eta)!=100) recMu++;
-						if(fabs(selMu3_eta)!=100) recMu++;
-						if(!(recMu>1)) continue;
-						unsigned int match_mu = 0;
-						for(int i = 0; i < recMu; i++){
-							if(i==0){
-								dEta_A0 = genA0_eta-selMu0_eta;
-								dPhi_A0 = My_dPhi(selMu0_phi,genA0_phi);
-							}
-
-							if(i==1){
-								dEta_A0 = genA0_eta-selMu1_eta;
-								dPhi_A0 = My_dPhi(selMu1_phi,genA0_phi);
-							}
-
-							if(i==2){
-								dEta_A0 = genA0_eta-selMu2_eta;
-								dPhi_A0 = My_dPhi(selMu2_phi,genA0_phi);
-							}
-
-							if(i==3){
-								dEta_A0 = genA0_eta-selMu3_eta;
-								dPhi_A0 = My_dPhi(selMu3_phi,genA0_phi);
-							}
-							dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
-							histo_dR_A0[nSam]->Fill(dR_A0);
-							if(dR_A0<dR_cut[ndR]) match_mu++;
+			if(!(isDiMuonHLTFired == true)) continue;
+			if(!(is4GenMu8 == true)) continue;
+			if(!(is2SelMu8 == true)) continue;
+			if(!(fabs(genA0_Lz)<=80 && genA0_Lxy<=80)) continue;
+			if(!(fabs(genA1_Lz)<=80 && genA1_Lxy<=80)) continue;
+			for(int k = 0; k < 40; k++){
+				if(!(fabs(genA0_Lz)>bin_edges_Lz[k] && fabs(genA0_Lz)<bin_edges_Lz[k+1])) continue;
+				for(int j = 0; j < 80; j++){
+					if(!(genA0_Lxy>bin_edges[j] && genA0_Lxy<bin_edges[j+1])) continue;
+					count_gam_A0[k][j]++;
+					unsigned int recMu = 0;
+					if(fabs(selMu0_eta)!=100) recMu++;
+					if(fabs(selMu1_eta)!=100) recMu++;
+					if(fabs(selMu2_eta)!=100) recMu++;
+					if(fabs(selMu3_eta)!=100) recMu++;
+					if(!(recMu>1)) continue;
+					unsigned int match_mu = 0;
+					for(int i = 0; i < recMu; i++){
+						if(i==0){
+							dEta_A0 = genA0_eta-selMu0_eta;
+							dPhi_A0 = My_dPhi(selMu0_phi,genA0_phi);
 						}
-						if(match_mu==2){
-							count_rec_A0[k][j]++;
+
+						if(i==1){
+							dEta_A0 = genA0_eta-selMu1_eta;
+							dPhi_A0 = My_dPhi(selMu1_phi,genA0_phi);
 						}
+
+						if(i==2){
+							dEta_A0 = genA0_eta-selMu2_eta;
+							dPhi_A0 = My_dPhi(selMu2_phi,genA0_phi);
+						}
+
+						if(i==3){
+							dEta_A0 = genA0_eta-selMu3_eta;
+							dPhi_A0 = My_dPhi(selMu3_phi,genA0_phi);
+						}
+						dR_A0 = sqrt(pow(dEta_A0,2)+pow(dPhi_A0,2));
+						histo_dR_A0[nSam]->Fill(dR_A0);
+						if(dR_A0<dR_cut[ndR]) match_mu++;
 					}
-				}
-
-				for(int k = 0; k < 40; k++){
-					if(!(fabs(genA1_Lz)>bin_edges_Lz[k] && fabs(genA1_Lz)<bin_edges_Lz[k+1])) continue;
-					for(int j = 0; j < 80; j++){
-						if(!(genA1_Lxy>bin_edges[j] && genA1_Lxy<bin_edges[j+1])) continue;
-						count_gam_A1[k][j]++;
-						unsigned int recMu = 0;
-						if(fabs(selMu0_eta)!=-100) recMu++;
-						if(fabs(selMu1_eta)!=-100) recMu++;
-						if(fabs(selMu2_eta)!=-100) recMu++;
-						if(fabs(selMu3_eta)!=-100) recMu++;
-						if(!(recMu>1)) continue;
-						unsigned int match_mu=0;
-						for(int j = 0; j < recMu; j++){
-							if(j==0){
-								dEta_A1 = genA1_eta-selMu0_eta;
-								dPhi_A1 = My_dPhi(selMu0_phi,genA1_phi);
-							}
-							if(j==1){
-								dEta_A1 = genA1_eta-selMu1_eta;
-								dPhi_A1 = My_dPhi(selMu1_phi,genA1_phi);
-							}
-							if(j==2){
-								dEta_A1 = genA1_eta-selMu2_eta;
-								dPhi_A1 = My_dPhi(selMu2_phi,genA1_phi);
-							}
-							if(j==3){
-								dEta_A1 = genA1_eta-selMu3_eta;
-								dPhi_A1 = My_dPhi(selMu3_phi,genA1_phi);
-							}
-							dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
-							histo_dR_A1[nSam]->Fill(dR_A1);
-							if(dR_A1<dR_cut[ndR]) match_mu++;
-						}
-						if(match_mu==2){
-							count_rec_A1[k][j]++;
-						}
-					}	
+					if(match_mu==2){
+						count_rec_A0[k][j]++;
+					}
 				}
 			}
 
 			for(int k = 0; k < 40; k++){
+				if(!(fabs(genA1_Lz)>bin_edges_Lz[k] && fabs(genA1_Lz)<bin_edges_Lz[k+1])) continue;
 				for(int j = 0; j < 80; j++){
-					if(count_gam_A0[k][j]!=0) eff_A0[k][j] = count_rec_A0[k][j]/count_gam_A0[k][j];
-					if(count_rec_A0[k][j]==0 && count_gam_A0[k][j]!=0) eff_A0[k][j] = 0.0001;
-					eff_2D_A0[nSam][ndR]->SetBinContent(k+1,j+1,eff_A0[k][j]);
-
-					if(count_gam_A1[k][j]!=0) eff_A1[k][j] = count_rec_A1[k][j]/count_gam_A1[k][j];
-					if(count_rec_A1[k][j]==0 && count_gam_A1[k][j]!=0) eff_A1[k][j] = 0.0001;
-					eff_2D_A1[nSam][ndR]->SetBinContent(k+1,j+1,eff_A1[k][j]);
-				}
+					if(!(genA1_Lxy>bin_edges[j] && genA1_Lxy<bin_edges[j+1])) continue;
+					count_gam_A1[k][j]++;
+					unsigned int recMu = 0;
+					if(fabs(selMu0_eta)!=-100) recMu++;
+					if(fabs(selMu1_eta)!=-100) recMu++;
+					if(fabs(selMu2_eta)!=-100) recMu++;
+					if(fabs(selMu3_eta)!=-100) recMu++;
+					if(!(recMu>1)) continue;
+					unsigned int match_mu=0;
+					for(int j = 0; j < recMu; j++){
+						if(j==0){
+							dEta_A1 = genA1_eta-selMu0_eta;
+							dPhi_A1 = My_dPhi(selMu0_phi,genA1_phi);
+						}
+						if(j==1){
+							dEta_A1 = genA1_eta-selMu1_eta;
+							dPhi_A1 = My_dPhi(selMu1_phi,genA1_phi);
+						}
+						if(j==2){
+							dEta_A1 = genA1_eta-selMu2_eta;
+							dPhi_A1 = My_dPhi(selMu2_phi,genA1_phi);
+						}
+						if(j==3){
+							dEta_A1 = genA1_eta-selMu3_eta;
+							dPhi_A1 = My_dPhi(selMu3_phi,genA1_phi);
+						}
+						dR_A1 = sqrt(pow(dEta_A1,2)+pow(dPhi_A1,2));
+						histo_dR_A1[nSam]->Fill(dR_A1);
+						if(dR_A1<dR_cut[ndR]) match_mu++;
+					}
+					if(match_mu==2){
+						count_rec_A1[k][j]++;
+					}
+				}	
 			}
-
-			eff_2D_A0[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
-			eff_2D_A1[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
-
-			canv_2D_A0[nSam][ndR]->cd();
-			set_canvas_style(canv_2D_A0[nSam][ndR]);
-			gStyle->SetOptStat(0);
-			eff_2D_A0[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
-			eff_2D_A0[nSam][ndR]->SetContour(NCont);
-			set_histo_frame_2D(eff_2D_A0[nSam][ndR]);
-			eff_2D_A0[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
-			eff_2D_A0[nSam][ndR]->Draw("colz");
-			//canv_2D_A0[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A0.png");
-
-			canv_2D_A1[nSam][ndR]->cd();
-			set_canvas_style(canv_2D_A1[nSam][ndR]);
-			eff_2D_A1[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
-			eff_2D_A1[nSam][ndR]->SetContour(NCont);
-			gStyle->SetOptStat(0);
-			set_histo_frame_2D(eff_2D_A1[nSam][ndR]);
-			eff_2D_A1[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
-			eff_2D_A1[nSam][ndR]->Draw("colz");
-			//canv_2D_A1[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A1.png");
 		}
-		canv_dR_A0[nSam]->cd();
-		canv_dR_A0[nSam]->SetLogy();
-		set_histo_frame_1D(histo_dR_A0[nSam]);
-		histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A0");
-		histo_dR_A0[nSam]->Draw();
-		//canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
 
-		canv_dR_A1[nSam]->cd();
-		canv_dR_A1[nSam]->SetLogy();
-		set_histo_frame_1D(histo_dR_A1[nSam]);
-		histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A1");
-		histo_dR_A1[nSam]->Draw();
-		//canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
+		for(int k = 0; k < 40; k++){
+			for(int j = 0; j < 80; j++){
+				if(count_gam_A0[k][j]!=0) eff_A0[k][j] = count_rec_A0[k][j]/count_gam_A0[k][j];
+				if(count_rec_A0[k][j]==0 && count_gam_A0[k][j]!=0) eff_A0[k][j] = 0.0001;
+				eff_2D_A0[nSam][ndR]->SetBinContent(k+1,j+1,eff_A0[k][j]);
+
+				if(count_gam_A1[k][j]!=0) eff_A1[k][j] = count_rec_A1[k][j]/count_gam_A1[k][j];
+				if(count_rec_A1[k][j]==0 && count_gam_A1[k][j]!=0) eff_A1[k][j] = 0.0001;
+				eff_2D_A1[nSam][ndR]->SetBinContent(k+1,j+1,eff_A1[k][j]);
+			}
+		}
+
+		eff_2D_A0[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
+		eff_2D_A1[nSam][ndR]->GetZaxis()->SetRangeUser(0,1);
+
+		canv_2D_A0[nSam][ndR]->cd();
+		set_canvas_style(canv_2D_A0[nSam][ndR]);
+		gStyle->SetOptStat(0);
+		eff_2D_A0[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
+		eff_2D_A0[nSam][ndR]->SetContour(NCont);
+		set_histo_frame_2D(eff_2D_A0[nSam][ndR]);
+		eff_2D_A0[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
+		eff_2D_A0[nSam][ndR]->Draw("colz");
+		canv_2D_A0[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A0.png");
+
+		canv_2D_A1[nSam][ndR]->cd();
+		set_canvas_style(canv_2D_A1[nSam][ndR]);
+		eff_2D_A1[nSam][ndR]->SetContour((sizeof(levels)/sizeof(Double_t)), levels);
+		eff_2D_A1[nSam][ndR]->SetContour(NCont);
+		gStyle->SetOptStat(0);
+		set_histo_frame_2D(eff_2D_A1[nSam][ndR]);
+		eff_2D_A1[nSam][ndR]->GetXaxis()->SetTitle(Legend_name[nSam]+", "+dR_txt[ndR]);
+		eff_2D_A1[nSam][ndR]->Draw("colz");
+		canv_2D_A1[nSam][ndR]->SaveAs(Save_dir+Sample_name[nSam]+"_"+dR_txt[ndR]+"_"+"eff_2D_A1.png");
 	}
+	canv_dR_A0[nSam]->cd();
+	canv_dR_A0[nSam]->SetLogy();
+	set_histo_frame_1D(histo_dR_A0[nSam]);
+	histo_dR_A0[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A0");
+	histo_dR_A0[nSam]->Draw();
+	canv_dR_A0[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A0.png");
+
+	canv_dR_A1[nSam]->cd();
+	canv_dR_A1[nSam]->SetLogy();
+	set_histo_frame_1D(histo_dR_A1[nSam]);
+	histo_dR_A1[nSam]->GetXaxis()->SetTitle(Legend_name[nSam]+"  "+"dR_A1");
+	histo_dR_A1[nSam]->Draw();
+	canv_dR_A1[nSam]->SaveAs(Save_dir+Sample_name[nSam]+"_"+"dR_A1.png");
+}
 }
